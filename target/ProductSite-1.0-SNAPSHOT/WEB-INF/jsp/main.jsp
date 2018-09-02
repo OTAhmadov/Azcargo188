@@ -1,11 +1,12 @@
 <%-- 
-    Document   : home
-    Created on : Feb 2, 2017, 10:47:06 PM
-    Author     : Hasanov
+    Document   : main
+    Created on : Sep 1, 2018, 10:47:06 PM
+    Author     : otahmadov
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,19 +15,64 @@
         <%@include file="include/header.jsp" %>
     </head>
     <body>
+        
+        <div class="main-header">
+            <div class="row">				
+                <!-- Logo Starts -->
+                <div class="col-md-7">
+                    <div id="logo">
+                    </div>
+                </div>
+                <!-- Logo Starts -->
+                <!-- Search Starts -->
+                <div class="col-md-4">
+                    
+                </div>
+                <!-- Search Ends -->
+                <div class="col-md-1">
+                    <div class="pull-right">						
+                        <!-- Languages Starts -->
+                        <div class="btn-group">
+                            <button class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+                                <spring:message code="label.header.language"/>&nbsp;
+                                <i class="fa fa-caret-down"></i>
+                            </button>
+                            <ul class="pull-right dropdown-menu">
+                                <li>
+                                    <a tabindex="-1" href="<c:url value="?lang=az" />"><spring:message code="label.header.azerbaijan"/></a>
+                                </li>
+                                <li>
+                                    <a tabindex="-1" href="<c:url value="?lang=en" />"><spring:message code="label.header.english"/></a>
+                                </li>
+                                <li>
+                                    <a tabindex="-1" href="<c:url value="?lang=ru" />"><spring:message code="label.header.russian"/></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Languages Ends -->
+                    </div>
+                </div>
+            </div>
+        </div>
+                                
+    <center>
+        <h1>
+            <spring:message code="translate.me" />
+        </h1>
+    </center>
         <h1>
             ${test}
         </h1>
         <c:if test="${not empty language}">
             <c:forEach items="${language}" var="lang">
                 <h4>
-                    ${lang.az}
+                    ${lang[lcl]}
                 </h4>
                 <h5>
-                    ${lang.en}
+                    ${lang[lcl]}
                 </h5>
                 <h6>
-                    ${lang.ru}
+                    ${lang[lcl]}
                 </h6>
                
             </c:forEach>

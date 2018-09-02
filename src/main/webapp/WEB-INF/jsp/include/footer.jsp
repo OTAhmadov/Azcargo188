@@ -1,7 +1,8 @@
 <%-- 
     Document   : footer
-    Created on : Jan 31, 2017, 2:56:07 PM
-    Author     : shasanov
+    Created on : Sep 1, 2018, 10:47:06 AM
+    Author     : otahmadov
+--%>
 --%>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

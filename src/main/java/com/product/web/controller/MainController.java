@@ -24,7 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
- * @author shasanov
+ * @author otahmadov
  */
 @Controller
 public class MainController extends SkeletonController {
@@ -34,9 +34,9 @@ public class MainController extends SkeletonController {
     protected String showHomePage(Model model) {
         List<MultilanguageString> string = new ArrayList<>();
         
-        string.add(new MultilanguageString("az", "az", "az"));
-        string.add(new MultilanguageString("en", "en", "en"));
-        string.add(new MultilanguageString("ru", "ru", "ru"));
+        string.add(new MultilanguageString("az", "en", "ru"));
+        string.add(new MultilanguageString("az", "en", "ru"));
+        string.add(new MultilanguageString("az", "en", "ru"));
         model.addAttribute("test", "test");
         model.addAttribute("language", string);
         return "main";

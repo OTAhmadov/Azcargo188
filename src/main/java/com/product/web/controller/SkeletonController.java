@@ -5,6 +5,9 @@
  */
 package com.product.web.controller;
 
+import com.product.web.domain.Account;
+import com.product.web.domain.OperationResponse;
+import com.product.web.enums.ResultCode;
 import com.product.web.service.FtpService;
 import com.product.web.service.ProductService;
 import javax.servlet.http.*;
@@ -15,7 +18,7 @@ import org.springframework.web.servlet.mvc.AbstractController;
 
 /**
  *
- * @author shasanov
+ * @author otahmadov
  */
 @Controller
 public class SkeletonController extends AbstractController {
@@ -34,18 +37,18 @@ public class SkeletonController extends AbstractController {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-//    protected Account getSessionAccount() {
-//        return (Account) request.getSession().getAttribute("account");
-//    }
-//    
-//    protected Account getSessionAccount(OperationResponse operationResponse) throws AuthenticationException {
-//        Account account = getSessionAccount();
-//        
-//        if(account == null) {
-//            operationResponse.setCode(ResultCode.UNAUTHORIZED);
-//            throw new AuthenticationException("Account object in session is null.");
-//        }
-//        
-//        return account;
-//    }
+    protected Account getSessionAccount() {
+        return (Account) request.getSession().getAttribute("account");
+    }
+    
+    protected Account getSessionAccount(OperationResponse operationResponse) throws Exception {
+        Account account = getSessionAccount();
+        
+        if(account == null) {
+            operationResponse.setCode(ResultCode.UNAUTHORIZED);
+            throw new Exception("Account object in session is null.");
+        }
+        
+        return account;
+    }
 }

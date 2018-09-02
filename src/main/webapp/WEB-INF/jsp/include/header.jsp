@@ -1,7 +1,7 @@
 <%-- 
     Document   : header
-    Created on : Jan 31, 2017, 11:35:34 AM
-    Author     : shasanov
+    Created on : Sep 1, 2018, 11:35:34 AM
+    Author     : otahmadov
 --%>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -24,3 +24,11 @@
 <link rel="apple-touch-icon-precomposed" href="images/fav-57.png">
 <link rel="shortcut icon" href="images/fav.png">
 
+<c:choose>
+    <c:when test="${pageContext.response.locale eq 'az' or pageContext.response.locale eq 'en' or pageContext.response.locale eq 'ru'}">
+        <c:set scope="request" var="lcl" value="${pageContext.response.locale}" />
+    </c:when>
+    <c:otherwise>
+        <c:set scope="request" var="lcl" value="en" />
+    </c:otherwise>
+</c:choose> 

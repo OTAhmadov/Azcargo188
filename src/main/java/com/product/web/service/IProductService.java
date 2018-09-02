@@ -5,10 +5,13 @@
  */
 package com.product.web.service;
 
+import com.product.web.domain.Account;
+import com.product.web.form.LoginForm;
+
 /**
  *
- * @author Orkhan
+ * @author otahmadov
  */
 public interface IProductService {
-    
+    public Account doLogin(LoginForm form);
 }
