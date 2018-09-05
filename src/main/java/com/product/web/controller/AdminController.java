@@ -6,6 +6,9 @@
 package com.product.web.controller;
 
 import com.product.web.domain.Account;
+import com.product.web.domain.OperationResponse;
+import com.product.web.enums.ResultCode;
+import com.product.web.form.DictionaryWrapperForm;
 import com.product.web.form.LoginForm;
 import com.product.web.util.WebUtils;
 import javax.servlet.http.HttpSession;
@@ -15,6 +18,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -66,5 +71,51 @@ public class AdminController extends SkeletonController {
         }
         
         return "redirect:/login";
+    }
+    
+    @GetMapping("/dictionary/type")
+    @ResponseBody
+    protected OperationResponse getDictionaryTypeList() {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        try {
+            operationResponse.setData(service.getDictionaryTypeList());
+            operationResponse.setCode(ResultCode.OK);
+        }
+        catch(Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return operationResponse;
+    }
+    
+    @GetMapping("/dictionary")
+    @ResponseBody
+    protected OperationResponse getDictionaryTypeList(@RequestParam int dicTypeId) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        try {
+            
+            operationResponse.setData(service.getDictionaryList(dicTypeId));
+            operationResponse.setCode(ResultCode.OK);
+        }
+        catch(Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return operationResponse;
+    }
+    
+    @PostMapping("/dictionary/ndu")
+    @ResponseBody
+    protected OperationResponse NDUDictionary(DictionaryWrapperForm form) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        try {
+            Account account = getSessionAccount(operationResponse);
+            operationResponse = service.NDUDictionary(form, account.getId());
+        }
+        catch(Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return operationResponse;
     }
 }

@@ -5,14 +5,18 @@
  */
 package com.product.web.domain;
 
+import lombok.Data;
+
 /**
  *
- * @author shasanov
+ * @author otahmadov
  */
+@Data
 public class DictionaryWrapper {
     private int id;
     private int type;
     private MultilanguageString value;
+    private MultilanguageString about;
     private int parentId;
     private String icon;
 
@@ -44,48 +48,13 @@ public class DictionaryWrapper {
         this.parentId = parentId;
     }
 
-    public int getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(int parentId) {
-        this.parentId = parentId;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    public DictionaryWrapper(int id, int type, MultilanguageString value, MultilanguageString about, int parentId, String icon) {
         this.id = id;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
         this.type = type;
-    }
-
-    public MultilanguageString getValue() {
-        return value;
-    }
-
-    public void setValue(MultilanguageString value) {
         this.value = value;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
+        this.about = about;
+        this.parentId = parentId;
         this.icon = icon;
     }
 
-    @Override
-    public String toString() {
-        return "DictionaryWrapper{" + "id=" + id + ", type=" + type + ", value=" + value + ", parentId=" + parentId + ", icon=" + icon + '}';
-    }
 }

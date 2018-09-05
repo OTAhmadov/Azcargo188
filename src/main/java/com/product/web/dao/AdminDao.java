@@ -8,12 +8,20 @@ package com.product.web.dao;
 import com.product.web.db.DbConnect;
 import com.product.web.domain.Account;
 import com.product.web.domain.Company;
+import com.product.web.domain.DictionaryWrapper;
+import com.product.web.domain.MultilanguageString;
+import com.product.web.domain.OperationResponse;
+import com.product.web.enums.ResultCode;
+import com.product.web.form.DictionaryWrapperForm;
 import com.product.web.form.LoginForm;
 import com.product.web.util.Crypto;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -59,6 +67,81 @@ public class AdminDao implements IAdminDao {
             log.error(e.getMessage(), e);
         }
         return null;
+    }
+
+    @Override
+    public List<DictionaryWrapper> getDictionaryTypeList() {
+        List<DictionaryWrapper> list = new ArrayList<>();
+        String query = "Select * from dictionary_type d where d.protect is null";
+        try(Connection connection = dbConnect.getPostgresConnection();
+                PreparedStatement preparedStatement = connection.prepareCall(query);
+                ResultSet resultSet = preparedStatement.executeQuery()) {
+            
+            while(resultSet.next()) {
+                list.add(new DictionaryWrapper(resultSet.getInt("id"), 
+                                                new MultilanguageString(resultSet.getString("name"), 
+                                                                        resultSet.getString("name"), 
+                                                                        resultSet.getString("name"))));
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
+    }
+
+    @Override
+    public List<DictionaryWrapper> getDictionaryList(int dicTypeId) {
+        List<DictionaryWrapper> list = new ArrayList<>();
+        String query = "Select * from dictionary d where d.dic_type_id = ? and d.active = 1";
+        try(Connection connection = dbConnect.getPostgresConnection();
+                PreparedStatement preparedStatement = connection.prepareCall(query)
+                ) {
+                preparedStatement.setInt(1, dicTypeId);
+                
+                try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while(resultSet.next()) {
+                        list.add(new DictionaryWrapper(resultSet.getInt("id"), 
+                                                        resultSet.getInt("dic_type_id"),
+                                                new MultilanguageString(resultSet.getString("name_az"), 
+                                                                        resultSet.getString("name_en"), 
+                                                                        resultSet.getString("name_ru")),
+                                                new MultilanguageString(resultSet.getString("about_az"), 
+                                                                        resultSet.getString("about_en"), 
+                                                                        resultSet.getString("about_ru")),
+                                                resultSet.getInt("parent_id"),
+                                                resultSet.getString("icon")));
+                }
+            
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
+    }
+
+    @Override
+    public OperationResponse NDUDictionary(DictionaryWrapperForm form, int accountId) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        String query = "{call ndu_dictionary(?,?,?,?,?,?,?)}";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            CallableStatement callableStatement = connection.prepareCall(query)) {
+            callableStatement.setInt(1, accountId);
+            callableStatement.setInt(2, form.getId());
+            callableStatement.setInt(3, form.getParentId());
+            callableStatement.setInt(4, form.getDicTypeId());
+            callableStatement.setString(5, form.getNameAz());
+            callableStatement.setString(6, form.getNameEn());
+            callableStatement.setString(7, form.getNameRu());
+            
+            callableStatement.executeUpdate();
+            operationResponse.setCode(ResultCode.OK);
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return operationResponse;
     }
     
 }

@@ -6,7 +6,14 @@
 
 $(function (e) {
     try {
-        
+        $('body').on('click', '#main-menu a', function(e) {
+            e.preventDefault();
+            alert();
+            $(this).parents('ul li').each(function() {
+                $(this).removeClass('active');
+            })
+            $(this).addClass('active');
+        })
     }
     catch (err) {
         console.error(err);
