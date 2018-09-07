@@ -6,9 +6,14 @@
 package com.product.web.service;
 
 import com.product.web.dao.AdminDao;
+import com.product.web.domain.About;
 import com.product.web.domain.Account;
+import com.product.web.domain.Contact;
 import com.product.web.domain.DictionaryWrapper;
 import com.product.web.domain.OperationResponse;
+import com.product.web.form.AboutForm;
+import com.product.web.form.AccountForm;
+import com.product.web.form.ContactForm;
 import com.product.web.form.DictionaryWrapperForm;
 import com.product.web.form.LoginForm;
 import java.util.List;
@@ -45,5 +50,45 @@ public class ProductService implements IProductService {
     @Override
     public OperationResponse NDUDictionary(DictionaryWrapperForm form, int accountId){
         return this.adminDao.NDUDictionary(form, accountId);
+    }
+    
+    @Override
+    public List<Contact> getContactList() {
+        return this.adminDao.getContactList();
+    }
+    
+    @Override
+    public Contact getContactDetails(int id) {
+        return this.adminDao.getContactDetails(id);
+    }
+    
+    @Override
+    public OperationResponse NDUContact(ContactForm form, int accountId){
+        return this.adminDao.NDUContact(form, accountId);
+    }
+    
+    @Override
+    public About getAbout() {
+        return this.adminDao.getAbout();
+    }
+    
+    @Override
+    public OperationResponse NDUAbout(AboutForm form, int accountId){
+        return this.adminDao.NDUAbout(form, accountId);
+    }
+    
+    @Override
+    public List<Account> getAccountList(){
+        return this.adminDao.getAccountList();
+    }
+    
+    @Override
+    public Account getAccountDetails(int id) {
+        return this.adminDao.getAccountDetails(id);
+    }
+    
+    @Override
+    public OperationResponse NDUAccount(AccountForm form, int accountId) {
+        return this.adminDao.NDUAccount(form, accountId);
     }
 }
