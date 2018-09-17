@@ -15,6 +15,16 @@ var Product = {
         UNAUTHORIZED: 'UNAUTHORIZED',
         INVALID_PARAMS: 'INVALID_PARAMS'
     },
+    REGEX: {
+        email: /\S+@\S+\.\S+/,
+        number: /^\d+$/,
+        decimalNumber: /^\d+(\.\d+)?$/,
+        phone: /\(\+\d{3}\)-\d{2}-\d{3}-\d{2}-\d{2}/,
+        IMAGE_EXPRESSION: 'image\/jpeg|image\/png',
+    },
+    MASK: {
+        phone: '(+000)-00-000-00-00'
+    },
     Proxy: {
         getDictionariesByType: function(type, callback) {
             $.ajax({
@@ -31,6 +41,38 @@ var Product = {
             });
         },
         
+        addProductFiles: function (productId, formData, callback) {
+            
+            $.ajax({
+                url: Product.rootUrl + "admin/product/" + productId + '/file/ndu',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result) {
+                        switch (result.code) {
+                            case Product.statusCodes.OK:
+
+                                if (callback) {
+                                    callback();
+                                }
+                                break;
+
+                            case Product.statusCodes.ERROR:
+                                if (result.message) {
+                                    
+                                } else {
+                                   alert('Xeta bas verdi') 
+                                }
+                                break;
+
+                        }
+                    }
+                }
+            })
+        },
+        
         
     },
     Service: {
@@ -43,5 +85,21 @@ var Product = {
 
             return html;
         },
+    },
+    Validation: {
+        checkFile: function (contentType, fileType) {
+            var result = contentType.match(fileType);
+            if (result) {
+                return true;
+            } else {
+
+                return false;
+            }
+        }
     }
+    
 };
+var fileTypes = {
+    IMAGE_CONTENT_TYPE: '^(' + Product.REGEX.IMAGE_EXPRESSION + ')$'
+    
+}

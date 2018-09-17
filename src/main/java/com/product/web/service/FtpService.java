@@ -119,12 +119,15 @@ public class FtpService {
             
             try(InputStream inputStream = file.getInputStream()) {
                 client.setFileType(FTP.BINARY_FILE_TYPE);
-                String fullPath = directory + "/" + name + FtpUtils.getExtension(file.getContentType());
-                
+//                String fullPath = directory + "/" + name + FtpUtils.getExtension(file.getContentType());
+                String fullPath = name + FtpUtils.getExtension(file.getContentType());
+               
                 if(client.storeFile(fullPath, inputStream))  {
                     operationResponse.setData(fullPath);
                     operationResponse.setCode(ResultCode.OK);
                 }
+//                client.getReplyCode()
+                
             }
         }
         catch(Exception e) {

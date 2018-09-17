@@ -17,7 +17,7 @@ public class AccountForm {
     private String lname;
     private String mname;
     private String newPassword;
-    private String password;
+    private String oldPassword;
 
     public AccountForm() {
     }
@@ -78,16 +78,16 @@ public class AccountForm {
         this.newPassword = newPassword;
     }
 
-    public String getPassword() {
-        return password;
+    public String getOldPassword() {
+        return oldPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 
     @Override
     public String toString() {
-        return "AccountForm{" + "id=" + id + ", companyId=" + companyId + ", username=" + username + ", fname=" + fname + ", lname=" + lname + ", mname=" + mname + ", newPassword=" + newPassword + ", password=" + password + '}';
+        return "AccountForm{" + "id=" + id + ", companyId=" + companyId + ", username=" + username + ", fname=" + fname + ", lname=" + lname + ", mname=" + mname + ", newPassword=" + newPassword + ", password=" + oldPassword + '}';
     }
 }

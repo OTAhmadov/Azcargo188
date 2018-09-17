@@ -77,6 +77,8 @@
                
             </c:forEach>
         </c:if>
+    
+    <input type="file" class="add_file"/>
         
         <div class="slider">
             <div class="container">

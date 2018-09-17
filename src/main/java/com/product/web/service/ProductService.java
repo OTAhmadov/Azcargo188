@@ -10,12 +10,15 @@ import com.product.web.domain.About;
 import com.product.web.domain.Account;
 import com.product.web.domain.Contact;
 import com.product.web.domain.DictionaryWrapper;
+import com.product.web.domain.FileWrapper;
 import com.product.web.domain.OperationResponse;
 import com.product.web.form.AboutForm;
 import com.product.web.form.AccountForm;
 import com.product.web.form.ContactForm;
 import com.product.web.form.DictionaryWrapperForm;
+import com.product.web.form.FileWrapperForm;
 import com.product.web.form.LoginForm;
+import com.product.web.form.ProductForm;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,5 +93,25 @@ public class ProductService implements IProductService {
     @Override
     public OperationResponse NDUAccount(AccountForm form, int accountId) {
         return this.adminDao.NDUAccount(form, accountId);
+    }
+    
+    @Override
+    public FileWrapper getFileByPath(String path) {
+        return this.adminDao.getFileByPath(path);
+    }
+    
+    @Override
+    public OperationResponse removeFile(int accountId, String path) {
+        return this.adminDao.removeFile(accountId, path);
+    }
+    
+    @Override
+    public OperationResponse NDUProduct(Account account, ProductForm form) {
+        return this.adminDao.NDUProduct(account, form);
+    }
+    
+    @Override
+    public OperationResponse addProductFile(Account account, int productId, FileWrapperForm form) {
+        return this.adminDao.addProductFile(account, productId, form);
     }
 }

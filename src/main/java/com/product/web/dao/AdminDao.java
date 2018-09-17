@@ -11,6 +11,7 @@ import com.product.web.domain.Account;
 import com.product.web.domain.Company;
 import com.product.web.domain.Contact;
 import com.product.web.domain.DictionaryWrapper;
+import com.product.web.domain.FileWrapper;
 import com.product.web.domain.MultilanguageString;
 import com.product.web.domain.OperationResponse;
 import com.product.web.enums.ResultCode;
@@ -18,7 +19,9 @@ import com.product.web.form.AboutForm;
 import com.product.web.form.AccountForm;
 import com.product.web.form.ContactForm;
 import com.product.web.form.DictionaryWrapperForm;
+import com.product.web.form.FileWrapperForm;
 import com.product.web.form.LoginForm;
+import com.product.web.form.ProductForm;
 import com.product.web.util.Crypto;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -325,21 +328,123 @@ public class AdminDao implements IAdminDao {
     @Override
     public OperationResponse NDUAccount(AccountForm form, int accountId) {
         OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
-        String query = "{call ndu_contact(?,?,?,?,?,?,?,?,?)}";
+        System.out.println(Crypto.base64Encode(form.getNewPassword()) + "  " + Crypto.base64Encode(form.getOldPassword()));
+        String query = "{call ndu_account(?,?,?,?,?,?,?,?,?)}";
         try(Connection connection = dbConnect.getPostgresConnection();
             CallableStatement callableStatement = connection.prepareCall(query)) {
             callableStatement.setInt(1, accountId);
             callableStatement.setInt(2, form.getId());
             callableStatement.setInt(3, 1);
             callableStatement.setString(4, form.getUsername());
-            callableStatement.setString(5, form.getNewPassword());
-            callableStatement.setString(6, form.getPassword());
+            callableStatement.setString(5, Crypto.base64Encode(form.getNewPassword()));
+            callableStatement.setString(6, form.getOldPassword() != null && !form.getOldPassword().isEmpty() ? Crypto.base64Encode(form.getOldPassword()) : "");
             callableStatement.setString(7, form.getFname());
             callableStatement.setString(8, form.getLname());
             callableStatement.setString(9, form.getMname());
             
             callableStatement.executeUpdate();
             operationResponse.setCode(ResultCode.OK);
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return operationResponse;
+    }
+
+    @Override
+    public FileWrapper getFileByPath(String path) {
+        String query = "select * from files f where f.path like '%'|| ? ||'%' and f.active = 1";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, path);
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if(resultSet.next()) {
+                    return new FileWrapper(resultSet.getString("path"), resultSet.getString("original_name"), resultSet.getString("file_type"));
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public OperationResponse addProductFile(Account account, int productId, FileWrapperForm form) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        
+        try(Connection connection = dbConnect.getPostgresConnection();
+            CallableStatement callableStatement = connection.prepareCall("{call add_product_files(?,?,?,?,?)}")) {
+            callableStatement.setInt(1, account.getId());
+            callableStatement.setInt(2, productId);
+            callableStatement.setString(3, form.getPath());
+            callableStatement.setString(4, form.getOriginalName());
+            callableStatement.setString(5, form.getContentType());
+            
+            callableStatement.executeUpdate();
+            operationResponse.setCode(ResultCode.OK);
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return operationResponse;
+    }
+
+    @Override
+    public OperationResponse NDUProduct(Account account, ProductForm form) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        
+        try(Connection connection = dbConnect.getPostgresConnection();
+            CallableStatement callableStatement = connection.prepareCall("{? = call ndu_product(?,?,?,?,?,?,?,?,?,?)}")) {
+            callableStatement.registerOutParameter(1, Types.INTEGER);
+            callableStatement.setInt(2, account.getId());
+            callableStatement.setInt(3, form.getId());
+            callableStatement.setInt(4, form.getCompanyId());
+            callableStatement.setInt(5, form.getTypeId());
+            callableStatement.setString(6, form.getName());
+            callableStatement.setString(7, form.getDescription());
+            callableStatement.setString(8, form.getReceiptDescription());
+            callableStatement.setInt(9, form.getCount());
+            callableStatement.setString(10, form.getPrice());
+            callableStatement.setInt(11, form.getPriority());
+            callableStatement.execute();
+            
+            int id = callableStatement.getInt(1);
+            
+            if(form.getId() == 0 && id > 0) {
+                if(form.getFiles() != null && form.getFiles().length > 0) {
+                    for(FileWrapperForm f: form.getFiles()) {
+                        operationResponse = this.addProductFile(account, id, f);
+                        if(operationResponse.getCode() != ResultCode.OK) {
+                            connection.rollback();
+                            throw new Exception("Error add file");
+                        }
+                    }
+                        
+                }
+            }
+            operationResponse.setCode(ResultCode.OK);
+            
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return operationResponse;
+    }
+
+    @Override
+    public OperationResponse removeFile(int accountId, String path) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        
+        try(Connection connection = dbConnect.getPostgresConnection();
+            CallableStatement callableStatement = connection.prepareCall("{call remove_files(?,?)}")) {
+            callableStatement.setInt(1, accountId);
+            callableStatement.setString(2, path);
+            callableStatement.executeUpdate();
+            
+            operationResponse.setCode(ResultCode.OK);
+            
         } 
         catch (Exception e) {
             log.error(e.getMessage(), e);

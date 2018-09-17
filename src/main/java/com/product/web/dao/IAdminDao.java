@@ -9,12 +9,15 @@ import com.product.web.domain.About;
 import com.product.web.domain.Account;
 import com.product.web.domain.Contact;
 import com.product.web.domain.DictionaryWrapper;
+import com.product.web.domain.FileWrapper;
 import com.product.web.domain.OperationResponse;
 import com.product.web.form.AboutForm;
 import com.product.web.form.AccountForm;
 import com.product.web.form.ContactForm;
 import com.product.web.form.DictionaryWrapperForm;
+import com.product.web.form.FileWrapperForm;
 import com.product.web.form.LoginForm;
+import com.product.web.form.ProductForm;
 import java.util.List;
 
 /**
@@ -38,4 +41,10 @@ public interface IAdminDao {
     public List<Account> getAccountList();
     public Account getAccountDetails(int id);
     public OperationResponse NDUAccount(AccountForm form, int accountId);
+    
+    public FileWrapper getFileByPath(String path);
+    public OperationResponse removeFile(int accountId, String path);
+    
+    public OperationResponse addProductFile(Account account, int productId, FileWrapperForm form);
+    public OperationResponse NDUProduct(Account account, ProductForm form);
 }
