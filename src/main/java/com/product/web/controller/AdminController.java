@@ -264,7 +264,7 @@ public class AdminController extends SkeletonController {
     }
     
     @ResponseBody
-    @PostMapping(value = "/product/{id:\\d+}/file/ndu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/product/{id:\\d+}/file/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     protected OperationResponse NDUProductFile(@RequestPart(name = "image", required = false) MultipartFile image,
                                                 @PathVariable int id,
                                                 MultipartHttpServletRequest multipartHttpServletRequest
