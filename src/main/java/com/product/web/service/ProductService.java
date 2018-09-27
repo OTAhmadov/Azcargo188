@@ -12,6 +12,7 @@ import com.product.web.domain.Contact;
 import com.product.web.domain.DictionaryWrapper;
 import com.product.web.domain.FileWrapper;
 import com.product.web.domain.OperationResponse;
+import com.product.web.domain.Product;
 import com.product.web.form.AboutForm;
 import com.product.web.form.AccountForm;
 import com.product.web.form.ContactForm;
@@ -113,5 +114,20 @@ public class ProductService implements IProductService {
     @Override
     public OperationResponse addProductFile(Account account, int productId, FileWrapperForm form) {
         return this.adminDao.addProductFile(account, productId, form);
+    }
+    
+    @Override
+    public List<Product> getProductList(ProductForm form) {
+        return this.adminDao.getProductList(form);
+    }
+    
+    @Override
+    public Product getProductDetails(int productId) {
+        return this.adminDao.getProductDetails(productId);
+    }
+    
+    @Override
+    public List<FileWrapper> getProductFileList(int productId) {
+        return this.adminDao.getProductFileList(productId);
     }
 }

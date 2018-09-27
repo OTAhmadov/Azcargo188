@@ -19,6 +19,8 @@ import com.product.web.form.ProductForm;
 import com.product.web.util.Crypto;
 import com.product.web.util.WebUtils;
 import com.product.web.validation.FileWrapperFormValidator;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
@@ -42,6 +44,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  *
  * @author otahmadov
  */
+@Api(description = "Admin panel ucun(AdminController)")
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController extends SkeletonController {
@@ -88,7 +91,7 @@ public class AdminController extends SkeletonController {
         
         return "redirect:/login";
     }
-    
+    @ApiOperation(value = "dictionary type larin listini getirir.", notes = "Biz terefden teyin olanan typeler siyahida gelmeyecek")
     @GetMapping("/dictionary/type")
     @ResponseBody
     protected OperationResponse getDictionaryTypeList() {
@@ -103,7 +106,7 @@ public class AdminController extends SkeletonController {
         
         return operationResponse;
     }
-    
+    @ApiOperation(value = "dictionary lerin listini getirir dic type id ye gore. ", notes = "mes: http://104.248.176.190:8080/admin/dictionary?dicTypeId=1")
     @GetMapping("/dictionary")
     @ResponseBody
     protected OperationResponse getDictionaryTypeList(@RequestParam int dicTypeId) {
@@ -120,6 +123,7 @@ public class AdminController extends SkeletonController {
         return operationResponse;
     }
     
+    @ApiOperation(value = "dictionary lerin add edit remove - si. ", notes = "parametr siyahisi form packagesinde var hamisinin baxarsan. istifade ucun sessiya teleb olunur, login olmaq lazimdir")
     @PostMapping("/dictionary/ndu")
     @ResponseBody
     protected OperationResponse NDUDictionary(DictionaryWrapperForm form) {
@@ -135,6 +139,7 @@ public class AdminController extends SkeletonController {
         return operationResponse;
     }
     
+    @ApiOperation(value = "contactlarin siyahisini getirir", notes = "")
     @GetMapping("/contacts")
     @ResponseBody
     protected OperationResponse getContactList() {
@@ -150,12 +155,13 @@ public class AdminController extends SkeletonController {
         return operationResponse;
     }
     
+    @ApiOperation(value = " id ye gore contactin deteilsini getirir.", notes = "")
     @GetMapping("/contact/{id:\\d+}")
     @ResponseBody
     protected OperationResponse getContactById(@PathVariable int id) {
         OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
         try {
-            Account account = getSessionAccount(operationResponse);
+//            Account account = getSessionAccount(operationResponse);
             operationResponse.setData(service.getContactDetails(id));
             operationResponse.setCode(ResultCode.OK);
         }
@@ -166,10 +172,11 @@ public class AdminController extends SkeletonController {
         return operationResponse;
     }
     
+    @ApiOperation(value = "kontactlarin add edit remove si", notes = "parametr siyahisi form packagesinde var hamisinin baxarsan. istifade ucun sessiya teleb olunur, login olmaq lazimdir")
     @PostMapping("/contact/ndu")
     @ResponseBody
     protected OperationResponse NDUContact(ContactForm form) {
-        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);  
         try {
             Account account = getSessionAccount(operationResponse);
             operationResponse = service.NDUContact(form, account.getId());
@@ -182,6 +189,7 @@ public class AdminController extends SkeletonController {
         return operationResponse;
     }
     
+    @ApiOperation(value = "about getirir.", notes = "")
     @GetMapping("/about")
     @ResponseBody
     protected OperationResponse getAbout() {
@@ -198,6 +206,7 @@ public class AdminController extends SkeletonController {
         return operationResponse;
     }
     
+    @ApiOperation(value = "about add edit remove si", notes = "parametr siyahisi form packagesinde var hamisinin baxarsan. istifade ucun sessiya teleb olunur, login olmaq lazimdir. eslinde about ancaq edit olunacaq.")
     @PostMapping("/about/ndu")
     @ResponseBody
     protected OperationResponse NDUAbout(AboutForm form) {
@@ -214,7 +223,7 @@ public class AdminController extends SkeletonController {
         return operationResponse;
     }
     
-    
+    @ApiOperation(value = "account listini getirir", notes = "istifade ucun sessiya teleb olunur, login olmaq lazimdir.")
     @GetMapping("/accounts")
     @ResponseBody
     protected OperationResponse getAccountList() {
@@ -231,6 +240,7 @@ public class AdminController extends SkeletonController {
         return operationResponse;
     }
     
+    @ApiOperation(value = "accountun id sine gore detail getirir", notes = "istifade ucun sessiya teleb olunur, login olmaq lazimdir.")
     @GetMapping("/account/{id:\\d+}")
     @ResponseBody
     protected OperationResponse getAccountById(@PathVariable int id) {
@@ -247,6 +257,7 @@ public class AdminController extends SkeletonController {
         return operationResponse;
     }
     
+    @ApiOperation(value = "accountlarin add edit remove si", notes = "parametr siyahisi form packagesinde var hamisinin baxarsan. istifade ucun sessiya teleb olunur, login olmaq lazimdir.")
     @PostMapping("/account/ndu")
     @ResponseBody
     protected OperationResponse NDUAccount(AccountForm form) {
@@ -263,6 +274,7 @@ public class AdminController extends SkeletonController {
         return operationResponse;
     }
     
+    @ApiOperation(value = "productun idsine gore file elave edir", notes = "file sayi max 5 dene qoymusam. istifade ucun sessiya teleb olunur, login olmaq lazimdir.")
     @ResponseBody
     @PostMapping(value = "/product/{id:\\d+}/file/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     protected OperationResponse NDUProductFile(@RequestPart(name = "image", required = false) MultipartFile image,
@@ -316,7 +328,8 @@ public class AdminController extends SkeletonController {
         
         return operationResponse;
     }
-
+    
+    @ApiOperation(value = "productlarin add edit remove si, ", notes = "parametr siyahisi form packagesinde var hamisinin baxarsan. istifade ucun sessiya teleb olunur, login olmaq lazimdir.")
     @ResponseBody
     @PostMapping(value = "/product/ndu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     protected OperationResponse NDUProduct(@RequestPart(name = "image", required = false) MultipartFile image,
@@ -371,6 +384,7 @@ public class AdminController extends SkeletonController {
         return operationResponse;
     }
     
+    @ApiOperation(value = "path e gore sekli qaytarir", notes = "ftp de olmaqla yanasi bazadada path movcud olmalidir. tehlukesizlik ucun bazadan yoxlayir.")
     @GetMapping(value = "/image/{path}", produces = MediaType.IMAGE_JPEG_VALUE) // OK
     @ResponseBody
     protected byte[] getProductImage(@PathVariable String path,
@@ -394,7 +408,9 @@ public class AdminController extends SkeletonController {
         return null;
     }
     
+    @ApiOperation(value = "image nin path ne gore silir", notes = "istifade ucun sessiya teleb olunur, login olmaq lazimdir.")
     @PostMapping(value = "/image/{path}/remove")
+    @ResponseBody
     protected OperationResponse removeStudentImage(@PathVariable String path) {
         OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
 
@@ -412,6 +428,60 @@ public class AdminController extends SkeletonController {
                 
                 operationResponse = service.removeFile(account.getId(), path);
             }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    @ApiOperation(value = "Productlarin siyahisini getirir", notes = "Filterler: typeId, companyId, name, priority, startPrice, endPrice. Default olaraq page=1 ve pageCount=50 goturulub")
+    @GetMapping(value = "/products")
+    @ResponseBody
+    protected OperationResponse getProductList(ProductForm form) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            
+            operationResponse.setData(service.getProductList(form));
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    @ApiOperation(value = "Productin sekillerinin listini qaytarir", notes = "her Ehtimala yazdim lazim olsa istifade edek")
+    @GetMapping(value = "/product/{id:\\d+}/files")
+    @ResponseBody
+    protected OperationResponse getProductFileList(@PathVariable int id) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            
+            operationResponse.setData(service.getProductFileList(id));
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    @ApiOperation(value = "Productinin id-sine gore detaillerini qaytarir", notes = "")
+    @GetMapping(value = "/product/{id:\\d+}")
+    @ResponseBody
+    protected OperationResponse getProductDetails(@PathVariable int id) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            
+            operationResponse.setData(service.getProductDetails(id));
+            operationResponse.setCode(ResultCode.OK);
+            
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

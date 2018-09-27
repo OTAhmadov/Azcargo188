@@ -11,6 +11,7 @@ import com.product.web.domain.Contact;
 import com.product.web.domain.DictionaryWrapper;
 import com.product.web.domain.FileWrapper;
 import com.product.web.domain.OperationResponse;
+import com.product.web.domain.Product;
 import com.product.web.form.AboutForm;
 import com.product.web.form.AccountForm;
 import com.product.web.form.ContactForm;
@@ -47,4 +48,7 @@ public interface IAdminDao {
     
     public OperationResponse addProductFile(Account account, int productId, FileWrapperForm form);
     public OperationResponse NDUProduct(Account account, ProductForm form);
+    public List<Product> getProductList(ProductForm form);
+    public Product getProductDetails(int productId);
+    public List<FileWrapper> getProductFileList(int productId);
 }

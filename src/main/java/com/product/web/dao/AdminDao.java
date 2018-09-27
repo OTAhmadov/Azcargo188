@@ -14,6 +14,7 @@ import com.product.web.domain.DictionaryWrapper;
 import com.product.web.domain.FileWrapper;
 import com.product.web.domain.MultilanguageString;
 import com.product.web.domain.OperationResponse;
+import com.product.web.domain.Product;
 import com.product.web.enums.ResultCode;
 import com.product.web.form.AboutForm;
 import com.product.web.form.AccountForm;
@@ -240,9 +241,9 @@ public class AdminDao implements IAdminDao {
                     if(resultSet.next()) {
                         return new About(resultSet.getInt("id"), 
                                             resultSet.getString("title"),
-                                            new MultilanguageString(resultSet.getString("name_az"), 
-                                                                    resultSet.getString("name_en"), 
-                                                                    resultSet.getString("name_ru")));
+                                            new MultilanguageString(resultSet.getString("content"), 
+                                                                    resultSet.getString("content_en"), 
+                                                                    resultSet.getString("content_ru")));
                     }
                     
         } 
@@ -450,6 +451,114 @@ public class AdminDao implements IAdminDao {
             log.error(e.getMessage(), e);
         }
         return operationResponse;
+    }
+
+    @Override
+    public List<Product> getProductList(ProductForm form) {
+        List<Product> list = new ArrayList<>();
+        
+        try(Connection connection = dbConnect.getPostgresConnection();
+            CallableStatement callableStatement = connection.prepareCall("{? = call get_product_list(?,?,?,?,?,?,?,?)}")) {
+            connection.setAutoCommit(false);
+            
+            callableStatement.registerOutParameter(1, Types.OTHER);
+            callableStatement.setInt(2, form.getTypeId());
+            callableStatement.setInt(3, form.getCompanyId() );
+            callableStatement.setString(4, form.getName() != null ? form.getName() : "");
+            callableStatement.setInt(5, form.getPriority());
+            callableStatement.setString(6, form.getStartPrice() != null ? form.getStartPrice() : "");
+            callableStatement.setString(7, form.getEndPrice() != null ? form.getEndPrice() : "");
+            callableStatement.setInt(8, form.getPage());
+            callableStatement.setInt(9, form.getPageCount());
+            callableStatement.execute();
+            
+            try(ResultSet resultSet = (ResultSet) callableStatement.getObject(1)) {
+                while(resultSet.next()) {
+                    list.add(new Product(resultSet.getInt("id"), 
+                                         new Company(resultSet.getInt("company_id"), 
+                                                     resultSet.getString("company_name"), null, null), 
+                                         new DictionaryWrapper(resultSet.getInt("type_id"), 
+                                                               new MultilanguageString(resultSet.getString("type_az"), 
+                                                                                        resultSet.getString("type_en"), 
+                                                                                        resultSet.getString("type_ru"))), 
+                                         resultSet.getString("name"), 
+                                         resultSet.getString("description"), 
+                                         resultSet.getString("recept_description"), 
+                                         resultSet.getInt("count"), 
+                                         resultSet.getString("price"), 
+                                         this.getProductFileList(resultSet.getInt("id")), 
+                                         resultSet.getInt("priority")));
+                }
+            }
+            
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
+    }
+    @Override
+    public Product getProductDetails(int productId) {
+        
+        try(Connection connection = dbConnect.getPostgresConnection();
+            CallableStatement callableStatement = connection.prepareCall("{? = call get_product_details(?)}")) {
+            connection.setAutoCommit(false);
+            callableStatement.registerOutParameter(1, Types.OTHER);
+            callableStatement.setInt(2, productId);
+            callableStatement.execute();
+            try(ResultSet resultSet = (ResultSet) callableStatement.getObject(1)) {
+                if(resultSet.next()) {
+                  return new Product(resultSet.getInt("id"), 
+                                         new Company(resultSet.getInt("company_id"), 
+                                                     resultSet.getString("company_name"), null, null), 
+                                         new DictionaryWrapper(resultSet.getInt("type_id"), 
+                                                               new MultilanguageString(resultSet.getString("type_az"), 
+                                                                                        resultSet.getString("type_en"), 
+                                                                                        resultSet.getString("type_ru"))), 
+                                         resultSet.getString("name"), 
+                                         resultSet.getString("description"), 
+                                         resultSet.getString("recept_description"), 
+                                         resultSet.getInt("count"), 
+                                         resultSet.getString("price"), 
+                                         this.getProductFileList(resultSet.getInt("id")), 
+                                         resultSet.getInt("priority"));
+                    
+                }
+            }
+            
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+    
+    @Override
+    public List<FileWrapper> getProductFileList(int productId) {
+        List<FileWrapper> list = new ArrayList<>();
+        String query = "select \n" +
+                        "  f.* \n" +
+                        "  from product_files pf\n" +
+                        "  join files f on f.id = pf.file_id and f.active = 1\n" +
+                        "  where pf.product_id = ? and pf.active = 1";
+        
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            
+            preparedStatement.setInt(1, productId);
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                while(resultSet.next()) {
+                    String path = resultSet.getString("path").split("\\.")[0];
+                    list.add(new FileWrapper(path, resultSet.getString("original_name"), resultSet.getString("type")));
+                }
+            }
+            
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
     }
     
 }

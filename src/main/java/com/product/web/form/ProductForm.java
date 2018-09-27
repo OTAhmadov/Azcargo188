@@ -19,8 +19,11 @@ public class ProductForm {
     private int count;
     private int priority;
     private String price;
+    private String startPrice;
+    private String endPrice;
     private FileWrapperForm[] files;
-
+    private int page = 1;
+    private int pageCount = 50;
     public ProductForm() {
     }
 
@@ -104,9 +107,40 @@ public class ProductForm {
         this.priority = priority;
     }
 
-    @Override
-    public String toString() {
-        return "ProductForm{" + "id=" + id + ", companyId=" + companyId + ", typeId=" + typeId + ", name=" + name + ", description=" + description + ", receiptDescription=" + receiptDescription + ", count=" + count + ", priority=" + priority + ", price=" + price + ", files=" + files + '}';
+    public String getStartPrice() {
+        return startPrice;
     }
 
+    public void setStartPrice(String startPrice) {
+        this.startPrice = startPrice;
+    }
+
+    public String getEndPrice() {
+        return endPrice;
+    }
+
+    public void setEndPrice(String endPrice) {
+        this.endPrice = endPrice;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getPageCount() {
+        return pageCount;
+    }
+
+    public void setPageCount(int pageCount) {
+        this.pageCount = pageCount;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductForm{" + "id=" + id + ", companyId=" + companyId + ", typeId=" + typeId + ", name=" + name + ", description=" + description + ", receiptDescription=" + receiptDescription + ", count=" + count + ", priority=" + priority + ", price=" + price + ", startPrice=" + startPrice + ", endPrice=" + endPrice + ", files=" + files + ", page=" + page + ", pageCount=" + pageCount + '}';
+    }
 }
