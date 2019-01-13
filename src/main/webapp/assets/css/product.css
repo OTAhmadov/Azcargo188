@@ -299,3 +299,33 @@ transition: all .3s ease-in-out;
     -ms-transform: scale(1.2);
     transform: scale(1.2);
 }
+
+#product_list .edit-product, #product_list .remove-product{
+        margin-left: 6px;
+        cursor: pointer;
+}
+.product-image-view{
+    width: 80px;
+    height: 80px;
+    margin-left: 5px;
+}
+.image-div {
+    float:left;
+    height: 108px;
+}
+.remove-image-btn{
+    /*margin-top: -79px;*/
+    position: absolute;
+    margin-left: -16px;
+    color: red;
+    cursor: pointer;
+}
+#dictinary_list i, #user_list i, #contact_list i{
+    margin-left: 6px;
+    cursor: pointer;
+}
+.add-contact {
+        margin-top: -27px;
+    margin-right: 20px;
+    cursor: pointer;
+}

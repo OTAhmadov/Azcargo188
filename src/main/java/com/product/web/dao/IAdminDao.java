@@ -7,6 +7,7 @@ package com.product.web.dao;
 
 import com.product.web.domain.About;
 import com.product.web.domain.Account;
+import com.product.web.domain.Company;
 import com.product.web.domain.Contact;
 import com.product.web.domain.DictionaryWrapper;
 import com.product.web.domain.FileWrapper;
@@ -47,8 +48,16 @@ public interface IAdminDao {
     public OperationResponse removeFile(int accountId, String path);
     
     public OperationResponse addProductFile(Account account, int productId, FileWrapperForm form);
+    public OperationResponse addOtherFile(Account account, FileWrapperForm form);
+    public List<FileWrapper> getOtherFile();
     public OperationResponse NDUProduct(Account account, ProductForm form);
     public List<Product> getProductList(ProductForm form);
     public Product getProductDetails(int productId);
     public List<FileWrapper> getProductFileList(int productId);
+    
+    public List<DictionaryWrapper> getCategoryListWithCount();
+    
+    public int getProductCount(int typeId, String name);
+    
+    public Company getCompanyInfo();
 }

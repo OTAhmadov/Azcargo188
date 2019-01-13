@@ -156,7 +156,7 @@ public class AdminDao implements IAdminDao {
     @Override
     public List<Contact> getContactList() {
         List<Contact> list = new ArrayList<>();
-        String query = "Select c.*, d.name_az, d.name_en, d.name_ru from contacts c "
+        String query = "Select c.*, d.name_az, d.name_en, d.name_ru, d.icon from contacts c "
                         + "join dictionary d on d.id = c.type_id and d.active = 1 "
                         + "where c.company_id = 1 and c.active = 1";
         try(Connection connection = dbConnect.getPostgresConnection();
@@ -169,7 +169,8 @@ public class AdminDao implements IAdminDao {
                                               new DictionaryWrapper(resultSet.getInt("type_id"), 
                                                                     new MultilanguageString(resultSet.getString("name_az"), 
                                                                                             resultSet.getString("name_en"), 
-                                                                                            resultSet.getString("name_ru"))),
+                                                                                            resultSet.getString("name_ru")),
+                                                                    resultSet.getString("icon")),
                                               resultSet.getString("contact")));
                 }
         } 
@@ -361,7 +362,7 @@ public class AdminDao implements IAdminDao {
             
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if(resultSet.next()) {
-                    return new FileWrapper(resultSet.getString("path"), resultSet.getString("original_name"), resultSet.getString("file_type"));
+                    return new FileWrapper(resultSet.getString("path"), resultSet.getString("path"), resultSet.getString("original_name"), resultSet.getString("file_type"));
                 }
             }
         } 
@@ -391,6 +392,43 @@ public class AdminDao implements IAdminDao {
         }
         return operationResponse;
     }
+    @Override
+    public OperationResponse addOtherFile(Account account, FileWrapperForm form) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        
+        try(Connection connection = dbConnect.getPostgresConnection();
+            CallableStatement callableStatement = connection.prepareCall("{call add_other_files(?,?,?,?)}")) {
+            callableStatement.setInt(1, account.getId());
+            callableStatement.setString(2, form.getPath());
+            callableStatement.setString(3, form.getOriginalName());
+            callableStatement.setString(4, form.getContentType());
+            
+            callableStatement.executeUpdate();
+            operationResponse.setCode(ResultCode.OK);
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return operationResponse;
+    }
+    @Override
+    public List<FileWrapper> getOtherFile() {
+        List<FileWrapper> list = new ArrayList<>();
+        String query = "select * from files f where f.active = 1 and f.place_type = 1";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery()) {
+            while(resultSet.next()) {
+                String path = resultSet.getString("path").split("\\.")[0];
+                    list.add(new FileWrapper(path, resultSet.getString("path"), resultSet.getString("original_name"), resultSet.getString("file_type")));
+             
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
+    }
 
     @Override
     public OperationResponse NDUProduct(Account account, ProductForm form) {
@@ -418,6 +456,7 @@ public class AdminDao implements IAdminDao {
                     for(FileWrapperForm f: form.getFiles()) {
                         operationResponse = this.addProductFile(account, id, f);
                         if(operationResponse.getCode() != ResultCode.OK) {
+                            connection.setAutoCommit(false);
                             connection.rollback();
                             throw new Exception("Error add file");
                         }
@@ -536,10 +575,10 @@ public class AdminDao implements IAdminDao {
     @Override
     public List<FileWrapper> getProductFileList(int productId) {
         List<FileWrapper> list = new ArrayList<>();
-        String query = "select \n" +
-                        "  f.* \n" +
-                        "  from product_files pf\n" +
-                        "  join files f on f.id = pf.file_id and f.active = 1\n" +
+        String query = "select " +
+                        "  f.* " +
+                        "  from product_files pf " +
+                        "  join files f on f.id = pf.file_id and f.active = 1 " +
                         "  where pf.product_id = ? and pf.active = 1";
         
         try(Connection connection = dbConnect.getPostgresConnection();
@@ -550,7 +589,7 @@ public class AdminDao implements IAdminDao {
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 while(resultSet.next()) {
                     String path = resultSet.getString("path").split("\\.")[0];
-                    list.add(new FileWrapper(path, resultSet.getString("original_name"), resultSet.getString("type")));
+                    list.add(new FileWrapper(path, resultSet.getString("path"), resultSet.getString("original_name"), resultSet.getString("file_type")));
                 }
             }
             
@@ -559,6 +598,89 @@ public class AdminDao implements IAdminDao {
             log.error(e.getMessage(), e);
         }
         return list;
+    }
+    
+    @Override
+    public List<DictionaryWrapper> getCategoryListWithCount() {
+        List<DictionaryWrapper> list = new ArrayList<>();
+        
+        try(Connection connection = dbConnect.getPostgresConnection();
+            CallableStatement callableStatement = connection.prepareCall("{? = call get_category_list_with_count()}")) {
+            connection.setAutoCommit(false);
+            callableStatement.registerOutParameter(1, Types.OTHER);
+            callableStatement.execute();
+            try(ResultSet resultSet = (ResultSet) callableStatement.getObject(1)) {
+                int count = 0;
+                while(resultSet.next()) {
+                    count += resultSet.getInt("count_category");
+                    list.add(new DictionaryWrapper(resultSet.getInt("type_id"), 
+                                                   new MultilanguageString(resultSet.getString("name_az"), 
+                                                                            resultSet.getString("name_en"), 
+                                                                            resultSet.getString("name_ru")),
+                                                    resultSet.getInt("count_category")));
+                }
+                DictionaryWrapper dw = new DictionaryWrapper(0, 
+                                                             new MultilanguageString("Hamısı", 
+                                                                            "All", 
+                                                                            "Все"),
+                                                              count);
+                list.add(0, dw);
+            }
+            
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
+    }
+
+    @Override
+    public int getProductCount(int typeId, String name) {
+        
+        String query = "select count(*) count from products p "+
+                       "where p.active = 1 and p.type_id = case when ? > 0 then ? else p.type_id end "+
+                       "and lower(p.name) like case when length(trim(?)) > 0 then '%' || lower(?) ||'%' else lower(p.name) end";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, typeId);
+            preparedStatement.setInt(2, typeId);
+            preparedStatement.setString(3, name != null ? name : "");
+            preparedStatement.setString(4, name != null ? name : "");
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if(resultSet.next()) {
+                    int count = resultSet.getInt("count");
+                    return count;
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return 0;
+    }
+
+    @Override
+    public Company getCompanyInfo() {
+        
+        String query = "select c.*, d.name_az from company c "
+                        + "join dictionary d on d.id = c.city_id and c.active = 1 where c.active = 1";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if(resultSet.next()) {
+                    return new Company(0, resultSet.getString("name"), null, 
+                                        resultSet.getString("name_az") + " " + resultSet.getString("address"), 
+                                        resultSet.getString("langitude"), 
+                                        resultSet.getString("latitude"));
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
     }
     
 }

@@ -35,12 +35,24 @@
     <link rel="stylesheet" href="<c:url value="/assets/index/plugins/slick/slick.css" />">
     <link rel="stylesheet" href="<c:url value="/assets/index/plugins/lightGallery-master/lightgallery.min.css" />">
 <link rel="stylesheet" href="<c:url value="/assets/index/css/style.css" />">
+<style>
+   @media (max-width: 1199px){
+    .menu > li > a:before{
+        height: auto;
+    }
+}
+.header--1 .navigation--mobile .ps-logo {
+    max-width: 165px;
+    line-height: 60px;
+    margin-bottom: 40px;
+} 
+</style>
 
 <c:choose>
     <c:when test="${pageContext.response.locale eq 'az' or pageContext.response.locale eq 'en' or pageContext.response.locale eq 'ru'}">
         <c:set scope="request" var="lcl" value="${pageContext.response.locale}" />
     </c:when>
     <c:otherwise>
-        <c:set scope="request" var="lcl" value="en" />
+        <c:set scope="request" var="lcl" value="az" />
     </c:otherwise>
 </c:choose> 

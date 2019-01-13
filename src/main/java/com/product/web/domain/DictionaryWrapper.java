@@ -19,13 +19,18 @@ public class DictionaryWrapper {
     private MultilanguageString about;
     private int parentId;
     private String icon;
-
+    private int count;
     public DictionaryWrapper() {
     }
 
     public DictionaryWrapper(int id, MultilanguageString value) {
         this.id = id;
         this.value = value;
+    }
+    public DictionaryWrapper(int id, MultilanguageString value, int count) {
+        this.id = id;
+        this.value = value;
+        this.count = count;
     }
 
     public DictionaryWrapper(int id, MultilanguageString value, String icon) {

@@ -9,53 +9,14 @@
     <meta name="description" content="Sufee Admin - HTML5 Admin Template">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="shortcut icon" href="assets/img/favicon.ico">
-
-    <link rel="stylesheet" href="assets/css/normalize.css">
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/css/themify-icons.css">
-    <link rel="stylesheet" href="assets/css/flag-icon.min.css">
-    <link rel="stylesheet" href="assets/css/cs-skin-elastic.css">
-    <link rel="stylesheet" href="assets/css/lib/datatable/dataTables.bootstrap.min.css">
-    <link rel="stylesheet" href="assets/scss/style.css">
-    <link href="assets/css/lib/vector-map/jqvmap.min.css" rel="stylesheet">
-
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
-
-
+<%@include file="../include/admin_header.jsp" %>
 </head>
 <body>
 
 
         <!-- Left Panel -->
 
-    <aside id="left-panel" class="left-panel">
-        <nav class="navbar navbar-expand-sm navbar-default">
-
-            <div class="navbar-header">
-                <a class="navbar-brand" href="./"><img src="assets/imag/logo.png" alt="Logo"></a>
-                <a class="navbar-brand hidden" href="./"><img src="assets/imag/logo2.png" alt="Logo"></a>
-            </div>
-
-            <div id="main-menu" class="main-menu collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active">
-                        <a href="<c:url value="/product" />" <i class="menu-icon fa fa-database" data-type="product"></i>Məhsullar </a>
-                    </li>
-                    <li>
-                        <a href="<c:url value="/log" />"> <i class="menu-icon fa fa-bars" data-type="log"></i>Loglar </a>
-                    </li>
-                    <li>
-                        <a href="<c:url value="/company" />"> <i class="menu-icon fa fa-building-o" data-type="company"></i>Filiallar </a>
-                    </li>
-                    <li>
-                        <a href="<c:url value="/dictionary" />"> <i class="menu-icon fa fa-cogs" data-type="dictionary"></i>Sazlamalar </a>
-                    </li>
-                </ul>
-            </div><!-- /.navbar-collapse -->
-        </nav>
-    </aside><!-- /#left-panel -->
+    <%@include file="../include/admin_modules.jsp" %><!-- /#left-panel -->
 
     <!-- Left Panel -->
 
@@ -83,7 +44,7 @@
                 <div class="col-sm-5">
                     <div class="user-area dropdown float-right">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="user-avatar rounded-circle" src="assets/img/admin.jpeg" alt="User Avatar">
+                            <img class="user-avatar rounded-circle" src="<c:url value="/assets/img/admin.jpeg"/>" alt="User Avatar">
                         </a>
 
                         <div class="user-menu dropdown-menu">
@@ -148,7 +109,37 @@
                             <strong class="card-title">Data Table</strong>
                         </div>
                         <div class="card-body">
-                            <%@include file="table/product_table.html" %>
+                            <table id="bootstrap-data-table" class="table table-striped table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th>Name</th>
+                                    <th>Position</th>
+                                    <th>Office</th>
+                                    <th>Salary</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>Tiger Nixon</td>
+                                    <td>System Architect</td>
+                                    <td>Edinburgh</td>
+                                    <td>$320,800</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Garrett Winters</td>
+                                    <td>Accountant</td>
+                                    <td>Tokyo</td>
+                                    <td>$170,750</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Ashton Cox</td>
+                                    <td>Junior Technical Author</td>
+                                    <td>San Francisco</td>
+                                    <td>$86,000</td>
+                                  </tr>
+
+                                </tbody>
+                              </table>
                         </div>
                     </div>
                 </div>
@@ -355,29 +346,17 @@
 
         </div> <!-- .content -->
     </div><!-- /#right-panel -->
-
+    <%@include file="../include/admin_footer.jsp" %>
     <script>
-
         $(function() {
-            $('a').on('click', function(e) {
-                e.preventDefault();
-            })
-            $('body').on('click','#main-menu a', function(){
-                $('#main-menu a').each(function() {
-                    $(this).parents('li').removeClass('active');
-                })
-                $(this).parents('li').addClass('active');
+            
+            $('#main-menu a i[data-type="user"]').parents('li').addClass('active');
 
-                var type = $(this).find('i').attr('data-type');
-
-                $('body .card .card-body').load('WEB-INF/jsp/product_table.html');
-
-            })
             
         })
         
     </script>
-    <%@include file="include/admin_footer.jsp" %>
+    
 
     <script type="text/javascript">
         $(document).ready(function() {

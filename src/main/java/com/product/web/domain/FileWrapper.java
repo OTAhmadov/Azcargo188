@@ -7,11 +7,12 @@ package com.product.web.domain;
 
 /**
  *
- * @author Nazrin
+ * @author otahmadov
  */
 public class FileWrapper {
     private int id;
     private String path;
+    private String fullPath;
     private String name;
     private String type;
     private byte[] file;
@@ -32,7 +33,9 @@ public class FileWrapper {
         this.file = file;
     }
 
-    public FileWrapper(String path, String name, String type) {
+    public FileWrapper(String path, String fullPath, String name, String type) {
+        this.path = path;
+        this.fullPath = fullPath;
         this.path = path;
         this.name = name;
         this.type = type;
@@ -62,6 +65,14 @@ public class FileWrapper {
         this.path = path;
     }
 
+    public String getFullPath() {
+        return fullPath;
+    }
+
+    public void setFullPath(String fullPath) {
+        this.fullPath = fullPath;
+    }
+
     public String getName() {
         return name;
     }
@@ -77,9 +88,5 @@ public class FileWrapper {
     public void setFile(byte[] file) {
         this.file = file;
     }
-
-    @Override
-    public String toString() {
-        return "FileWrapper{" + "id=" + id + ", path=" + path + ", name=" + name + ", type=" + type + ", file=" + file + '}';
-    }
+    
 }

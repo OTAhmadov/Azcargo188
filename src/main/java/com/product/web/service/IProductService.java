@@ -7,6 +7,7 @@ package com.product.web.service;
 
 import com.product.web.domain.About;
 import com.product.web.domain.Account;
+import com.product.web.domain.Company;
 import com.product.web.domain.Contact;
 import com.product.web.domain.DictionaryWrapper;
 import com.product.web.domain.FileWrapper;
@@ -48,7 +49,14 @@ public interface IProductService {
             
     public OperationResponse NDUProduct(Account account, ProductForm form);
     public OperationResponse addProductFile(Account account, int productId, FileWrapperForm form);
+    public OperationResponse addOtherFile(Account account, FileWrapperForm form);
+    public List<FileWrapper> getOtherFile();
     public List<Product> getProductList(ProductForm form);
     public Product getProductDetails(int productId);
     public List<FileWrapper> getProductFileList(int productId);
+    
+    public List<DictionaryWrapper> getCategoryListWithCount();
+    public int getProductCount(int typeId, String name);
+    public Company getCompanyInfo();
+    
 }

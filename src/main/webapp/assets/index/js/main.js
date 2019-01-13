@@ -271,7 +271,7 @@
                 zoom: map.data('zoom'),
                 scrollwheel: false,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
-                scrollwheel: false,
+//                scrollwheel: false,
                 styles: [
                     {
                         "featureType": "administrative",

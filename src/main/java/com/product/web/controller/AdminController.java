@@ -50,12 +50,96 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AdminController extends SkeletonController {
     private Logger log = Logger.getLogger(AdminController.class);
     
+    @GetMapping(value = "/product")
+    protected String showAdminProduct() {
+        
+        try {
+            if(getSessionAccount() != null) {
+                return "admin/product";
+            }
+            
+            return "login";
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return "redirect:/main";
+    }
+    
+    @GetMapping(value = "/common")
+    protected String showAdminLog() {
+        
+        try {
+            if(getSessionAccount() != null) {
+                return "admin/common";
+            }
+            
+            return "login";
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return "redirect:/main";
+    }
+    
+    @GetMapping(value = "/dic")
+    protected String showAdminDictionary() {
+        
+        try {
+            if(getSessionAccount() != null) {
+                return "admin/dictionary";
+            }
+            
+            return "login";
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return "redirect:/main";
+    }
+    @GetMapping(value = "/user")
+    protected String showAdminUser() {
+        
+        try {
+            if(getSessionAccount() != null) {
+                return "admin/user";
+            }
+            
+            return "login";
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return "redirect:/main";
+    }
+    
+    @GetMapping(value = "/company")
+    protected String showAdminCompany() {
+        
+        try {
+            if(getSessionAccount() != null) {
+                return "admin/company";
+            }
+            
+            return "login";
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return "redirect:/main";
+    }
+    
     @GetMapping
     protected String showLoginPage() {
         
         try {
             if(getSessionAccount() != null) {
-                return "admin";
+                return "admin/product";
             }
             
             return "login";
@@ -83,7 +167,7 @@ public class AdminController extends SkeletonController {
             
             HttpSession session = request.getSession(true);
             session.setAttribute("account", account);
-            return "redirect:/admin";
+            return "redirect:/admin/product";
         }
         catch(Exception e) {
             log.error(e.getMessage(), e);
@@ -329,18 +413,16 @@ public class AdminController extends SkeletonController {
         return operationResponse;
     }
     
-    @ApiOperation(value = "productlarin add edit remove si, ", notes = "parametr siyahisi form packagesinde var hamisinin baxarsan. istifade ucun sessiya teleb olunur, login olmaq lazimdir.")
+    @ApiOperation(value = "BAsliq ucun sekiller elave edilmesi", notes = "file sayi max 5 dene qoymusam. istifade ucun sessiya teleb olunur, login olmaq lazimdir.")
     @ResponseBody
-    @PostMapping(value = "/product/ndu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    protected OperationResponse NDUProduct(@RequestPart(name = "image", required = false) MultipartFile image,
-                                            @RequestPart(name = "form", required = false) ProductForm form,
-                                            MultipartHttpServletRequest multipartHttpServletRequest
+    @PostMapping(value = "/other/file/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    protected OperationResponse addOtherFiles(@RequestPart(name = "image", required = false) MultipartFile image,
+                                                MultipartHttpServletRequest multipartHttpServletRequest
 //                                                BindingResult result
     ) {
         OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
         try {
             Account account = getSessionAccount(operationResponse);
-            
             MultiValueMap<String, MultipartFile> requestParts = multipartHttpServletRequest.getMultiFileMap();
             List<MultipartFile> files;
             
@@ -352,6 +434,7 @@ public class AdminController extends SkeletonController {
             
             FileWrapperForm[] fileWrappers = new FileWrapperForm[files.size()];
             
+            FileWrapperFormValidator fileWrapperFormValidator = new FileWrapperFormValidator();
             int i = 0;
             
             for (MultipartFile multipartFile : files) {
@@ -366,14 +449,99 @@ public class AdminController extends SkeletonController {
                         fileWrappers[i].setOriginalName(multipartFile.getOriginalFilename());
                         fileWrappers[i].setPath(fullPath);
                         fileWrappers[i].setContentType(multipartFile.getContentType());
-
+                        
+                        operationResponse = service.addOtherFile(account, fileWrappers[i]);
+                        
+                        if(operationResponse.getCode() != ResultCode.OK) {
+                            throw new Exception("Error add file");
+                        }
                     }
                 }
-                
                 i = i + 1;
             }
+        }
+        catch(Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return operationResponse;
+    }
+    @ApiOperation(value = "basliq ucun sekillerin getirilmesi", notes = "file sayi max 5 dene qoymusam. istifade ucun sessiya teleb olunur, login olmaq lazimdir.")
+    @ResponseBody
+    @GetMapping(value = "/other/files")
+    protected OperationResponse getOtherFiles() {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        try {
+            operationResponse.setData(service.getOtherFile());
+            operationResponse.setCode(ResultCode.OK);
+        }
+        catch(Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return operationResponse;
+    }
+    
+    @ApiOperation(value = "productlarin add edit remove si, ", notes = "parametr siyahisi form packagesinde var hamisinin baxarsan. istifade ucun sessiya teleb olunur, login olmaq lazimdir.")
+    @ResponseBody
+    @PostMapping(value = "/product/ndu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    protected OperationResponse NDUProduct(@RequestPart(name = "image", required = false) MultipartFile image,
+                                            @RequestPart(name = "form", required = false) ProductForm form,
+                                            MultipartHttpServletRequest multipartHttpServletRequest
+//                                                BindingResult result
+    ) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        try {
+            Account account = getSessionAccount(operationResponse);
             
-            form.setFiles(fileWrappers);
+            
+            
+            int i = 0;
+            if(form.getId() == 0) {
+                MultiValueMap<String, MultipartFile> requestParts = multipartHttpServletRequest.getMultiFileMap();
+                List<MultipartFile> files;
+
+                files = requestParts.get("image");
+
+                if (files != null && files.size() > 5) {
+                    throw new Exception("invalid file count");
+                }
+
+                FileWrapperForm[] fileWrappers = new FileWrapperForm[files.size()];                                                         
+                for (MultipartFile multipartFile : files) {
+                    if (multipartFile != null && multipartFile.getSize() > 0) {
+                        fileWrappers[i] = new FileWrapperForm();
+                        fileWrappers[i].setFile(multipartFile);
+
+                        OperationResponse saveFileResponse = ftpService.saveFtpFile("", multipartFile, Crypto.getGuid());
+
+                        if (saveFileResponse.getCode() == ResultCode.OK) {
+                            String fullPath = (String) saveFileResponse.getData();
+                            fileWrappers[i].setOriginalName(multipartFile.getOriginalFilename());
+                            fileWrappers[i].setPath(fullPath);
+                            fileWrappers[i].setContentType(multipartFile.getContentType());
+
+                        }
+                    }
+
+                    i = i + 1;
+                }
+                form.setFiles(fileWrappers);
+            } else if(form.getId() < 0) {
+                List<FileWrapper> imageList = service.getProductFileList(Math.abs(form.getId()));
+                if(imageList.size() > 0) {
+                
+                    for(FileWrapper f: imageList) {
+                        OperationResponse removeOperation = ftpService.removeFtpFile(f.getFullPath());
+                        if(removeOperation.getCode() != ResultCode.OK) {
+                            throw new Exception("Error remove ftp file");
+                        
+                        }
+                    }
+                }
+            }
+                        
+            
             operationResponse = service.NDUProduct(account, form);
             
         }
@@ -411,7 +579,7 @@ public class AdminController extends SkeletonController {
     @ApiOperation(value = "image nin path ne gore silir", notes = "istifade ucun sessiya teleb olunur, login olmaq lazimdir.")
     @PostMapping(value = "/image/{path}/remove")
     @ResponseBody
-    protected OperationResponse removeStudentImage(@PathVariable String path) {
+    protected OperationResponse removeProductImage(@PathVariable String path) {
         OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
 
         try {
@@ -488,5 +656,6 @@ public class AdminController extends SkeletonController {
 
         return operationResponse;
     }
+    
     
 }

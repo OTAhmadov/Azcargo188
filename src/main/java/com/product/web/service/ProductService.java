@@ -8,6 +8,7 @@ package com.product.web.service;
 import com.product.web.dao.AdminDao;
 import com.product.web.domain.About;
 import com.product.web.domain.Account;
+import com.product.web.domain.Company;
 import com.product.web.domain.Contact;
 import com.product.web.domain.DictionaryWrapper;
 import com.product.web.domain.FileWrapper;
@@ -117,6 +118,16 @@ public class ProductService implements IProductService {
     }
     
     @Override
+    public OperationResponse addOtherFile(Account account, FileWrapperForm form) {
+        return this.adminDao.addOtherFile(account, form);
+    }
+    
+    @Override
+    public List<FileWrapper> getOtherFile() {
+        return this.adminDao.getOtherFile();
+    }
+    
+    @Override
     public List<Product> getProductList(ProductForm form) {
         return this.adminDao.getProductList(form);
     }
@@ -129,5 +140,20 @@ public class ProductService implements IProductService {
     @Override
     public List<FileWrapper> getProductFileList(int productId) {
         return this.adminDao.getProductFileList(productId);
+    }
+    
+    @Override
+    public List<DictionaryWrapper> getCategoryListWithCount() {
+        return this.adminDao.getCategoryListWithCount();
+    }
+
+    @Override
+    public int getProductCount(int typeId, String name) {
+        return this.adminDao.getProductCount(typeId, name);
+    }
+
+    @Override
+    public Company getCompanyInfo() {
+        return this.adminDao.getCompanyInfo();
     }
 }
