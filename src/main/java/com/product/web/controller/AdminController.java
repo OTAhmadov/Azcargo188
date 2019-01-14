@@ -50,12 +50,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AdminController extends SkeletonController {
     private Logger log = Logger.getLogger(AdminController.class);
     
-    @GetMapping(value = "/product")
+    @GetMapping(value = "/service")
     protected String showAdminProduct() {
         
         try {
             if(getSessionAccount() != null) {
-                return "admin/product";
+                return "admin/service";
             }
             
             return "login";
@@ -139,7 +139,7 @@ public class AdminController extends SkeletonController {
         
         try {
             if(getSessionAccount() != null) {
-                return "admin/product";
+                return "admin/service";
             }
             
             return "login";
@@ -167,7 +167,7 @@ public class AdminController extends SkeletonController {
             
             HttpSession session = request.getSession(true);
             session.setAttribute("account", account);
-            return "redirect:/admin/product";
+            return "redirect:/admin/service";
         }
         catch(Exception e) {
             log.error(e.getMessage(), e);

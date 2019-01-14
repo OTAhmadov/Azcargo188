@@ -5,13 +5,18 @@
  */
 package com.product.web.form;
 
+import lombok.Data;
+
 /**
  *
- * @author Nazrin
+ * @author otahmadov
  */
+@Data
 public class AboutForm {
     private int id;
-    private String title;
+    private String titleAz;
+    private String titleEn;
+    private String titleRu;
     private String contentAz;
     private String contentEn;
     private String contentRu;
@@ -19,48 +24,5 @@ public class AboutForm {
     public AboutForm() {
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContentAz() {
-        return contentAz;
-    }
-
-    public void setContentAz(String contentAz) {
-        this.contentAz = contentAz;
-    }
-
-    public String getContentEn() {
-        return contentEn;
-    }
-
-    public void setContentEn(String contentEn) {
-        this.contentEn = contentEn;
-    }
-
-    public String getContentRu() {
-        return contentRu;
-    }
-
-    public void setContentRu(String contentRu) {
-        this.contentRu = contentRu;
-    }
-
-    @Override
-    public String toString() {
-        return "AboutForm{" + "id=" + id + ", title=" + title + ", contentAz=" + contentAz + ", contentEn=" + contentEn + ", contentRu=" + contentRu + '}';
-    }
+    
 }

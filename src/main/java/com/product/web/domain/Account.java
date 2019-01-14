@@ -19,27 +19,23 @@ public class Account {
     private String lastname;
     private String middlename;
     private String password;
-    private Company company;
 
-    public Account(int id, String username, String password, Company company) {
+    public Account(int id, String username, String password) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.company = company;
     }
 
-    public Account(int id, String username, Company company) {
+    public Account(int id, String username) {
         this.id = id;
         this.username = username;
-        this.company = company;
     }
 
-    public Account(int id, String username, String firstname, String lastname, String middlename, Company company) {
+    public Account(int id, String username, String firstname, String lastname, String middlename) {
         this.id = id;
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
         this.middlename = middlename;
-        this.company = company;
     }
 }

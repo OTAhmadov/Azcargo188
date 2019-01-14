@@ -11,7 +11,8 @@
         <nav class="navbar navbar-expand-sm navbar-default">
 
             <div class="navbar-header">
-                <a class="navbar-brand" href="./"><img src="<c:url value="/assets/img/logo.png"/>" alt="Logo"></a>
+                <a class="navbar-brand" href="./"><img src="<c:url value="/assets/img/azcargo/azcargo-logo1.png"/>" alt="Logo"></a>
+                <!--<a class="navbar-brand" href="./"><img src="<c:url value="/assets/img/azcargo/azcargo-logo1.png"/>" alt="Logo"></a>-->
                 <a class="navbar-brand hidden" href="./"><img src="<c:url value="/assets/img/logo2.png"/>" alt="Logo"></a>
             </div>
 

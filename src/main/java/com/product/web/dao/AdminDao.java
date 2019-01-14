@@ -65,9 +65,7 @@ public class AdminDao implements IAdminDao {
                                             resultSet.getString("user_name"), 
                                             resultSet.getString("first_name"), 
                                             resultSet.getString("last_name"), 
-                                            resultSet.getString("middle_name"), 
-                                            new Company(resultSet.getInt("company_id"), 
-                                                        resultSet.getString("company_name"), null, null));
+                                            resultSet.getString("middle_name"));
                     }
                 }
             }
@@ -158,7 +156,7 @@ public class AdminDao implements IAdminDao {
         List<Contact> list = new ArrayList<>();
         String query = "Select c.*, d.name_az, d.name_en, d.name_ru, d.icon from contacts c "
                         + "join dictionary d on d.id = c.type_id and d.active = 1 "
-                        + "where c.company_id = 1 and c.active = 1";
+                        + "where c.active = 1";
         try(Connection connection = dbConnect.getPostgresConnection();
                 PreparedStatement preparedStatement = connection.prepareCall(query);
                 ResultSet resultSet = preparedStatement.executeQuery()
@@ -213,14 +211,13 @@ public class AdminDao implements IAdminDao {
     @Override
     public OperationResponse NDUContact(ContactForm form, int accountId) {
         OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
-        String query = "{call ndu_contact(?,?,?,?,?)}";
+        String query = "{call ndu_contact(?,?,?,?)}";
         try(Connection connection = dbConnect.getPostgresConnection();
             CallableStatement callableStatement = connection.prepareCall(query)) {
             callableStatement.setInt(1, accountId);
             callableStatement.setInt(2, form.getId());
-            callableStatement.setInt(3, form.getCompanyId());
-            callableStatement.setInt(4, form.getTypeId());
-            callableStatement.setString(5, form.getContact());
+            callableStatement.setInt(3, form.getTypeId());
+            callableStatement.setString(4, form.getContact());
             
             callableStatement.executeUpdate();
             operationResponse.setCode(ResultCode.OK);
@@ -241,8 +238,10 @@ public class AdminDao implements IAdminDao {
                 ) {
                     if(resultSet.next()) {
                         return new About(resultSet.getInt("id"), 
-                                            resultSet.getString("title"),
-                                            new MultilanguageString(resultSet.getString("content"), 
+                                            new MultilanguageString(resultSet.getString("title_az"), 
+                                                                    resultSet.getString("title_en"), 
+                                                                    resultSet.getString("title_ru")),
+                                            new MultilanguageString(resultSet.getString("content_az"), 
                                                                     resultSet.getString("content_en"), 
                                                                     resultSet.getString("content_ru")));
                     }
@@ -257,16 +256,17 @@ public class AdminDao implements IAdminDao {
     @Override
     public OperationResponse NDUAbout(AboutForm form, int accountId) {
          OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
-            String query = "{call ndu_about(?,?,?,?,?,?,?)}";
+            String query = "{call ndu_about(?,?,?,?,?,?,?,?)}";
             try(Connection connection = dbConnect.getPostgresConnection();
                 CallableStatement callableStatement = connection.prepareCall(query)) {
                 callableStatement.setInt(1, accountId);
                 callableStatement.setInt(2, form.getId());
-                callableStatement.setInt(3, 1);
-                callableStatement.setString(4, form.getTitle());
-                callableStatement.setString(5, form.getContentAz());
-                callableStatement.setString(6, form.getContentEn());
-                callableStatement.setString(7, form.getContentRu());
+                callableStatement.setString(3, form.getTitleAz());
+                callableStatement.setString(4, form.getTitleEn());
+                callableStatement.setString(5, form.getTitleRu());
+                callableStatement.setString(6, form.getContentAz());
+                callableStatement.setString(7, form.getContentEn());
+                callableStatement.setString(8, form.getContentRu());
 
                 callableStatement.executeUpdate();
                 operationResponse.setCode(ResultCode.OK);
@@ -280,7 +280,7 @@ public class AdminDao implements IAdminDao {
     @Override
     public List<Account> getAccountList() {
         List<Account> list = new ArrayList<>();
-        String query = "Select * from accounts c where c.company_id = 1 and c.active = 1";
+        String query = "Select * from accounts c where c.active = 1";
         try(Connection connection = dbConnect.getPostgresConnection();
                 PreparedStatement preparedStatement = connection.prepareCall(query);
                 ResultSet resultSet = preparedStatement.executeQuery()
@@ -290,8 +290,7 @@ public class AdminDao implements IAdminDao {
                                                 resultSet.getString("user_name"), 
                                                 resultSet.getString("first_name"), 
                                                 resultSet.getString("last_name"), 
-                                                resultSet.getString("middle_name"), 
-                                                new Company(resultSet.getInt("company_id"), null, null, null)));
+                                                resultSet.getString("middle_name")));
                 }
         } 
         catch (Exception e) {
@@ -315,8 +314,7 @@ public class AdminDao implements IAdminDao {
                                                 resultSet.getString("user_name"), 
                                                 resultSet.getString("first_name"), 
                                                 resultSet.getString("last_name"), 
-                                                resultSet.getString("middle_name"), 
-                                                new Company(resultSet.getInt("company_id"), null, null, null));
+                                                resultSet.getString("middle_name"));
                     }
                 }
                     
@@ -331,18 +329,17 @@ public class AdminDao implements IAdminDao {
     public OperationResponse NDUAccount(AccountForm form, int accountId) {
         OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
         System.out.println(Crypto.base64Encode(form.getNewPassword()) + "  " + Crypto.base64Encode(form.getOldPassword()));
-        String query = "{call ndu_account(?,?,?,?,?,?,?,?,?)}";
+        String query = "{call ndu_account(?,?,?,?,?,?,?,?)}";
         try(Connection connection = dbConnect.getPostgresConnection();
             CallableStatement callableStatement = connection.prepareCall(query)) {
             callableStatement.setInt(1, accountId);
             callableStatement.setInt(2, form.getId());
-            callableStatement.setInt(3, 1);
-            callableStatement.setString(4, form.getUsername());
-            callableStatement.setString(5, Crypto.base64Encode(form.getNewPassword()));
-            callableStatement.setString(6, form.getOldPassword() != null && !form.getOldPassword().isEmpty() ? Crypto.base64Encode(form.getOldPassword()) : "");
-            callableStatement.setString(7, form.getFname());
-            callableStatement.setString(8, form.getLname());
-            callableStatement.setString(9, form.getMname());
+            callableStatement.setString(3, form.getUsername());
+            callableStatement.setString(4, Crypto.base64Encode(form.getNewPassword()));
+            callableStatement.setString(5, form.getOldPassword() != null && !form.getOldPassword().isEmpty() ? Crypto.base64Encode(form.getOldPassword()) : "");
+            callableStatement.setString(6, form.getFname());
+            callableStatement.setString(7, form.getLname());
+            callableStatement.setString(8, form.getMname());
             
             callableStatement.executeUpdate();
             operationResponse.setCode(ResultCode.OK);

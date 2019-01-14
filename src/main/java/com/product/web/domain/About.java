@@ -14,13 +14,13 @@ import lombok.Data;
 @Data
 public class About {
     private int id;
-    private String title;
+    private MultilanguageString title;
     private MultilanguageString content;
 
     public About() {
     }
 
-    public About(int id, String title, MultilanguageString content) {
+    public About(int id, MultilanguageString title, MultilanguageString content) {
         this.id = id;
         this.title = title;
         this.content = content;

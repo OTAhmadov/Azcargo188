@@ -90,8 +90,16 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row form-group">
-                                <div class="col col-md-2"><label for="disabled-input" class=" form-control-label">Başlıq</label></div>
-                                <div class="col-12 col-md-10"><input type="text" id="title" class="form-control"></div>
+                                <div class="col col-md-2"><label for="disabled-input" class=" form-control-label">Başlıq-AZ</label></div>
+                                <div class="col-12 col-md-10"><input type="text" id="title_az" class="form-control"></div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col col-md-2"><label for="disabled-input" class=" form-control-label">Başlıq-EN</label></div>
+                                <div class="col-12 col-md-10"><input type="text" id="title_en" class="form-control"></div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col col-md-2"><label for="disabled-input" class=" form-control-label">Başlıq-RU</label></div>
+                                <div class="col-12 col-md-10"><input type="text" id="title_ru" class="form-control"></div>
                             </div>
                             <div class="row form-group">
                                 <div class="col col-md-2"><label for="textarea-input" class=" form-control-label">Haqqında-AZ</label></div>
@@ -114,7 +122,7 @@
                 <div class="col-md-12" style="border-bottom: 1px solid;">
                     <div class="card">
                         <div class="card-header">
-                            <h3>Əlaqə vasitələri</h3>
+                            <h3 style="width: 200px;">Əlaqə vasitələri</h3>
                             <i class="fa fa-plus add-contact pull-right"></i>
                         </div>
                         <div class="card-body">
@@ -200,12 +208,16 @@
             Product.Proxy.getAbout(function(data) {
                 if(data && data.data) {
                     var id = data.data.id;
-                    var title = data.data.title;
+                    var titleAz = data.data.title.az;
+                    var titleEn = data.data.title.en;
+                    var titleRu = data.data.title.ru;
                     var contentAz = data.data.content.az;
                     var contentEn = data.data.content.en;
                     var contentRu = data.data.content.ru;
                     
-                    $('#title').val(title)
+                    $('#title_az').val(titleAz)
+                    $('#title_en').val(titleEn)
+                    $('#title_ru').val(titleRu)
                     $('#content_az').val(contentAz)
                     $('#content_en').val(contentEn)
                     $('#content_ru').val(contentRu)

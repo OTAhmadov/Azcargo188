@@ -457,7 +457,7 @@ $(function (e) {
             $('#old_password').val('');
             $('#new_password').val('');
             $('.btn-ndu-account').removeAttr('data-id');
-            $('#old_password').parents('div').addClass('hidden');
+            $('#old_password').parent('div').parent('div').addClass('hidden');
             $('.user_modal').modal('show');
             
         })
@@ -557,7 +557,9 @@ $(function (e) {
         $('body').on('click', '.btn-edit-about', function(){
             var form = {
                 id: 1,
-                title:$('#title').val(),
+                titleAz:$('#title_az').val(),
+                titleEn:$('#title_en').val(),
+                titleRu:$('#title_ru').val(),
                 contentAz: $('#content_az').val(),
                 contentEn: $('#content_en').val(),
                 contentRu: $('#content_ru').val()                
@@ -572,7 +574,7 @@ $(function (e) {
         })
         
         $('body').on('click', '.add-contact', function(){
-            alert()
+            
             $('body .contact_modal').modal("show");
                     
         })
