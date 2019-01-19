@@ -19,13 +19,25 @@
             <div id="main-menu" class="main-menu collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="<c:url value="/admin/product" />"> <i class="menu-icon fa fa-database" data-type="product"></i>Məhsullar </a>
+                        <a href="<c:url value="/admin/service" />"> <i class="menu-icon fa fa-info" data-type="service"></i>Xidmətlər </a>
+                    </li>
+                    
+                    <li>
+                        <a href="<c:url value="/admin/common" />"> <i class="menu-icon fa fa-info" data-type="common"></i>Ümumi</a>
+                    </li>
+                    
+                    <li>
+                        <a href="<c:url value="/admin/achievement" />"> <i class="menu-icon fa fa-info" data-type="achievement"></i>Nailiyyətlər </a>
+                    </li>
+                    
+                    <li>
+                        <a href="<c:url value="/admin/promotation" />"> <i class="menu-icon fa fa-info" data-type="promotation"></i>Kampaniyalar </a>
                     </li>
                     <li>
-                        <a href="<c:url value="/admin/common" />"> <i class="menu-icon fa fa-info" data-type="log"></i>Ümumi </a>
+                        <a href="<c:url value="/admin/corporative" />"> <i class="menu-icon fa fa-database" data-type="corporative"></i>Korporativ təkliflər</a>
                     </li>
-                    <li class="hidden">
-                        <a href="<c:url value="/admin/company" />"> <i class="menu-icon fa fa-building-o" data-type="company"></i>Filiallar </a>
+                    <li>
+                        <a href="<c:url value="/admin/career" />"> <i class="menu-icon fa fa-database" data-type="career"></i>Karyera</a>
                     </li>
                     <li>
                         <a href="<c:url value="/admin/dic" />"> <i class="menu-icon fa fa-cogs" data-type="dictionary"></i>Soraqçalar </a>
@@ -33,9 +45,6 @@
                     <li>
                         <a href="<c:url value="/admin/user" />"> <i class="menu-icon fa fa-users" data-type="user"></i>İstifadəçilər </a>
                     </li>
-<!--                    <li class="hidden">
-                        <a href="<c:url value="/admin/common" />"> <i class="menu-icon fa fa-bars" data-type="log"></i>Loglar </a>
-                    </li>-->
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>

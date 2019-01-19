@@ -7,15 +7,21 @@ package com.product.web.controller;
 
 import com.product.web.domain.Account;
 import com.product.web.domain.FileWrapper;
+import com.product.web.domain.MultilanguageString;
 import com.product.web.domain.OperationResponse;
+import com.product.web.domain.Service;
 import com.product.web.enums.ResultCode;
 import com.product.web.form.AboutForm;
 import com.product.web.form.AccountForm;
+import com.product.web.form.AchievementForm;
+import com.product.web.form.CareerForm;
 import com.product.web.form.ContactForm;
 import com.product.web.form.DictionaryWrapperForm;
 import com.product.web.form.FileWrapperForm;
 import com.product.web.form.LoginForm;
 import com.product.web.form.ProductForm;
+import com.product.web.form.PromotationForm;
+import com.product.web.form.ServiceForm;
 import com.product.web.util.Crypto;
 import com.product.web.util.WebUtils;
 import com.product.web.validation.FileWrapperFormValidator;
@@ -58,7 +64,7 @@ public class AdminController extends SkeletonController {
                 return "admin/service";
             }
             
-            return "login";
+            return "redirect:/admin";
         } 
         catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -75,7 +81,7 @@ public class AdminController extends SkeletonController {
                 return "admin/common";
             }
             
-            return "login";
+            return "redirect:/admin";
         } 
         catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -92,7 +98,7 @@ public class AdminController extends SkeletonController {
                 return "admin/dictionary";
             }
             
-            return "login";
+            return "redirect:/admin";
         } 
         catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -108,7 +114,7 @@ public class AdminController extends SkeletonController {
                 return "admin/user";
             }
             
-            return "login";
+            return "redirect:/admin";
         } 
         catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -117,15 +123,66 @@ public class AdminController extends SkeletonController {
         return "redirect:/main";
     }
     
-    @GetMapping(value = "/company")
+    @GetMapping(value = "/achievement")
     protected String showAdminCompany() {
         
         try {
             if(getSessionAccount() != null) {
-                return "admin/company";
+                return "admin/achievement";
             }
             
-            return "login";
+            return "redirect:/admin";
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return "redirect:/main";
+    }
+    
+    @GetMapping(value = "/promotation")
+    protected String showAdminPromotation() {
+        
+        try {
+            if(getSessionAccount() != null) {
+                return "admin/promotation";
+            }
+            
+            return "redirect:/admin";
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return "redirect:/main";
+    }
+    
+    @GetMapping(value = "/corporative")
+    protected String showAdminCorporative() {
+        
+        try {
+            if(getSessionAccount() != null) {
+                return "admin/corporative";
+            }
+            
+            return "redirect:/admin";
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return "redirect:/main";
+    }
+    
+    @GetMapping(value = "/career")
+    protected String showAdminCareer() {
+        
+        try {
+            if(getSessionAccount() != null) {
+                return "admin/career";
+            }
+            
+            return "redirect:/admin";
         } 
         catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -173,8 +230,9 @@ public class AdminController extends SkeletonController {
             log.error(e.getMessage(), e);
         }
         
-        return "redirect:/login";
+        return "redirect:/admin";
     }
+    
     @ApiOperation(value = "dictionary type larin listini getirir.", notes = "Biz terefden teyin olanan typeler siyahida gelmeyecek")
     @GetMapping("/dictionary/type")
     @ResponseBody
@@ -193,10 +251,16 @@ public class AdminController extends SkeletonController {
     @ApiOperation(value = "dictionary lerin listini getirir dic type id ye gore. ", notes = "mes: http://104.248.176.190:8080/admin/dictionary?dicTypeId=1")
     @GetMapping("/dictionary")
     @ResponseBody
-    protected OperationResponse getDictionaryTypeList(@RequestParam int dicTypeId) {
+    protected OperationResponse getDictionaryTypeList(@RequestParam int dicTypeId,
+                                                       @RequestParam(defaultValue = "0") String parentId) {
         OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
         try {
             
+            if(!parentId.equals("0")) {
+                operationResponse.setData(service.getDictionaryListByParent(Integer.parseInt(parentId)));
+                operationResponse.setCode(ResultCode.OK);
+                return operationResponse;
+            }
             operationResponse.setData(service.getDictionaryList(dicTypeId));
             operationResponse.setCode(ResultCode.OK);
         }
@@ -657,5 +721,396 @@ public class AdminController extends SkeletonController {
         return operationResponse;
     }
     
+    
+    @ResponseBody
+    @PostMapping(value = "/achievement/ndu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    protected OperationResponse NDUAchievement(@RequestPart(name = "image", required = false) MultipartFile image,
+                                                @RequestPart(name = "form", required = false) AchievementForm form
+    ) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            
+            if (image != null && image.getSize() > 0) {
+                
+                OperationResponse saveFileResponse = ftpService.saveFtpFile("", image, Crypto.getGuid());
+                if(saveFileResponse.getCode() != ResultCode.OK) {
+                    throw new Exception("Error upload file");
+                }
+                
+                String fullPath = (String) saveFileResponse.getData();
+                FileWrapperForm fileWrapperForm = new FileWrapperForm();
+                fileWrapperForm.setOriginalName(image.getOriginalFilename());
+                fileWrapperForm.setPath(fullPath);
+                operationResponse = service.addFile(fileWrapperForm);
+                
+                form.setFileId((int) operationResponse.getData());
+                if(saveFileResponse.getCode() != ResultCode.OK) {
+                    throw new Exception("Error upload file");
+                }
+                
+                
+            }      
+            
+            operationResponse = service.NDUAchievement(form, account.getId());
+            
+        }
+        catch(Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return operationResponse;
+    }
+    
+    @GetMapping(value = "/achievements")
+    @ResponseBody
+    protected OperationResponse getAchievementList(AchievementForm form) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            operationResponse.setData(service.getAchievementList());
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    @GetMapping(value = "/achievement/{id:\\d+}")
+    @ResponseBody
+    protected OperationResponse getAchievementDetails(AchievementForm form,
+                                                    @PathVariable int id) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            operationResponse.setData(service.getAchievementDetails(id));
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    @ResponseBody
+    @PostMapping(value = "/career/ndu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    protected OperationResponse NDUCareer(@RequestPart(name = "image", required = false) MultipartFile image,
+                                                @RequestPart(name = "form", required = false) CareerForm form
+    ) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            
+            if (image != null && image.getSize() > 0) {
+                
+                OperationResponse saveFileResponse = ftpService.saveFtpFile("", image, Crypto.getGuid());
+                if(saveFileResponse.getCode() != ResultCode.OK) {
+                    throw new Exception("Error upload file");
+                }
+                
+                String fullPath = (String) saveFileResponse.getData();
+                FileWrapperForm fileWrapperForm = new FileWrapperForm();
+                fileWrapperForm.setOriginalName(image.getOriginalFilename());
+                fileWrapperForm.setPath(fullPath);
+                operationResponse = service.addFile(fileWrapperForm);
+                form.setFileId((int) operationResponse.getData());
+                if(saveFileResponse.getCode() != ResultCode.OK) {
+                    throw new Exception("Error upload file");
+                }
+                
+            }      
+            
+            operationResponse = service.NDUCareer(form, account.getId());
+            
+        }
+        catch(Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return operationResponse;
+    }
+    
+    @GetMapping(value = "/careers")
+    @ResponseBody
+    protected OperationResponse getCareerList(CareerForm form) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            operationResponse.setData(service.getCareerList());
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    @GetMapping(value = "/career/{id:\\d+}")
+    @ResponseBody
+    protected OperationResponse getCareerDetails(CareerForm form,
+                                                    @PathVariable int id) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            operationResponse.setData(service.getCareerDetails(id));
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    @ResponseBody
+    @PostMapping(value = "/promotation/ndu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    protected OperationResponse NDUPromotation(@RequestPart(name = "image", required = false) MultipartFile image,
+                                                @RequestPart(name = "form", required = false) PromotationForm form
+    ) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            
+            if (image != null && image.getSize() > 0) {
+                
+                OperationResponse saveFileResponse = ftpService.saveFtpFile("", image, Crypto.getGuid());
+                if(saveFileResponse.getCode() != ResultCode.OK) {
+                    throw new Exception("Error upload file");
+                }
+                
+                String fullPath = (String) saveFileResponse.getData();
+                FileWrapperForm fileWrapperForm = new FileWrapperForm();
+                fileWrapperForm.setOriginalName(image.getOriginalFilename());
+                fileWrapperForm.setPath(fullPath);
+                operationResponse = service.addFile(fileWrapperForm);
+                form.setFileId((int) operationResponse.getData());
+                if(saveFileResponse.getCode() != ResultCode.OK) {
+                    throw new Exception("Error upload file");
+                }
+                
+            }      
+            
+            operationResponse = service.NDUPromotation(form, account.getId());
+            
+        }
+        catch(Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return operationResponse;
+    }
+    
+    @GetMapping(value = "/promotations")
+    @ResponseBody
+    protected OperationResponse getPromotationList(PromotationForm form) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            operationResponse.setData(service.getPromotationList());
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    @GetMapping(value = "/promotation/{id:\\d+}")
+    @ResponseBody
+    protected OperationResponse getPromotationDetails(PromotationForm form,
+                                                    @PathVariable int id) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            operationResponse.setData(service.getPromotationDetails(id));
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    @ResponseBody
+    @PostMapping(value = "/service/ndu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    protected OperationResponse NDUService(@RequestPart(name = "image", required = false) MultipartFile image,
+                                                @RequestPart(name = "form", required = false) ServiceForm form
+    ) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            
+            Service serviceDetail = service.getServiceByType(form.getId(), form.getTypeId());
+            
+            if(serviceDetail != null) {
+                operationResponse.setMessage(new MultilanguageString("Bu xidmət artıq mövcüddur", "", ""));
+                throw new Exception("Duplicate Service type");
+            }
+            
+            if (image != null && image.getSize() > 0) {
+                
+                OperationResponse saveFileResponse = ftpService.saveFtpFile("", image, Crypto.getGuid());
+                if(saveFileResponse.getCode() != ResultCode.OK) {
+                    throw new Exception("Error upload file");
+                }
+                
+                String fullPath = (String) saveFileResponse.getData();
+                FileWrapperForm fileWrapperForm = new FileWrapperForm();
+                fileWrapperForm.setOriginalName(image.getOriginalFilename());
+                fileWrapperForm.setPath(fullPath);
+                operationResponse = service.addFile(fileWrapperForm);
+                form.setFileId((int) operationResponse.getData());
+                if(saveFileResponse.getCode() != ResultCode.OK) {
+                    throw new Exception("Error upload file");
+                }
+                
+            }      
+            
+            operationResponse = service.NDUService(form, account.getId());
+            
+        }
+        catch(Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return operationResponse;
+    }
+    
+    @GetMapping(value = "/services")
+    @ResponseBody
+    protected OperationResponse getServiceList(ServiceForm form) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            operationResponse.setData(service.getServiceList());
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    @GetMapping(value = "/service/{id:\\d+}")
+    @ResponseBody
+    protected OperationResponse getServiceDetails(ServiceForm form,
+                                                    @PathVariable int id) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            operationResponse.setData(service.getServiceDetails(id));
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    @GetMapping(value = "/corporatives")
+    @ResponseBody
+    protected OperationResponse getCorporativeList() {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            operationResponse.setData(service.getCorporativeList());
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    @GetMapping(value = "/corporative/{id:\\d+}")
+    @ResponseBody
+    protected OperationResponse getCorporativeDetails(@PathVariable int id) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            operationResponse.setData(service.getCorporativeDetails(id));
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
     
 }

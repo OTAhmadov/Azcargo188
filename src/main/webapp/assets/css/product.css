@@ -300,7 +300,27 @@ transition: all .3s ease-in-out;
     transform: scale(1.2);
 }
 
-#product_list .edit-product, #product_list .remove-product{
+#service_list .edit-service, #service_list .remove-service{
+        margin-left: 6px;
+        cursor: pointer;
+}
+
+#achievement_list .edit-achievement, #achievement_list .remove-achievement{
+        margin-left: 6px;
+        cursor: pointer;
+}
+
+#promotation_list .edit-promotation, #promotation_list .remove-promotation{
+        margin-left: 6px;
+        cursor: pointer;
+}
+
+#career_list .edit-career, #career_list .remove-career{
+        margin-left: 6px;
+        cursor: pointer;
+}
+
+#corporative_list .view-corporative{
         margin-left: 6px;
         cursor: pointer;
 }

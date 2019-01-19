@@ -8,21 +8,30 @@ package com.product.web.dao;
 import com.product.web.db.DbConnect;
 import com.product.web.domain.About;
 import com.product.web.domain.Account;
+import com.product.web.domain.Achievement;
+import com.product.web.domain.Career;
 import com.product.web.domain.Company;
 import com.product.web.domain.Contact;
+import com.product.web.domain.Corporative;
 import com.product.web.domain.DictionaryWrapper;
 import com.product.web.domain.FileWrapper;
 import com.product.web.domain.MultilanguageString;
 import com.product.web.domain.OperationResponse;
 import com.product.web.domain.Product;
+import com.product.web.domain.Promotation;
+import com.product.web.domain.Service;
 import com.product.web.enums.ResultCode;
 import com.product.web.form.AboutForm;
 import com.product.web.form.AccountForm;
+import com.product.web.form.AchievementForm;
+import com.product.web.form.CareerForm;
 import com.product.web.form.ContactForm;
 import com.product.web.form.DictionaryWrapperForm;
 import com.product.web.form.FileWrapperForm;
 import com.product.web.form.LoginForm;
 import com.product.web.form.ProductForm;
+import com.product.web.form.PromotationForm;
+import com.product.web.form.ServiceForm;
 import com.product.web.util.Crypto;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -65,7 +74,8 @@ public class AdminDao implements IAdminDao {
                                             resultSet.getString("user_name"), 
                                             resultSet.getString("first_name"), 
                                             resultSet.getString("last_name"), 
-                                            resultSet.getString("middle_name"));
+                                            resultSet.getString("middle_name"),
+                                            resultSet.getString("user_type"));
                     }
                 }
             }
@@ -105,6 +115,37 @@ public class AdminDao implements IAdminDao {
                 PreparedStatement preparedStatement = connection.prepareCall(query)
                 ) {
                 preparedStatement.setInt(1, dicTypeId);
+                
+                try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while(resultSet.next()) {
+                        list.add(new DictionaryWrapper(resultSet.getInt("id"), 
+                                                        resultSet.getInt("dic_type_id"),
+                                                new MultilanguageString(resultSet.getString("name_az"), 
+                                                                        resultSet.getString("name_en"), 
+                                                                        resultSet.getString("name_ru")),
+                                                new MultilanguageString(resultSet.getString("about_az"), 
+                                                                        resultSet.getString("about_en"), 
+                                                                        resultSet.getString("about_ru")),
+                                                resultSet.getInt("parent_id"),
+                                                resultSet.getString("icon")));
+                }
+            
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
+    }
+
+    @Override
+    public List<DictionaryWrapper> getDictionaryListByParent(int parentId) {
+        List<DictionaryWrapper> list = new ArrayList<>();
+        String query = "Select * from dictionary d where d.parent_id = ? and d.active = 1";
+        try(Connection connection = dbConnect.getPostgresConnection();
+                PreparedStatement preparedStatement = connection.prepareCall(query)
+                ) {
+                preparedStatement.setInt(1, parentId);
                 
                 try(ResultSet resultSet = preparedStatement.executeQuery()) {
                     while(resultSet.next()) {
@@ -290,7 +331,8 @@ public class AdminDao implements IAdminDao {
                                                 resultSet.getString("user_name"), 
                                                 resultSet.getString("first_name"), 
                                                 resultSet.getString("last_name"), 
-                                                resultSet.getString("middle_name")));
+                                                resultSet.getString("middle_name"),
+                                                resultSet.getString("user_type")));
                 }
         } 
         catch (Exception e) {
@@ -314,7 +356,8 @@ public class AdminDao implements IAdminDao {
                                                 resultSet.getString("user_name"), 
                                                 resultSet.getString("first_name"), 
                                                 resultSet.getString("last_name"), 
-                                                resultSet.getString("middle_name"));
+                                                resultSet.getString("middle_name"),
+                                                resultSet.getString("user_type"));
                     }
                 }
                     
@@ -671,6 +714,517 @@ public class AdminDao implements IAdminDao {
                                         resultSet.getString("name_az") + " " + resultSet.getString("address"), 
                                         resultSet.getString("langitude"), 
                                         resultSet.getString("latitude"));
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public List<Achievement> getAchievementList() {
+        List<Achievement> list = new ArrayList<>();
+        String query = "select * from achievement a where a.active = 1 order by to_date(a.achievement_date, 'dd/mm/yyyy') desc";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                while(resultSet.next()) {
+                    list.add(new Achievement(resultSet.getString("achievement_date"), 
+                                             resultSet.getInt("id"), 
+                                             resultSet.getString("title_az"), 
+                                             resultSet.getString("title_en"), 
+                                             resultSet.getString("title_ru"), 
+                                             resultSet.getString("description_az"), 
+                                             resultSet.getString("description_en"), 
+                                             resultSet.getString("description_ru"), 
+                                             resultSet.getInt("file_id")
+                                             ));
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
+    }
+
+    @Override
+    public Achievement getAchievementDetails(int id) {
+        List<Achievement> list = new ArrayList<>();
+        String query = "select * from achievement a where a.active = 1 and a.id = ?";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if(resultSet.next()) {
+                    return new Achievement(resultSet.getString("achievement_date"), 
+                                             resultSet.getInt("id"), 
+                                             resultSet.getString("title_az"), 
+                                             resultSet.getString("title_en"), 
+                                             resultSet.getString("title_ru"), 
+                                             resultSet.getString("description_az"), 
+                                             resultSet.getString("description_en"), 
+                                             resultSet.getString("description_ru"), 
+                                             resultSet.getInt("file_id")
+                                             );
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public OperationResponse NDUAchievement(AchievementForm form, int accountId) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        
+        try(Connection connection = dbConnect.getPostgresConnection();
+            CallableStatement callableStatement = connection.prepareCall("{call ndu_achievement(?,?,?,?,?,?,?,?,?,?)}")) {
+            callableStatement.setInt(1, accountId);
+            callableStatement.setInt(2, form.getId());
+            callableStatement.setString(3, form.getCreateDate());
+            callableStatement.setInt(4, form.getFileId());
+            callableStatement.setString(5, form.getTitleAz());
+            callableStatement.setString(6, form.getTitleEn());
+            callableStatement.setString(7, form.getTitleRu());
+            callableStatement.setString(8, form.getDescriptionAz());
+            callableStatement.setString(9, form.getDescriptionEn());
+            callableStatement.setString(10, form.getDescriptionRu());
+            
+            callableStatement.executeUpdate();
+            
+            operationResponse.setCode(ResultCode.OK);
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return operationResponse;
+    }
+
+    @Override
+    public List<Career> getCareerList() {
+        List<Career> list = new ArrayList<>();
+        String query = "select * from v_career";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                while(resultSet.next()) {
+                    list.add(new Career(resultSet.getString("start_salary"), 
+                                        resultSet.getString("end_salary"), 
+                                        resultSet.getString("start_date"), 
+                                        resultSet.getString("end_date"), 
+                                        new DictionaryWrapper(resultSet.getInt("status"), 
+                                                                new MultilanguageString(resultSet.getString("name_az"), 
+                                                                                        resultSet.getString("name_en"), 
+                                                                                        resultSet.getString("name_ru"))), 
+                                             resultSet.getInt("id"), 
+                                             resultSet.getString("title_az"), 
+                                             resultSet.getString("title_en"), 
+                                             resultSet.getString("title_ru"), 
+                                             resultSet.getString("description_az"), 
+                                             resultSet.getString("description_en"), 
+                                             resultSet.getString("description_ru"), 
+                                             resultSet.getInt("file_id")
+                                             ));
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
+    }
+
+    @Override
+    public Career getCareerDetails(int id) {
+        String query = "select * from v_career v where v.id = ?";
+        
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if(resultSet.next()) {
+                    return new Career(resultSet.getString("start_salary"), 
+                                        resultSet.getString("end_salary"), 
+                                        resultSet.getString("start_date"), 
+                                        resultSet.getString("end_date"), 
+                                        new DictionaryWrapper(resultSet.getInt("status"), 
+                                                                new MultilanguageString(resultSet.getString("name_az"), 
+                                                                                        resultSet.getString("name_en"), 
+                                                                                        resultSet.getString("name_ru"))), 
+                                             resultSet.getInt("id"), 
+                                             resultSet.getString("title_az"), 
+                                             resultSet.getString("title_en"), 
+                                             resultSet.getString("title_ru"), 
+                                             resultSet.getString("description_az"), 
+                                             resultSet.getString("description_en"), 
+                                             resultSet.getString("description_ru"), 
+                                             resultSet.getInt("file_id")
+                                             );
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public OperationResponse NDUCareer(CareerForm form, int accountId) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        
+        try(Connection connection = dbConnect.getPostgresConnection();
+            CallableStatement callableStatement = connection.prepareCall("{call ndu_career(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}")) {
+            callableStatement.setInt(1, accountId);
+            callableStatement.setInt(2, form.getId());
+            callableStatement.setString(3, form.getStartDate());
+            callableStatement.setString(4, form.getEndDate());
+            callableStatement.setString(5, form.getStartSalary());
+            callableStatement.setString(6, form.getEndSalary());
+            callableStatement.setInt(7, form.getStatus());
+            callableStatement.setInt(8, form.getFileId());
+            callableStatement.setString(9, form.getTitleAz());
+            callableStatement.setString(10, form.getTitleEn());
+            callableStatement.setString(11, form.getTitleRu());
+            callableStatement.setString(12, form.getDescriptionAz());
+            callableStatement.setString(13, form.getDescriptionEn());
+            callableStatement.setString(14, form.getDescriptionRu());
+            
+            callableStatement.executeUpdate();
+            
+            operationResponse.setCode(ResultCode.OK);
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return operationResponse;
+    }
+
+    @Override
+    public OperationResponse ADCareer(CareerForm form, int accountId) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        
+        try(Connection connection = dbConnect.getPostgresConnection();
+            CallableStatement callableStatement = connection.prepareCall("{call ad_career(?,?)}")) {
+            callableStatement.setInt(1, accountId);
+            callableStatement.setInt(2, form.getId());
+            callableStatement.executeUpdate();
+            
+            operationResponse.setCode(ResultCode.OK);
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return operationResponse;
+    }
+
+    @Override
+    public List<Promotation> getPromotationList() {
+        List<Promotation> list = new ArrayList<>();
+        String query = "select * from promotation where active = 1 order by id desc";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                while(resultSet.next()) {
+                    list.add(new Promotation(resultSet.getString("start_day"), 
+                                             resultSet.getString("end_day"), 
+                                             resultSet.getInt("id"), 
+                                             resultSet.getString("title_az"), 
+                                             resultSet.getString("title_en"), 
+                                             resultSet.getString("title_ru"), 
+                                             resultSet.getString("description_az"), 
+                                             resultSet.getString("description_en"), 
+                                             resultSet.getString("description_ru"), 
+                                             resultSet.getInt("file_id")
+                                             ));
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
+    }
+
+    @Override
+    public Promotation getPromotationDetails(int id) {
+        String query = "select * from promotation where id = ? and  active = 1 ";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if(resultSet.next()) {
+                    return new Promotation(resultSet.getString("start_day"), 
+                                             resultSet.getString("end_day"), 
+                                             resultSet.getInt("id"), 
+                                             resultSet.getString("title_az"), 
+                                             resultSet.getString("title_en"), 
+                                             resultSet.getString("title_ru"), 
+                                             resultSet.getString("description_az"), 
+                                             resultSet.getString("description_en"), 
+                                             resultSet.getString("description_ru"), 
+                                             resultSet.getInt("file_id")
+                                             );
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public OperationResponse NDUPromotation(PromotationForm form, int accountId) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        
+        try(Connection connection = dbConnect.getPostgresConnection();
+            CallableStatement callableStatement = connection.prepareCall("{call ndu_promotation(?,?,?,?,?,?,?,?,?,?,?)}")) {
+            callableStatement.setInt(1, accountId);
+            callableStatement.setInt(2, form.getId());
+            callableStatement.setString(3, form.getStartDate());
+            callableStatement.setString(4, form.getEndDate());
+            callableStatement.setInt(5, form.getFileId());
+            callableStatement.setString(6, form.getTitleAz());
+            callableStatement.setString(7, form.getTitleEn());
+            callableStatement.setString(8, form.getTitleRu());
+            callableStatement.setString(9, form.getDescriptionAz());
+            callableStatement.setString(10, form.getDescriptionEn());
+            callableStatement.setString(11, form.getDescriptionRu());
+            
+            callableStatement.executeUpdate();
+            
+            operationResponse.setCode(ResultCode.OK);
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return operationResponse;
+    }
+
+    @Override
+    public List<Service> getServiceList() {
+        List<Service> list = new ArrayList<>();
+        String query = "select * from v_service";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                while(resultSet.next()) {
+                    list.add(new Service(new DictionaryWrapper(resultSet.getInt("type_id"), 
+                                                                0, new MultilanguageString(resultSet.getString("name_az"), 
+                                                                                        resultSet.getString("name_en"), 
+                                                                                        resultSet.getString("name_ru")), 
+                                                                resultSet.getInt("parent_id")),
+                                             resultSet.getInt("id"), 
+                                             resultSet.getString("title_az"), 
+                                             resultSet.getString("title_en"), 
+                                             resultSet.getString("title_ru"), 
+                                             resultSet.getString("description_az"), 
+                                             resultSet.getString("description_en"), 
+                                             resultSet.getString("description_ru"), 
+                                             resultSet.getInt("file_id")
+                                             ));
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
+    }
+
+    @Override
+    public Service getServiceDetails(int id) {
+        String query = "select * from v_service where id = ?";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if(resultSet.next()) {
+                    return new Service(new DictionaryWrapper(resultSet.getInt("type_id"), 
+                                                                0, new MultilanguageString(resultSet.getString("name_az"), 
+                                                                                        resultSet.getString("name_en"), 
+                                                                                        resultSet.getString("name_ru")), 
+                                                                resultSet.getInt("parent_id")),
+                                             resultSet.getInt("id"), 
+                                             resultSet.getString("title_az"), 
+                                             resultSet.getString("title_en"), 
+                                             resultSet.getString("title_ru"), 
+                                             resultSet.getString("description_az"), 
+                                             resultSet.getString("description_en"), 
+                                             resultSet.getString("description_ru"), 
+                                             resultSet.getInt("file_id")
+                                             );
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+    
+    @Override
+    public Service getServiceByType(int id, int typeId) {
+        
+        String query = "";
+        if(id > 0) {
+            query = "select * from v_service where type_id = ? and id <> ? ";
+        } else {
+           query = "select * from v_service where type_id = ?"; 
+        }
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            
+            if(id > 0) {
+                preparedStatement.setInt(1, typeId);
+                preparedStatement.setInt(2, id);
+            } else {
+                preparedStatement.setInt(1, typeId);
+            }
+            
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if(resultSet.next()) {
+                    return new Service(new DictionaryWrapper(resultSet.getInt("type_id"), 
+                                                                0, new MultilanguageString(resultSet.getString("name_az"), 
+                                                                                        resultSet.getString("name_en"), 
+                                                                                        resultSet.getString("name_ru")), 
+                                                                resultSet.getInt("parent_id")),
+                                             resultSet.getInt("id"), 
+                                             resultSet.getString("title_az"), 
+                                             resultSet.getString("title_en"), 
+                                             resultSet.getString("title_ru"), 
+                                             resultSet.getString("description_az"), 
+                                             resultSet.getString("description_en"), 
+                                             resultSet.getString("description_ru"), 
+                                             resultSet.getInt("file_id")
+                                             );
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public OperationResponse NDUService(ServiceForm form, int accountId) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        
+        try(Connection connection = dbConnect.getPostgresConnection();
+            CallableStatement callableStatement = connection.prepareCall("{call ndu_service(?,?,?,?,?,?,?,?,?,?)}")) {
+            callableStatement.setInt(1, accountId);
+            callableStatement.setInt(2, form.getId());
+            callableStatement.setInt(3, form.getTypeId());
+            callableStatement.setInt(4, form.getFileId());
+            callableStatement.setString(5, form.getTitleAz());
+            callableStatement.setString(6, form.getTitleEn());
+            callableStatement.setString(7, form.getTitleRu());
+            callableStatement.setString(8, form.getDescriptionAz());
+            callableStatement.setString(9, form.getDescriptionEn());
+            callableStatement.setString(10, form.getDescriptionRu());
+            
+            callableStatement.executeUpdate();
+            
+            operationResponse.setCode(ResultCode.OK);
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return operationResponse;
+    }
+    
+    @Override
+    public OperationResponse addFile(FileWrapperForm form) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        String query = "insert into files(path, original_name, title_az, title_en, title_ru, description_az, description_en, description_ru) " +
+                        "values(?,?,?,?,?,?,?,?) RETURNING id";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, form.getPath());
+            preparedStatement.setString(2, form.getOriginalName());
+            preparedStatement.setString(5, form.getTitleAz());
+            preparedStatement.setString(6, form.getTitleEn());
+            preparedStatement.setString(7, form.getTitleRu());
+            preparedStatement.setString(8, form.getDescriptionAz());
+            preparedStatement.setString(9, form.getDescriptionEn());
+            preparedStatement.setString(10, form.getDescriptionRu());
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if(resultSet.next()) {
+                    operationResponse.setData(resultSet.getInt(1));
+                    operationResponse.setCode(ResultCode.OK);
+                }
+            }
+            
+            operationResponse.setCode(ResultCode.OK);
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return operationResponse;
+    }
+
+    @Override
+    public List<Corporative> getCorporativeList() {
+         String query = "select * from v_corporate ";
+         List<Corporative> list = new ArrayList<>();
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                while(resultSet.next()) {
+                    list.add (new Corporative(resultSet.getInt("id"), 
+                                             resultSet.getString("fullname"), 
+                                             resultSet.getString("company_name"), 
+                                             resultSet.getString("company_voen"), 
+                                             resultSet.getString("position"), 
+                                             resultSet.getString("phone"), 
+                                             resultSet.getString("email"), 
+                                             resultSet.getString("description_az"),
+                                             resultSet.getInt("file_id"),
+                                             resultSet.getString("create_date")
+                                             ));
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
+    }
+
+    @Override
+    public Corporative getCorporativeDetails(int id) {
+        String query = "select * from v_corporate where id = ?";
+         List<Corporative> list = new ArrayList<>();
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if(resultSet.next()) {
+                    return new Corporative(resultSet.getInt("id"), 
+                                             resultSet.getString("fullname"), 
+                                             resultSet.getString("company_name"), 
+                                             resultSet.getString("company_voen"), 
+                                             resultSet.getString("position"), 
+                                             resultSet.getString("phone"), 
+                                             resultSet.getString("email"), 
+                                             resultSet.getString("description_az"),
+                                             resultSet.getInt("file_id"),
+                                             resultSet.getString("create_date")
+                                             );
                 }
             }
         } 

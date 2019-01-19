@@ -21,6 +21,8 @@
     <!--<link rel="stylesheet" href="<c:url value="/assets/css/flag-icon.min.css" />">-->
     <link rel="stylesheet" href="<c:url value="/assets/css/cs-skin-elastic.css" />">
     <link rel="stylesheet" href="<c:url value="/assets/css/product.css" />">
+    <link rel="stylesheet" href="<c:url value="/assets/css/bootstrap-datepicker.min.css" />">
+    <link rel="stylesheet" href="<c:url value="/assets/css/foundation-datepicker.min.css" />">
     <link rel="stylesheet" href="<c:url value="/assets/css/lib/datatable/dataTables.bootstrap.min.css" />">
     <link rel="stylesheet" href="<c:url value="/assets/scss/style.css" />">
     <link rel="stylesheet" href="<c:url value="/assets/css/lib/vector-map/jqvmap.min.css" />">

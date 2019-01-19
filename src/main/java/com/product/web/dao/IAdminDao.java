@@ -7,19 +7,28 @@ package com.product.web.dao;
 
 import com.product.web.domain.About;
 import com.product.web.domain.Account;
+import com.product.web.domain.Achievement;
+import com.product.web.domain.Career;
 import com.product.web.domain.Company;
 import com.product.web.domain.Contact;
+import com.product.web.domain.Corporative;
 import com.product.web.domain.DictionaryWrapper;
 import com.product.web.domain.FileWrapper;
 import com.product.web.domain.OperationResponse;
 import com.product.web.domain.Product;
+import com.product.web.domain.Promotation;
+import com.product.web.domain.Service;
 import com.product.web.form.AboutForm;
 import com.product.web.form.AccountForm;
+import com.product.web.form.AchievementForm;
+import com.product.web.form.CareerForm;
 import com.product.web.form.ContactForm;
 import com.product.web.form.DictionaryWrapperForm;
 import com.product.web.form.FileWrapperForm;
 import com.product.web.form.LoginForm;
 import com.product.web.form.ProductForm;
+import com.product.web.form.PromotationForm;
+import com.product.web.form.ServiceForm;
 import java.util.List;
 
 /**
@@ -31,6 +40,7 @@ public interface IAdminDao {
     
     public List<DictionaryWrapper> getDictionaryTypeList();
     public List<DictionaryWrapper> getDictionaryList(int dicTypeId);
+    public List<DictionaryWrapper> getDictionaryListByParent(int parentId);
     public OperationResponse NDUDictionary(DictionaryWrapperForm form, int accountId);
     
     public List<Contact> getContactList();
@@ -60,4 +70,29 @@ public interface IAdminDao {
     public int getProductCount(int typeId, String name);
     
     public Company getCompanyInfo();
+    
+    
+    public List<Achievement> getAchievementList();
+    public Achievement getAchievementDetails(int id);
+    public OperationResponse NDUAchievement(AchievementForm form, int accountId);
+    
+    public List<Career> getCareerList();
+    public Career getCareerDetails(int id);
+    public OperationResponse NDUCareer(CareerForm form, int accountId);
+    public OperationResponse ADCareer(CareerForm form, int accountId);
+    
+    public List<Promotation> getPromotationList();
+    public Promotation getPromotationDetails(int id);
+    public OperationResponse NDUPromotation(PromotationForm form, int accountId);
+    
+    public List<Service> getServiceList();
+    public Service getServiceDetails(int id);
+    public Service getServiceByType(int id, int typeId);
+    public OperationResponse NDUService(ServiceForm form, int accountId);
+    
+    public OperationResponse addFile(FileWrapperForm form);
+    
+    public List<Corporative> getCorporativeList();
+    public Corporative getCorporativeDetails(int id);
+    
 }

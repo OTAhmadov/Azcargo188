@@ -22,11 +22,13 @@
 
 <script type="text/javascript" src="<c:url value="/assets/js/product.js" />"></script>
 <script type="text/javascript" src="<c:url value="/assets/js/events.js" />"></script>
+
 <script src="<c:url value="/assets/js/crop.js" />"></script>
 <script src="<c:url value="/assets/js/custom.js" />"></script>
 <script src="<c:url value="/assets/js/masonry.pkgd.min.js" />"></script>
 
 <script src="<c:url value="/assets/index/plugins/jquery/jquery.min.js" />"></script>
+
 <script src="<c:url value="/assets/index/plugins/bootstrap/bootstrap.min.js" />"></script>
     <script src="<c:url value="/assets/js/bootstrap.min.js" />"></script>
     <script src="<c:url value="/assets/index/plugins/owl-carousel/owl.carousel.min.js" />"></script>
@@ -52,7 +54,7 @@
     <script src="<c:url value="/assets/js/lib/data-table/buttons.print.min.js" />"></script>
     <script src="<c:url value="/assets/js/lib/data-table/buttons.colVis.min.js" />"></script>
     <script src="<c:url value="/assets/js/lib/data-table/datatables-init.js" />"></script>
-    
+    <script type="text/javascript" src="<c:url value="/assets/js/foundation-datepicker.min.js" />"></script>
     
     
     <!--<script src="<c:url value="/assets/index/js/main.js" />"></script>-->

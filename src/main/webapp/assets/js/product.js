@@ -70,6 +70,21 @@ var Product = {
                 }
             });
         },
+        getDictionariesByParent: function(id, callback) {
+            $.ajax({
+                url: Product.rootUrl + 'dictionary',
+                type: 'GET',
+                data: {
+                    dicTypeId: 0,
+                    parentId:id
+                },
+                success: function(data) {
+                    if(data && data.code === Product.statusCodes.OK && callback) {
+                        callback(data.data);
+                    }
+                }
+            });
+        },
         getDictionariesType: function(callback) {
             $.ajax({
                 url: Product.rootUrl + 'dictionary/type',
@@ -227,14 +242,136 @@ var Product = {
                 }
             })
         },
-        nduProduct: function (formData, callback) {
+        nduService: function (formData, callback) {
             
             $.ajax({
-                url: Product.rootUrl + "product/ndu",
+                url: Product.rootUrl + "service/ndu",
                 type: 'POST',
                 data: formData,
                 contentType: false,
                 processData: false,
+                success: function (result) {
+                    if (result) {
+                        switch (result.code) {
+                            case Product.statusCodes.OK:
+
+                                if (callback) {
+                                    callback(result);
+                                }
+                                break;
+
+                            case Product.statusCodes.ERROR:
+                                if (result.message) {
+                                    alert(result.message.az) 
+                                } else {
+                                   alert('Xeta bas verdi') 
+                                }
+                                break;
+
+                        }
+                    }
+                }
+            })
+        },
+        nduAchievement: function (formData, callback) {
+            
+            $.ajax({
+                url: Product.rootUrl + "achievement/ndu",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result) {
+                        switch (result.code) {
+                            case Product.statusCodes.OK:
+
+                                if (callback) {
+                                    callback(result);
+                                }
+                                break;
+
+                            case Product.statusCodes.ERROR:
+                                if (result.message) {
+                                    alert(result.message.az) 
+                                } else {
+                                   alert('Xeta bas verdi') 
+                                }
+                                break;
+
+                        }
+                    }
+                }
+            })
+        },
+        nduPromotation: function (formData, callback) {
+            
+            $.ajax({
+                url: Product.rootUrl + "promotation/ndu",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result) {
+                        switch (result.code) {
+                            case Product.statusCodes.OK:
+
+                                if (callback) {
+                                    callback(result);
+                                }
+                                break;
+
+                            case Product.statusCodes.ERROR:
+                                if (result.message) {
+                                    alert(result.message.az) 
+                                } else {
+                                   alert('Xeta bas verdi') 
+                                }
+                                break;
+
+                        }
+                    }
+                }
+            })
+        },
+        nduCareer: function (formData, callback) {
+            
+            $.ajax({
+                url: Product.rootUrl + "career/ndu",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result) {
+                        switch (result.code) {
+                            case Product.statusCodes.OK:
+
+                                if (callback) {
+                                    callback(result);
+                                }
+                                break;
+
+                            case Product.statusCodes.ERROR:
+                                if (result.message) {
+                                    alert(result.message.az) 
+                                } else {
+                                   alert('Xeta bas verdi') 
+                                }
+                                break;
+
+                        }
+                    }
+                }
+            })
+        },
+        getServiceList: function (form, callback) {
+            
+            $.ajax({
+                url: Product.rootUrl + "services",
+                type: 'GET',
+                data: form,
                 success: function (result) {
                     if (result) {
                         switch (result.code) {
@@ -258,10 +395,97 @@ var Product = {
                 }
             })
         },
-        getProductList: function (form, callback) {
+        getAchievementList: function (form, callback) {
             
             $.ajax({
-                url: Product.rootUrl + "products",
+                url: Product.rootUrl + "achievements",
+                type: 'GET',
+                data: form,
+                success: function (result) {
+                    if (result) {
+                        switch (result.code) {
+                            case Product.statusCodes.OK:
+
+                                if (callback) {
+                                    callback(result);
+                                }
+                                break;
+
+                            case Product.statusCodes.ERROR:
+                                if (result.message) {
+                                    
+                                } else {
+                                   alert('Xeta bas verdi') 
+                                }
+                                break;
+
+                        }
+                    }
+                }
+            })
+        },
+        getCareerList: function (form, callback) {
+            
+            $.ajax({
+                url: Product.rootUrl + "careers",
+                type: 'GET',
+                data: form,
+                success: function (result) {
+                    if (result) {
+                        switch (result.code) {
+                            case Product.statusCodes.OK:
+
+                                if (callback) {
+                                    callback(result);
+                                }
+                                break;
+
+                            case Product.statusCodes.ERROR:
+                                if (result.message) {
+                                    
+                                } else {
+                                   alert('Xeta bas verdi') 
+                                }
+                                break;
+
+                        }
+                    }
+                }
+            })
+        },
+        getCorporativeList: function (form, callback) {
+            
+            $.ajax({
+                url: Product.rootUrl + "corporatives",
+                type: 'GET',
+                data: form,
+                success: function (result) {
+                    if (result) {
+                        switch (result.code) {
+                            case Product.statusCodes.OK:
+
+                                if (callback) {
+                                    callback(result);
+                                }
+                                break;
+
+                            case Product.statusCodes.ERROR:
+                                if (result.message) {
+                                    
+                                } else {
+                                   alert('Xeta bas verdi') 
+                                }
+                                break;
+
+                        }
+                    }
+                }
+            })
+        },
+        getPromotationList: function (form, callback) {
+            
+            $.ajax({
+                url: Product.rootUrl + "promotations",
                 type: 'GET',
                 data: form,
                 success: function (result) {
@@ -315,10 +539,122 @@ var Product = {
                 }
             })
         },
-        getProductDetails: function (id, callback) {
+        getServiceDetails: function (id, callback) {
             
             $.ajax({
-                url: Product.rootUrl + "product/"+id,
+                url: Product.rootUrl + "service/"+id,
+                type: 'GET',
+                success: function (result) {
+                    if (result) {
+                        switch (result.code) {
+                            case Product.statusCodes.OK:
+
+                                if (callback) {
+                                    callback(result);
+                                }
+                                break;
+
+                            case Product.statusCodes.ERROR:
+                                if (result.message) {
+                                    
+                                } else {
+                                   alert('Xeta bas verdi') 
+                                }
+                                break;
+
+                        }
+                    }
+                }
+            })
+        },
+        getAchievementDetails: function (id, callback) {
+            
+            $.ajax({
+                url: Product.rootUrl + "achievement/"+id,
+                type: 'GET',
+                success: function (result) {
+                    if (result) {
+                        switch (result.code) {
+                            case Product.statusCodes.OK:
+
+                                if (callback) {
+                                    callback(result);
+                                }
+                                break;
+
+                            case Product.statusCodes.ERROR:
+                                if (result.message) {
+                                    
+                                } else {
+                                   alert('Xeta bas verdi') 
+                                }
+                                break;
+
+                        }
+                    }
+                }
+            })
+        },
+        getPromotationDetails: function (id, callback) {
+            
+            $.ajax({
+                url: Product.rootUrl + "promotation/"+id,
+                type: 'GET',
+                success: function (result) {
+                    if (result) {
+                        switch (result.code) {
+                            case Product.statusCodes.OK:
+
+                                if (callback) {
+                                    callback(result);
+                                }
+                                break;
+
+                            case Product.statusCodes.ERROR:
+                                if (result.message) {
+                                    
+                                } else {
+                                   alert('Xeta bas verdi') 
+                                }
+                                break;
+
+                        }
+                    }
+                }
+            })
+        },
+        getCareerDetails: function (id, callback) {
+            
+            $.ajax({
+                url: Product.rootUrl + "career/"+id,
+                type: 'GET',
+                success: function (result) {
+                    if (result) {
+                        switch (result.code) {
+                            case Product.statusCodes.OK:
+
+                                if (callback) {
+                                    callback(result);
+                                }
+                                break;
+
+                            case Product.statusCodes.ERROR:
+                                if (result.message) {
+                                    
+                                } else {
+                                   alert('Xeta bas verdi') 
+                                }
+                                break;
+
+                        }
+                    }
+                }
+            })
+        },
+        getCorporativeDetails: function (id, callback) {
+            
+            $.ajax({
+                url: Product.rootUrl + "corporative/"+id,
                 type: 'GET',
                 success: function (result) {
                     if (result) {

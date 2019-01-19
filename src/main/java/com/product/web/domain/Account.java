@@ -19,6 +19,7 @@ public class Account {
     private String lastname;
     private String middlename;
     private String password;
+    private String userType;
 
     public Account(int id, String username, String password) {
         this.id = id;
@@ -31,11 +32,12 @@ public class Account {
         this.username = username;
     }
 
-    public Account(int id, String username, String firstname, String lastname, String middlename) {
+    public Account(int id, String username, String firstname, String lastname, String middlename, String userType) {
         this.id = id;
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
         this.middlename = middlename;
+        this.userType = userType;
     }
 }

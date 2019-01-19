@@ -8,19 +8,28 @@ package com.product.web.service;
 import com.product.web.dao.AdminDao;
 import com.product.web.domain.About;
 import com.product.web.domain.Account;
+import com.product.web.domain.Achievement;
+import com.product.web.domain.Career;
 import com.product.web.domain.Company;
 import com.product.web.domain.Contact;
+import com.product.web.domain.Corporative;
 import com.product.web.domain.DictionaryWrapper;
 import com.product.web.domain.FileWrapper;
 import com.product.web.domain.OperationResponse;
 import com.product.web.domain.Product;
+import com.product.web.domain.Promotation;
+import com.product.web.domain.Promotation;
 import com.product.web.form.AboutForm;
 import com.product.web.form.AccountForm;
+import com.product.web.form.AchievementForm;
+import com.product.web.form.CareerForm;
 import com.product.web.form.ContactForm;
 import com.product.web.form.DictionaryWrapperForm;
 import com.product.web.form.FileWrapperForm;
 import com.product.web.form.LoginForm;
 import com.product.web.form.ProductForm;
+import com.product.web.form.PromotationForm;
+import com.product.web.form.ServiceForm;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +59,11 @@ public class ProductService implements IProductService {
     @Override
     public List<DictionaryWrapper> getDictionaryList(int dicTypeId){
         return this.adminDao.getDictionaryList(dicTypeId);
+    }
+    
+    @Override
+    public List<DictionaryWrapper> getDictionaryListByParent(int parentId){
+        return this.adminDao.getDictionaryListByParent(parentId);
     }
     
     @Override
@@ -156,4 +170,90 @@ public class ProductService implements IProductService {
     public Company getCompanyInfo() {
         return this.adminDao.getCompanyInfo();
     }
+
+    @Override
+    public List<Achievement> getAchievementList() {
+        return this.adminDao.getAchievementList();
+    }
+
+    @Override
+    public Achievement getAchievementDetails(int id) {
+        return this.adminDao.getAchievementDetails(id);
+    }
+
+    @Override
+    public OperationResponse NDUAchievement(AchievementForm form, int accountId) {
+        return this.adminDao.NDUAchievement(form, accountId);
+    }
+
+    @Override
+    public List<Career> getCareerList() {
+        return this.adminDao.getCareerList();
+    }
+    
+    @Override
+    public Career getCareerDetails(int id) {
+        return this.adminDao.getCareerDetails(id);
+    }
+
+    @Override
+    public OperationResponse NDUCareer(CareerForm form, int accountId) {
+        return this.adminDao.NDUCareer(form, accountId);
+    }
+
+    @Override
+    public OperationResponse ADCareer(CareerForm form, int accountId) {
+        return this.adminDao.ADCareer(form, accountId);
+    }
+    
+    @Override
+    public List<Promotation> getPromotationList() {
+        return this.adminDao.getPromotationList();
+    }
+    
+    @Override
+    public Promotation getPromotationDetails(int id) {
+        return this.adminDao.getPromotationDetails(id);
+    }
+
+    @Override
+    public OperationResponse NDUPromotation(PromotationForm form, int accountId) {
+        return this.adminDao.NDUPromotation(form, accountId);
+    }
+    
+    @Override
+    public List<com.product.web.domain.Service> getServiceList() {
+        return this.adminDao.getServiceList();
+    }
+    
+    @Override
+    public com.product.web.domain.Service getServiceDetails(int id) {
+        return this.adminDao.getServiceDetails(id);
+    }
+    
+    @Override
+    public com.product.web.domain.Service getServiceByType(int id, int typeId) {
+        return this.adminDao.getServiceByType(id, typeId);
+    }
+
+    @Override
+    public OperationResponse NDUService(ServiceForm form, int accountId) {
+        return this.adminDao.NDUService(form, accountId);
+    }
+
+    @Override
+    public OperationResponse addFile(FileWrapperForm form) {
+        return this.adminDao.addFile(form);
+    }
+
+    @Override
+    public List<Corporative> getCorporativeList() {
+        return this.adminDao.getCorporativeList();
+    }
+
+    @Override
+    public Corporative getCorporativeDetails(int id) {
+        return this.adminDao.getCorporativeDetails(id);
+    }
+    
 }

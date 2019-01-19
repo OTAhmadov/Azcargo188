@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author otahmadov
  */
-public class FileWrapperForm {
+public class FileWrapperForm extends CommonForm{
     private String originalName;
     private String path;
     private MultipartFile file;

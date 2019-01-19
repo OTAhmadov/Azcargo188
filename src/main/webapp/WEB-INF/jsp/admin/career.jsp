@@ -85,7 +85,7 @@
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>Xidmətlər</h1>
+                        <h1>Karyera</h1>
                     </div>
                 </div>
             </div>
@@ -93,7 +93,7 @@
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
-                            <li class="active add-service"><span class="fa fa-plus" style="cursor: pointer;"></span></li>
+                            <li class="active add-career"><span class="fa fa-plus" style="cursor: pointer;"></span></li>
                         </ol>
                     </div>
                 </div>
@@ -109,11 +109,13 @@
                                                     <strong class="card-title">Data Table</strong>
                                                 </div>-->
                         <div class="card-body">
-                            <table id="service_list" class="table table-striped table-bordered">
+                            <table id="career_list" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Tipi</th>
                                         <th>Başlıq</th>
+                                        <th>Tarix</th>
+                                        <th>Məbləğ</th>
+                                        <th>Status</th>
                                         <th>Kontent</th>
                                         <th></th>
                                     </tr>
@@ -127,31 +129,30 @@
                 </div>
             </div>
 
-            <div class="modal fade bs-example-modal-lg service_modal" tabicommon_selling_modalndex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+            <div class="modal fade bs-example-modal-lg career_modal" tabicommon_selling_modalndex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
 
                         <div class="modal-header">
                             <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>-->
-                            <h4 class="modal-title" id="myLargeModalLabel">Xidmət haqqında məlumat</h4>
+                            <h4 class="modal-title" id="myLargeModalLabel">Karyera haqqında məlumat</h4>
                         </div>
                         <div class="modal-body">
-                            <form id="service-form">
+                            <form id="career-form">
+                                
                                 <div class="row form-group">
-                                    <div class="col col-md-3"><label for="select" class=" form-control-label">Xidmət</label></div>
-                                    <div class="col-12 col-md-9">
-                                        <select name="select" class="form-control super_service_type">
-
-                                        </select>
-                                    </div>
+                                    <div class="col col-md-3"><label for="product_name" class=" form-control-label">Məbləğ</label></div>
+                                    <div class="col-12 col-md-4"><input type="text" id="startSalary" name="text-input" placeholder="" class="form-control"></div>
+                                    <div class="col-12 col-md-1"></div>
+                                    <div class="col-12 col-md-4"><input type="text" id="endSalary" name="text-input" placeholder="" class="form-control"></div>
+                                    
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col col-md-3"><label for="select" class=" form-control-label">Alt xidmət</label></div>
-                                    <div class="col-12 col-md-9">
-                                        <select name="select" class="form-control sub_service_type">
-
-                                        </select>
-                                    </div>
+                                    <div class="col col-md-3"><label for="product_name" class=" form-control-label">Tarix</label></div>
+                                    <div class="col-12 col-md-4"><input type="text" id="startDate" name="text-input" placeholder="" class="form-control"></div>
+                                    <div class="col-12 col-md-1"></div>
+                                    <div class="col-12 col-md-4"><input type="text" id="endDate" name="text-input" placeholder="" class="form-control"></div>
+                                    
                                 </div>
                                 <div class="row form-group">
                                     <div class="col col-md-3"><label for="product_name" class=" form-control-label">Başlıq(AZ)</label></div>
@@ -190,82 +191,18 @@
                                 </div>
                             </form>
                             
-<!--                            <div class="row form-group">
+                            
+                            <div class="row form-group ">
                                 <p class="col pull-right" style="font-weight: 700;padding-right: 15px;">
-                                    <span style="display: inline-block;margin-right: 10px;">Seçilmiş</span>
-                                    <label class="switch switch-3d switch-danger mr-3"><input data-type='uncheck' type="checkbox" class="switch-input product_priority"> <span class="switch-label"></span> <span class="switch-handle"></span></label>
-                                </p>
-                            </div>-->
-                        </div>
-                        <div class="modal-footer">
-
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Bağla</button>
-                            <button type="button" class="btn btn-primary btn-ndu-service">Təsdiq et</button>
-
-                        </div>
-                    </div>
-                </div>
-            </div>    
-            <div class="modal fade bs-example-modal-lg service_edit_modal" tabicommon_selling_modalndex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            <h4 class="modal-title" id="myLargeModalLabel">Məhsulun redaktə edilməsi</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row form-group">
-                                <div class="col col-md-3"><label for="select" class=" form-control-label">Tipi</label></div>
-                                <div class="col-12 col-md-9">
-                                    <select name="select" id="edit_product_type" class="form-control">
-
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col col-md-3"><label for="product_name" class=" form-control-label">Adı</label></div>
-                                <div class="col-12 col-md-9"><input type="text" id="edit_product_name" name="text-input" placeholder="" class="form-control"></div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col col-md-3"><label for="product_count" class=" form-control-label">Sayı</label></div>
-                                <div class="col-12 col-md-9"><input type="number" id="edit_product_count" name="text-input" placeholder="" class="form-control"></div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col col-md-3"><label for="product_price" class=" form-control-label">Qiyməti</label></div>
-                                <div class="col-12 col-md-9"><input type="text" id="edit_product_price"  class="form-control"></div>
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col col-md-3"><label for="product_reciept" class=" form-control-label">Resept</label></div>
-                                <div class="col-12 col-md-9"><textarea id="edit_product_reciept" rows="6" class="form-control"></textarea></div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col col-md-3"><label for="product_note" class=" form-control-label">Qeyd</label></div>
-                                <div class="col-12 col-md-9"><textarea id="edit_product_note" rows="6" class="form-control"></textarea></div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col col-md-3"><label for="product_files" class=" form-control-label">Şəkil</label></div>
-                                <div class="col-12 col-md-9 image-content-div">
-
-
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <!--<div class="col col-md-3"><label for="product_files" class=" form-control-label">Şəkil</label></div>-->
-                                <div class="col-12 col-md-9"><input type="file" id="edit_product_files"  multiple="" class="form-control-file"></div>
-                            </div>
-                            <div class="row form-group">
-                                <p class="col pull-right" style="font-weight: 700;padding-right: 15px;">
-                                    <span style="display: inline-block;margin-right: 10px;">Seçilmiş</span>
-                                    <label class="switch switch-3d switch-danger mr-3"><input data-type='uncheck' type="checkbox" class="switch-input edit_product_priority"> <span class="switch-label"></span> <span class="switch-handle"></span></label>
+                                    <span style="display: inline-block;margin-right: 10px;">Status</span>
+                                    <label class="switch switch-3d switch-danger mr-3"><input value = "47" data-type='check' type="checkbox" class="switch-input career_status" checked="true"> <span class="switch-label"></span> <span class="switch-handle"></span></label>
                                 </p>
                             </div>
                         </div>
                         <div class="modal-footer">
 
                             <button type="button" class="btn btn-default" data-dismiss="modal">Bağla</button>
-                            <button type="button" class="btn btn-primary btn-edit-ndu-product">Təsdiq et</button>
+                            <button type="button" class="btn btn-primary btn-ndu-career">Təsdiq et</button>
 
                         </div>
                     </div>
@@ -276,78 +213,41 @@
         <script>
             $(function () {
 
-                $('#main-menu a i[data-type="service"]').parents('li').addClass('active');
+                $('#main-menu a i[data-type="career"]').parents('li').addClass('active');
                 
-                Product.Proxy.getServiceList('', function (data) {
+                
+                $('#startDate').fdatepicker()
+                $('#endDate').fdatepicker()
+                
+                Product.Proxy.getCareerList('', function (data) {
                     if (data && data.data) {
                         var html = '';
                             $.each(data.data, function (i, v) {
-                                var descriptionLength = v.descriptionAz.length;
+                                var descriptionLength = v.descriptionAz ? v.descriptionAz.length : 0;
                                 var description = v.descriptionAz;
-                                if(descriptionLength > 60) {
-                                    description = v.descriptionAz.substring(0,60) + '...';
+                                if(descriptionLength > 20) {
+                                    description = v.descriptionAz.substring(0,20) + '...';
                                 } 
                                 html += '<tr>' +
-                                        '<td>' + v.typeId.value.az + '</th>' +
-                                        '<td>' + v.titleAz + '</td>' +
+                                        '<td>' + v.titleAz + '</th>' +
+                                        '<td>' + (v.startDate +' - '+ v.endDate) + '</td>' +
+                                        '<td>' + (v.startSalary +' - '+ v.endSalary) + '</td>' +
+                                        '<td>' + (v.status.value.az) + '</td>' +
                                         '<td>' + description + '</td>' +
-                                        '<td><i class="fa fa-remove remove-service" data-id="' + v.id + '"></i>' +
-                                        '<i class="fa fa-edit edit-service" data-id = "' + v.id + '"></i></td>' +
+                                        '<td><i class="fa fa-remove remove-career" data-id="' + v.id + '"></i>' +
+                                        '<i class="fa fa-edit edit-career" data-id = "' + v.id + '"></i></td>' +
                                         '</tr>'
                             })
-                            $('#service_list tbody').html(html);
-                            $('#achievement_list').DataTable();
+                            $('#career_list tbody').html(html);
+                            $('#career_list').DataTable();
                     }
 
                 })
-                
-                Product.Proxy.getDictionariesByType('1', function(data) {
-                    if(data) {
-                        var html = "";
-                        $.each(data, function(i, v){
-                            if(v.parentId == 0)
-                                html += '<option value = '+v.id+'>'+v.value.az+'</option>'
-                        })
-                        
-                        $('.super_service_type').html(html);
-                        var parentId = $('.super_service_type').val();
-                        Product.Proxy.getDictionariesByParent(parentId, function(data2) {
-                            if(data2) {
-                                var html = "";
-                                $.each(data2, function(i, v){
-                                        html += '<option value = '+v.id+'>'+v.value.az+'</option>'
-                                })
-
-                                $('.sub_service_type').html(html);
-                            }
-                        })
-                    }
-                })
-                $('body').on('change', '.super_service_type', function() {
-                    var id = $(this).val();
-                    Product.Proxy.getDictionariesByParent(id, function(data) {
-                        if(data) {
-                            var html = "";
-                            $.each(data, function(i, v){
-                                    html += '<option value = '+v.id+'>'+v.value.az+'</option>'
-                            })
-
-                            $('.sub_service_type').html(html);
-                        }
-                    })
-                });
 
             })
 
         </script>
 
-
-        <!--    <script type="text/javascript">
-                $(document).ready(function() {
-                    
-                  
-                } );
-            </script>-->
 
 </body>
 </html>
