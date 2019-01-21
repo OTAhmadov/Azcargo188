@@ -40,6 +40,12 @@
                         <a href="<c:url value="/admin/career" />"> <i class="menu-icon fa fa-database" data-type="career"></i>Karyera</a>
                     </li>
                     <li>
+                        <a href="<c:url value="/admin/careerApply" />"> <i class="menu-icon fa fa-database" data-type="careerApply"></i>Karyera müraciətləri</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/commonApply" />"> <i class="menu-icon fa fa-database" data-type="commonApply"></i>Ümumi müraciətlər</a>
+                    </li>
+                    <li>
                         <a href="<c:url value="/admin/dic" />"> <i class="menu-icon fa fa-cogs" data-type="dictionary"></i>Soraqçalar </a>
                     </li>
                     <li>

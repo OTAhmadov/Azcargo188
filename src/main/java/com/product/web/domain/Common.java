@@ -32,4 +32,9 @@ public class Common {
         this.descriptionRu = descriptionRu;
         this.fileId = fileId;
     }
+
+    public Common(String titleAz, String descriptionAz) {
+        this.titleAz = titleAz;
+        this.descriptionAz = descriptionAz;
+    }
 }

@@ -27,4 +27,9 @@ public class Career extends Common {
         this.endDate = endDate;
         this.status = status;
     }
+
+    public Career(String titleAz, String descriptionAz) {
+        super(titleAz, descriptionAz);
+    }
+    
 }

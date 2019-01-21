@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.product.web</groupId>
-    <artifactId>ProductSite</artifactId>
+    <artifactId>Azcargo188</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>ProductSite</name>
+    <name>Azcargo188</name>
 
 
     <properties>

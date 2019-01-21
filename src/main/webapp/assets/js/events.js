@@ -145,6 +145,8 @@ $(function (e) {
             $('body .career_modal').modal('show');
             $('body .btn-ndu-career').attr('data-type', 'add');
         })
+        
+        
 
         $('body').on('click', '.btn-ndu-service', function () {
             var form = new FormData();
@@ -665,6 +667,52 @@ $(function (e) {
             })
 
             $('body .corporative_modal').modal('show');
+        })
+
+        $('body').on('click', '.view-career-apply', function () {
+
+            var id = $(this).attr('data-id');
+            Product.Proxy.getCareerApplyDetails(id, function (data) {
+                if (data && data.data) {
+                    $('body #careerTitle').val(data.data.career.titleAz);
+                    $('body #descriptionAz').val(data.data.career.descriptionAz);
+                    $('body #fullname').val(data.data.fullname);
+                    $('body #phone').val(data.data.phone);
+                    $('body #birthdate').val(data.data.birthdate);
+                    $('body #experience').val(data.data.experience.value.az);
+                    $('body #drivingLicense').val(data.data.drivingLicense.value.az);
+                    $('body #createDate').val(data.data.createDate);
+                    $('body #product_files').attr('data-id', data.data.fileId);
+
+                    if (data.data.fileId && data.data.fileId > 0) {
+                        $('body .active-file-div').removeClass('hidden');
+                        var html =  '<div class="image-div">' +
+                                    '<img src="http://dadliteatr.az/admin/image/' + data.data.fileId + '"  class="form-control-file product-image-view">' +
+                                    '</div>'
+                    }
+
+                    $('body .image-content-div').html(html);
+
+                }
+            })
+
+            $('body .career_apply_modal').modal('show');
+        })
+
+        $('body').on('click', '.view-common-apply', function () {
+
+            var id = $(this).attr('data-id');
+            Product.Proxy.getCommonApplyDetails(id, function (data) {
+                if (data && data.data) {
+                    $('body #descriptionAz').val(data.data.description);
+                    $('body #name').val(data.data.name);
+                    $('body #email').val(data.data.email);
+                    $('body #createDate').val(data.data.createDate);
+
+                }
+            })
+
+            $('body .common_apply_modal').modal('show');
         })
 
         $('body').on('click', '.remove-service', function () {

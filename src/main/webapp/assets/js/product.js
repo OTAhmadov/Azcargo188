@@ -482,6 +482,64 @@ var Product = {
                 }
             })
         },
+        getCommonApplyList: function (form, callback) {
+            
+            $.ajax({
+                url: Product.rootUrl + "commonApplyes",
+                type: 'GET',
+                data: form,
+                success: function (result) {
+                    if (result) {
+                        switch (result.code) {
+                            case Product.statusCodes.OK:
+
+                                if (callback) {
+                                    callback(result);
+                                }
+                                break;
+
+                            case Product.statusCodes.ERROR:
+                                if (result.message) {
+                                    
+                                } else {
+                                   alert('Xeta bas verdi') 
+                                }
+                                break;
+
+                        }
+                    }
+                }
+            })
+        },
+        getCareerApplyList: function (form, callback) {
+            
+            $.ajax({
+                url: Product.rootUrl + "careerApplyes",
+                type: 'GET',
+                data: form,
+                success: function (result) {
+                    if (result) {
+                        switch (result.code) {
+                            case Product.statusCodes.OK:
+
+                                if (callback) {
+                                    callback(result);
+                                }
+                                break;
+
+                            case Product.statusCodes.ERROR:
+                                if (result.message) {
+                                    
+                                } else {
+                                   alert('Xeta bas verdi') 
+                                }
+                                break;
+
+                        }
+                    }
+                }
+            })
+        },
         getPromotationList: function (form, callback) {
             
             $.ajax({
@@ -655,6 +713,62 @@ var Product = {
             
             $.ajax({
                 url: Product.rootUrl + "corporative/"+id,
+                type: 'GET',
+                success: function (result) {
+                    if (result) {
+                        switch (result.code) {
+                            case Product.statusCodes.OK:
+
+                                if (callback) {
+                                    callback(result);
+                                }
+                                break;
+
+                            case Product.statusCodes.ERROR:
+                                if (result.message) {
+                                    
+                                } else {
+                                   alert('Xeta bas verdi') 
+                                }
+                                break;
+
+                        }
+                    }
+                }
+            })
+        },
+        getCareerApplyDetails: function (id, callback) {
+            
+            $.ajax({
+                url: Product.rootUrl + "careerApply/"+id,
+                type: 'GET',
+                success: function (result) {
+                    if (result) {
+                        switch (result.code) {
+                            case Product.statusCodes.OK:
+
+                                if (callback) {
+                                    callback(result);
+                                }
+                                break;
+
+                            case Product.statusCodes.ERROR:
+                                if (result.message) {
+                                    
+                                } else {
+                                   alert('Xeta bas verdi') 
+                                }
+                                break;
+
+                        }
+                    }
+                }
+            })
+        },
+        getCommonApplyDetails: function (id, callback) {
+            
+            $.ajax({
+                url: Product.rootUrl + "commonApply/"+id,
                 type: 'GET',
                 success: function (result) {
                     if (result) {

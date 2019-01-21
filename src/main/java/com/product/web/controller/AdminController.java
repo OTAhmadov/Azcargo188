@@ -191,6 +191,40 @@ public class AdminController extends SkeletonController {
         return "redirect:/main";
     }
     
+    @GetMapping(value = "/careerApply")
+    protected String showAdminCareerApply() {
+        
+        try {
+            if(getSessionAccount() != null) {
+                return "admin/career_apply";
+            }
+            
+            return "redirect:/admin";
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return "redirect:/main";
+    }
+    
+    @GetMapping(value = "/commonApply")
+    protected String showAdminCommonApply() {
+        
+        try {
+            if(getSessionAccount() != null) {
+                return "admin/common_apply";
+            }
+            
+            return "redirect:/admin";
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return "redirect:/main";
+    }
+    
     @GetMapping
     protected String showLoginPage() {
         
@@ -1104,6 +1138,90 @@ public class AdminController extends SkeletonController {
                 throw new Exception("User Access Denied");
             }
             operationResponse.setData(service.getCorporativeDetails(id));
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    @GetMapping(value = "/careerApplyes")
+    @ResponseBody
+    protected OperationResponse getCareerApplyList() {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            operationResponse.setData(service.getCareerApplyList());
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    @GetMapping(value = "/careerApply/{id:\\d+}")
+    @ResponseBody
+    protected OperationResponse getCareerApplyDetails(@PathVariable int id) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            operationResponse.setData(service.getCareerApplyDetails(id));
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    @GetMapping(value = "/commonApplyes")
+    @ResponseBody
+    protected OperationResponse getCommonApplyList() {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            operationResponse.setData(service.getCommonApplyList());
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    @GetMapping(value = "/commonApply/{id:\\d+}")
+    @ResponseBody
+    protected OperationResponse getCommonApplyDetails(@PathVariable int id) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            operationResponse.setData(service.getCommonApplyDetail(id));
             operationResponse.setCode(ResultCode.OK);
             
         } catch (Exception e) {

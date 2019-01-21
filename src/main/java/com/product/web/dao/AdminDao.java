@@ -10,6 +10,8 @@ import com.product.web.domain.About;
 import com.product.web.domain.Account;
 import com.product.web.domain.Achievement;
 import com.product.web.domain.Career;
+import com.product.web.domain.CareerApply;
+import com.product.web.domain.CommonApply;
 import com.product.web.domain.Company;
 import com.product.web.domain.Contact;
 import com.product.web.domain.Corporative;
@@ -24,7 +26,9 @@ import com.product.web.enums.ResultCode;
 import com.product.web.form.AboutForm;
 import com.product.web.form.AccountForm;
 import com.product.web.form.AchievementForm;
+import com.product.web.form.CareerApplyForm;
 import com.product.web.form.CareerForm;
+import com.product.web.form.CommonApplyForm;
 import com.product.web.form.ContactForm;
 import com.product.web.form.DictionaryWrapperForm;
 import com.product.web.form.FileWrapperForm;
@@ -840,6 +844,84 @@ public class AdminDao implements IAdminDao {
         }
         return list;
     }
+    @Override
+    public List<CareerApply> getCareerApplyList() {
+        List<CareerApply> list = new ArrayList<>();
+        String query = "select * from v_career_apply";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                while(resultSet.next()) {
+                    list.add(new CareerApply(resultSet.getInt("id"), 
+                                            new Career(resultSet.getString("career_title"), 
+                                                        resultSet.getString("career_description")), 
+                                            resultSet.getString("fullname"), 
+                                            resultSet.getString("phone"), 
+                                            resultSet.getString("birthdate"), 
+                                            new DictionaryWrapper(resultSet.getInt("experience"), 
+                                                                    new MultilanguageString(resultSet.getString("experience_name"), "", "")), 
+                                            new DictionaryWrapper(resultSet.getInt("driving_license"), 
+                                                                    new MultilanguageString(resultSet.getString("driving_lisence_name"), "", "")), 
+                                            resultSet.getInt("file_id"), 
+                                            resultSet.getString("create_date")));
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
+    }
+    @Override
+    public CareerApply getCareerApplyDetails(int id){
+        String query = "select * from v_career_apply where id = ?";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if(resultSet.next()) {
+                    return new CareerApply(resultSet.getInt("id"), 
+                                            new Career(resultSet.getString("career_title"), 
+                                                        resultSet.getString("career_description")), 
+                                            resultSet.getString("fullname"), 
+                                            resultSet.getString("phone"), 
+                                            resultSet.getString("birthdate"), 
+                                            new DictionaryWrapper(resultSet.getInt("experience"), 
+                                                                    new MultilanguageString(resultSet.getString("experience_name"), "", "")), 
+                                            new DictionaryWrapper(resultSet.getInt("driving_license"), 
+                                                                    new MultilanguageString(resultSet.getString("driving_lisence_name"), "", "")), 
+                                            resultSet.getInt("file_id"), 
+                                            resultSet.getString("create_date"));
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+    
+    @Override
+    public OperationResponse insertCareerApply(CareerApplyForm form){
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        try(Connection connection = dbConnect.getPostgresConnection();
+            CallableStatement callableStatement = connection.prepareCall("{call insert_career_apply(?,?,?,?,?,?,?)}")) {
+            callableStatement.setInt(1, form.getCareerId());
+            callableStatement.setString(2, form.getFullname());
+            callableStatement.setString(3, form.getPhone());
+            callableStatement.setString(4, form.getBirthdate());
+            callableStatement.setInt(5, form.getExperienceId());
+            callableStatement.setInt(6, form.getDrivingLicenseId());
+            callableStatement.setInt(7, form.getFileId());
+            callableStatement.executeUpdate();
+            operationResponse.setCode(ResultCode.OK);
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return operationResponse;
+    }
 
     @Override
     public Career getCareerDetails(int id) {
@@ -1223,6 +1305,73 @@ public class AdminDao implements IAdminDao {
                                              resultSet.getString("email"), 
                                              resultSet.getString("description_az"),
                                              resultSet.getInt("file_id"),
+                                             resultSet.getString("create_date")
+                                             );
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+    
+    @Override
+    public OperationResponse insertCommonApply(CommonApplyForm form) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        try(Connection connection = dbConnect.getPostgresConnection();
+            CallableStatement callableStatement = connection.prepareCall("{call insert_common_apply(?,?,?,?)}")) {
+            callableStatement.setString(1, form.getName());
+            callableStatement.setString(2, form.getEmail());
+            callableStatement.setString(3, form.getIpAddress());
+            callableStatement.setString(4, form.getDescription());
+            callableStatement.executeUpdate();
+            operationResponse.setCode(ResultCode.OK);
+            
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return operationResponse;
+    }
+    
+    @Override
+    public List<CommonApply> getCommonApplyList() {
+        String query = "select id, name, email, description, ip_addr, to_char(create_date, 'dd/mm/yyyy') create_date from common_apply where active = 1 order by id desc";
+         List<CommonApply> list = new ArrayList<>();
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                while(resultSet.next()) {
+                    list.add( new CommonApply(resultSet.getInt("id"), 
+                                             resultSet.getString("name"), 
+                                             resultSet.getString("description"), 
+                                             resultSet.getString("email"), 
+                                             resultSet.getString("ip_addr"), 
+                                             resultSet.getString("create_date")
+                                             ));
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
+    }
+    
+    @Override
+    public CommonApply getCommonApplyDetail(int id) {
+        String query = "select id, name, email, description, ip_addr, to_char(create_date, 'dd/mm/yyyy') create_date from common_apply where active = 1 and id = ? order by id desc";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if(resultSet.next()) {
+                    return new CommonApply(resultSet.getInt("id"), 
+                                             resultSet.getString("name"), 
+                                             resultSet.getString("description"), 
+                                             resultSet.getString("email"), 
+                                             resultSet.getString("ip_addr"), 
                                              resultSet.getString("create_date")
                                              );
                 }

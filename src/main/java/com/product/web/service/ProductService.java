@@ -10,6 +10,8 @@ import com.product.web.domain.About;
 import com.product.web.domain.Account;
 import com.product.web.domain.Achievement;
 import com.product.web.domain.Career;
+import com.product.web.domain.CareerApply;
+import com.product.web.domain.CommonApply;
 import com.product.web.domain.Company;
 import com.product.web.domain.Contact;
 import com.product.web.domain.Corporative;
@@ -22,7 +24,9 @@ import com.product.web.domain.Promotation;
 import com.product.web.form.AboutForm;
 import com.product.web.form.AccountForm;
 import com.product.web.form.AchievementForm;
+import com.product.web.form.CareerApplyForm;
 import com.product.web.form.CareerForm;
+import com.product.web.form.CommonApplyForm;
 import com.product.web.form.ContactForm;
 import com.product.web.form.DictionaryWrapperForm;
 import com.product.web.form.FileWrapperForm;
@@ -254,6 +258,36 @@ public class ProductService implements IProductService {
     @Override
     public Corporative getCorporativeDetails(int id) {
         return this.adminDao.getCorporativeDetails(id);
+    }
+
+    @Override
+    public OperationResponse insertCommonApply(CommonApplyForm form){
+        return this.adminDao.insertCommonApply(form);
+    }
+
+    @Override
+    public List<CommonApply> getCommonApplyList()  {
+        return this.adminDao.getCommonApplyList();
+    }
+
+    @Override
+    public CommonApply getCommonApplyDetail(int id) {
+        return this.adminDao.getCommonApplyDetail(id);
+    }
+
+    @Override
+     public List<CareerApply> getCareerApplyList() {
+        return this.adminDao.getCareerApplyList();
+    }
+
+    @Override
+    public CareerApply getCareerApplyDetails(int id) {
+        return this.adminDao.getCareerApplyDetails(id);
+    }
+
+    @Override
+    public OperationResponse insertCareerApply(CareerApplyForm form) {
+        return this.adminDao.insertCareerApply(form);
     }
     
 }

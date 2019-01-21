@@ -9,6 +9,8 @@ import com.product.web.domain.About;
 import com.product.web.domain.Account;
 import com.product.web.domain.Achievement;
 import com.product.web.domain.Career;
+import com.product.web.domain.CareerApply;
+import com.product.web.domain.CommonApply;
 import com.product.web.domain.Company;
 import com.product.web.domain.Contact;
 import com.product.web.domain.Corporative;
@@ -21,7 +23,9 @@ import com.product.web.domain.Service;
 import com.product.web.form.AboutForm;
 import com.product.web.form.AccountForm;
 import com.product.web.form.AchievementForm;
+import com.product.web.form.CareerApplyForm;
 import com.product.web.form.CareerForm;
+import com.product.web.form.CommonApplyForm;
 import com.product.web.form.ContactForm;
 import com.product.web.form.DictionaryWrapperForm;
 import com.product.web.form.FileWrapperForm;
@@ -93,4 +97,12 @@ public interface IProductService {
     
     public List<Corporative> getCorporativeList();
     public Corporative getCorporativeDetails(int id);
+    
+    public OperationResponse insertCommonApply(CommonApplyForm form);
+    public List<CommonApply> getCommonApplyList();
+    public CommonApply getCommonApplyDetail(int id);
+    
+    public List<CareerApply> getCareerApplyList();
+    public CareerApply getCareerApplyDetails(int id);
+    public OperationResponse insertCareerApply(CareerApplyForm form);
 }
