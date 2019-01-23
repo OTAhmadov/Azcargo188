@@ -20,9 +20,10 @@
         <link rel="stylesheet" href="<c:url value="assets/main/css/style.css"/>">
         <link rel="stylesheet" href="<c:url value="assets/main/css/plugins.css"/>">
         <link rel="stylesheet" href="<c:url value="assets/main/css/ie8.css"/>">
-        <link rel="stylesheet" href="<c:url value="assets/main/css/font-awesome.min.css" />">
+        <!--<link rel="stylesheet" href="<c:url value="assets/main/css/font-awesome.min.css" />">-->
         <link rel="stylesheet" href="<c:url value="assets/main/css/plugins/style-switcher.css" />">
         <link rel="stylesheet" href="<c:url value="assets/main/css/plugins/owl.carousel.css" />">
+        <link rel="stylesheet" href="<c:url value="assets/main/css/flexicel.css" />">
         
         
         
@@ -49,7 +50,7 @@
                          <div class="container h-100">
                             <div class="row align-items-center h-100">
                                 <div class="col-md-2 HeaderLeft--col logo-1">
-                                    <img src="<c:url value="assets/main/img/icons/svgs/azcargo-logo1.png?v=2" />"  alt="movex" class="w-100" />
+                                    <img src="<c:url value="assets/main/img/icons/svgs/azcargo-logo1.png?v=2" />"  alt="movex" class="" />
                                 </div>
                                 <div class="col-md-2 HeaderLeft--col other-logo">
                                     <img src="<c:url value="assets/main/img/icons/svgs/azcargo-call.png?v=2" />"  alt="movex" class="w-100" />
@@ -366,7 +367,7 @@
                                                         <span class="text-white font-mp-bold font-12 active">ƏSAS</span>
                                                     </a>
                                                 </li>
-                                                <li>
+                                                <li class="pl-15">
                                                     <a href="<c:url value="/about" />" class="d-block underline-none text-green-hover">
                                                         <span class="text-white font-mp-bold font-12">HAQQIMIZDA</span>
                                                     </a>
@@ -431,7 +432,7 @@
                         <div class="container h-100">
                             <div class="row align-items-center h-100">
                                 <div class="col-md-2 HeaderLeft--col logo-1">
-                                    <img src="<c:url value="assets/main/img/icons/svgs/azcargo-logo.png?v=2" />"  alt="movex" class="w-100" />
+                                    <img src="<c:url value="assets/main/img/icons/svgs/azcargo-logo.png?v=2" />"  alt="movex" class="" />
                                 </div>
                                 <div class="col-md-2 HeaderLeft--col other-logo">
                                     <img src="<c:url value="assets/main/img/icons/svgs/azcargo-call1.png?v=2" />"  alt="movex" class="w-100" />
@@ -743,12 +744,12 @@
                                             <ul class="list-s-none d-flex align-items-center p-0 justify-content-end menu-item">
 
                                                 <!--<li style="width: 94px;">-->
-                                                <li >
+                                                <li>
                                                     <a href="<c:url value="/index" />" class="d-block underline-none text-green-hover">
                                                         <span class="text-white font-mp-bold font-12 active">ƏSAS</span>
                                                     </a>
                                                 </li>
-                                                <li>
+                                                <li class="pl-15">
                                                     <a href="<c:url value="/about" />" class="d-block underline-none text-green-hover">
                                                         <span class="text-white font-mp-bold font-12">HAQQIMIZDA</span>
                                                     </a>

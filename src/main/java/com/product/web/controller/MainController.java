@@ -72,6 +72,11 @@ public class MainController extends SkeletonController {
         return "career";
     }
     
+    @GetMapping("/corporative")
+    protected String showCorporativePage(Model model) {
+        return "corporative";
+    }
+    
     @GetMapping("/service")
     protected String showServicePage(Model model) {
         

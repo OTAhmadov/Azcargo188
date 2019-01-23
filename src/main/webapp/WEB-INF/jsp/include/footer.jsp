@@ -178,11 +178,28 @@
 
         </div>
 
-        <script  src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+        <!--<script  src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>-->
+        <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
         <script  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" ></script>
         <script  src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
         <script  src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js"></script>
+        <script  src="<c:url value="assets/main/js/back-to-top.js" />"></script>
         <script  src="<c:url value="assets/main/js/build.js" />"></script>
+        <script  src="<c:url value="assets/main/js/jquery.flexicel.js" />"></script>
+        <script>
+            $(window).load(function() {
+                $("#flexiselDemo1").flexisel({
+                    visibleItems: 7,
+                    itemsToScroll: 1,         
+                    autoPlay: {
+                        enable: true,
+                        interval: 2000,
+                        pauseOnHover: true
+                    }        
+                }); 
+//
+            });
+        </script>
         <!--<script  src="<c:url value="assets/main/js/product.js" />"></script>-->
         <script>
             $(function () {
@@ -417,7 +434,7 @@
 
             });
         </script>
-
+        
     </body>
 
 

@@ -460,4 +460,31 @@
 
                             <!-- ./WhyUs --></div>
                         <div class="py-25"></div>
+                        <div class="container">
+                            
+                            <div class="divider-h-1 bg-light-gray"></div>
+                            <div class="divider-h-1 bg-light-gray"></div>
+                            
+                        </div>
+                        <div class="py-25"></div>
+                        <div class="container">
+                            <h2 class="text-gray font-40 font-mp-bold text-center">Partnyorlar</h2>
+                            <div class="py-15"></div>
+                            <!--<div class="headline"><h2>Partnyorlar</h2></div>-->
+                                <ul id="flexiselDemo1">
+                                    <li><img src="<c:url value="assets/main/img/clients4/1.png" />" /></li>
+                                    <li><img src="<c:url value="assets/main/img/clients4/1.png" />" /></li>
+                                    <li><img src="<c:url value="assets/main/img/clients4/2.png" />" /></li>
+                                    <li><img src="<c:url value="assets/main/img/clients4/3.png" />" /></li>                                                 
+                                    <li><img src="<c:url value="assets/main/img/clients4/4.png" />" /></li>                                                 
+                                    <li><img src="<c:url value="assets/main/img/clients4/5.png" />" /></li>                                                 
+                                    <li><img src="<c:url value="assets/main/img/clients4/6.png" />" /></li>                                                 
+                                    <li><img src="<c:url value="assets/main/img/clients4/7.png" />" /></li>                                                 
+                                    <li><img src="<c:url value="assets/main/img/clients4/8.png" />" /></li>                                                 
+                                    <li><img src="<c:url value="assets/main/img/clients4/3.png" />" /></li>                                                 
+                                    <li><img src="<c:url value="assets/main/img/clients4/1.png" />" /></li>                                                 
+                                    <li><img src="<c:url value="assets/main/img/clients4/4.png" />" /></li>                                                 
+                                </ul> 
+                        </div>
+                        <div class="py-25"></div>
                         <%@include file="include/footer.jsp" %>
