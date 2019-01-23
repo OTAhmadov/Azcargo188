@@ -278,3 +278,7 @@ span.active {
 .vacancy-div {
     margin-top: 1px;
 }
+
+.achievement-description {
+        border-radius: 15px;
+}

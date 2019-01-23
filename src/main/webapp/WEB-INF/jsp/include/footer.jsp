@@ -148,13 +148,13 @@
                                     </div>
                                     <div class="col-md-6 d-flex align-items-center justify-content-end ">
                                         <div class="Block">
-                                            <img src="<c:url value="assets/main/img/icons/svgs/MasterCard.svg?v=1" />" width="40" alt="MasterCard">
+                                            <img src="<c:url value="/assets/main/img/icons/svgs/MasterCard.svg?v=1" />" width="40" alt="MasterCard">
                                             <span class="pl-15"></span>
-                                            <img src="<c:url value="assets/main/img/icons/svgs/Visa.svg?v=1" />" width="40" alt="Visa">
+                                            <img src="<c:url value="/assets/main/img/icons/svgs/Visa.svg?v=1" />" width="40" alt="Visa">
                                             <span class="pl-15"></span>
-                                            <img src="<c:url value="assets/main/img/icons/svgs/PayPal.svg?v=1" />" width="36" alt="PayPal">
+                                            <img src="<c:url value="/assets/main/img/icons/svgs/PayPal.svg?v=1" />" width="36" alt="PayPal">
                                             <span class="pl-15"></span>
-                                            <img src="<c:url value="assets/main/img/icons/svgs/AmericanExpress.svg?v=1" />" width="52" alt="AmericanExpress">
+                                            <img src="<c:url value="/assets/main/img/icons/svgs/AmericanExpress.svg?v=1" />" width="52" alt="AmericanExpress">
                                         </div>
                                     </div>
                                 </div>
@@ -180,12 +180,14 @@
 
         <!--<script  src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>-->
         <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
+        <!--<script  src="<c:url value="/assets/js/jquery-3.1.1.min.js" />"></script>-->
         <script  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" ></script>
         <script  src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
         <script  src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js"></script>
-        <script  src="<c:url value="assets/main/js/back-to-top.js" />"></script>
-        <script  src="<c:url value="assets/main/js/build.js" />"></script>
-        <script  src="<c:url value="assets/main/js/jquery.flexicel.js" />"></script>
+        <script  src="<c:url value="/assets/main/js/back-to-top.js" />"></script>
+        <script  src="<c:url value="/assets/main/js/build.js" />"></script>
+        <script  src="<c:url value="/assets/main/js/jquery.flexicel.js" />"></script>
+        
         <script>
             $(window).load(function() {
                 $("#flexiselDemo1").flexisel({
@@ -203,6 +205,11 @@
         <!--<script  src="<c:url value="assets/main/js/product.js" />"></script>-->
         <script>
             $(function () {
+                
+                $('.apply-career').on('click', function() {
+                    $('#LoginModalCenter').modal('show');
+                })
+                
                 $('.menu-img').on('click', function () {
                     var type = $('.menu-div').attr('data-type');
                     if (type == 'hide')

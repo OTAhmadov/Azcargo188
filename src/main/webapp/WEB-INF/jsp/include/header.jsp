@@ -10,20 +10,20 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"/>
-        <link rel="stylesheet" href="<c:url value="assets/main/css/build.min.css" />">
-        <link rel="stylesheet" href="<c:url value="assets/main/css/azcargo.css" />">
-        <link rel="stylesheet" href="<c:url value="assets/main/css/shortcode_timeline2.css" />">
-        <link rel="stylesheet" href="<c:url value="assets/main/css/profile.css" />">
-        <link rel="stylesheet" href="<c:url value="assets/main/css/app.css" />">
-        <link rel="stylesheet" href="<c:url value="assets/main/css/bootstrap.min.css" />">
-        <link rel="stylesheet" href="<c:url value="assets/main/css/blocks.css"/>">
-        <link rel="stylesheet" href="<c:url value="assets/main/css/style.css"/>">
-        <link rel="stylesheet" href="<c:url value="assets/main/css/plugins.css"/>">
-        <link rel="stylesheet" href="<c:url value="assets/main/css/ie8.css"/>">
-        <!--<link rel="stylesheet" href="<c:url value="assets/main/css/font-awesome.min.css" />">-->
-        <link rel="stylesheet" href="<c:url value="assets/main/css/plugins/style-switcher.css" />">
-        <link rel="stylesheet" href="<c:url value="assets/main/css/plugins/owl.carousel.css" />">
-        <link rel="stylesheet" href="<c:url value="assets/main/css/flexicel.css" />">
+        <link rel="stylesheet" href="<c:url value="/assets/main/css/build.min.css" />">
+        <link rel="stylesheet" href="<c:url value="/assets/main/css/azcargo.css" />">
+        <link rel="stylesheet" href="<c:url value="/assets/main/css/shortcode_timeline2.css" />">
+        <link rel="stylesheet" href="<c:url value="/assets/main/css/profile.css" />">
+        <link rel="stylesheet" href="<c:url value="/assets/main/css/app.css" />">
+        <link rel="stylesheet" href="<c:url value="/assets/main/css/bootstrap.min.css" />">
+        <link rel="stylesheet" href="<c:url value="/assets/main/css/blocks.css"/>">
+        <link rel="stylesheet" href="<c:url value="/assets/main/css/style.css"/>">
+        <link rel="stylesheet" href="<c:url value="/assets/main/css/plugins.css"/>">
+        <link rel="stylesheet" href="<c:url value="/assets/main/css/ie8.css"/>">
+        <link rel="stylesheet" href="<c:url value="/assets/css/font-awesome.min.css" />">
+        <link rel="stylesheet" href="<c:url value="/assets/main/css/plugins/style-switcher.css" />">
+        <link rel="stylesheet" href="<c:url value="/assets/main/css/plugins/owl.carousel.css" />">
+        <link rel="stylesheet" href="<c:url value="/assets/main/css/flexicel.css" />">
         
         
         
@@ -50,10 +50,10 @@
                          <div class="container h-100">
                             <div class="row align-items-center h-100">
                                 <div class="col-md-2 HeaderLeft--col logo-1">
-                                    <img src="<c:url value="assets/main/img/icons/svgs/azcargo-logo1.png?v=2" />"  alt="movex" class="" />
+                                    <img src="<c:url value="/assets/main/img/icons/svgs/azcargo-logo1.png?v=2" />"  alt="movex" class="" />
                                 </div>
                                 <div class="col-md-2 HeaderLeft--col other-logo">
-                                    <img src="<c:url value="assets/main/img/icons/svgs/azcargo-call.png?v=2" />"  alt="movex" class="w-100" />
+                                    <img src="<c:url value="/assets/main/img/icons/svgs/azcargo-call.png?v=2" />"  alt="movex" class="w-100" />
                                 </div>
                                 <div class="col-md-8 HeaderRight--col h-100 py-15">
                                     <div class="HeaderRight h-100">
@@ -432,10 +432,10 @@
                         <div class="container h-100">
                             <div class="row align-items-center h-100">
                                 <div class="col-md-2 HeaderLeft--col logo-1">
-                                    <img src="<c:url value="assets/main/img/icons/svgs/azcargo-logo.png?v=2" />"  alt="movex" class="" />
+                                    <img src="<c:url value="/assets/main/img/icons/svgs/azcargo-logo.png?v=2" />"  alt="movex" class="" />
                                 </div>
                                 <div class="col-md-2 HeaderLeft--col other-logo">
-                                    <img src="<c:url value="assets/main/img/icons/svgs/azcargo-call1.png?v=2" />"  alt="movex" class="w-100" />
+                                    <img src="<c:url value="/assets/main/img/icons/svgs/azcargo-call1.png?v=2" />"  alt="movex" class="w-100" />
                                 </div>
                                 <div class="col-md-8 HeaderRight--col h-100 py-15">
                                     <div class="HeaderRight h-100">

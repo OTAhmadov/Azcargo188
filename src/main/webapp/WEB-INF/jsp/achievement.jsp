@@ -64,8 +64,10 @@
                                         <div class="md-margin-bottom-20"></div>
                                     </div>
                                     <div class="col-md-8">
-                                        <p>Winter purslane courgette pumpkin quandong komatsuna fennel green bean cucumber watercress. Pea sprouts wattle seed rutabaga okra yarrow cress avocado grape.</p>
+                                        <p>Winter purslane courgette pumpkin quandong komatsuna fennel green bean cucumber watercress. 
+                                            Pea sprouts wattle seed rutabaga okra yarrow cress avocado grape...</p>
                                         <p>Cabbage lentil cucumber chickpea sorrel gram garbanzo plantain lotus root bok choy squash cress potato.</p>
+                                        <a href="<c:url value="/achievement/1"/>" style="color: #72c02c">Ətraflı</a>
                                     </div>
                                 </div>
                             </div>
@@ -81,8 +83,10 @@
                                         <div class="md-margin-bottom-20"></div>
                                     </div>
                                     <div class="col-md-8">
-                                        <p>Winter purslane courgette pumpkin quandong komatsuna fennel green bean cucumber watercress. Pea sprouts wattle seed rutabaga okra yarrow cress avocado grape.</p>
+                                        <p>Winter purslane courgette pumpkin quandong komatsuna fennel green bean cucumber watercress. 
+                                            Pea sprouts wattle seed rutabaga okra yarrow cress avocado grape...</p>
                                         <p>Cabbage lentil cucumber chickpea sorrel gram garbanzo plantain lotus root bok choy squash cress potato.</p>
+                                        <a href="<c:url value="/achievement/1"/>" style="color: #72c02c">Ətraflı</a>
                                     </div>
                                 </div>
                             </div>
@@ -100,6 +104,7 @@
                                     <div class="col-md-8">
                                         <p>Winter purslane courgette pumpkin quandong komatsuna fennel green bean cucumber watercress. Pea sprouts wattle seed rutabaga okra yarrow cress avocado grape.</p>
                                         <p>Cabbage lentil cucumber chickpea sorrel gram garbanzo plantain lotus root bok choy squash cress potato.</p>
+                                        <a href="<c:url value="/achievement/1"/>" style="color: #72c02c">Ətraflı</a>
                                     </div>
                                 </div>
                             </div>
@@ -117,6 +122,7 @@
                                     <div class="col-md-8">
                                         <p>Winter purslane courgette pumpkin quandong komatsuna fennel green bean cucumber watercress. Pea sprouts wattle seed rutabaga okra yarrow cress avocado grape.</p>
                                         <p>Cabbage lentil cucumber chickpea sorrel gram garbanzo plantain lotus root bok choy squash cress potato.</p>
+                                       <a href="<c:url value="/achievement/1"/>" style="color: #72c02c">Ətraflı</a>
                                     </div>
                                 </div>
                             </div>
@@ -134,6 +140,7 @@
                                     <div class="col-md-8">
                                         <p>Winter purslane courgette pumpkin quandong komatsuna fennel green bean cucumber watercress. Pea sprouts wattle seed rutabaga okra yarrow cress avocado grape.</p>
                                         <p>Cabbage lentil cucumber chickpea sorrel gram garbanzo plantain lotus root bok choy squash cress potato.</p>
+                                        <a href="<c:url value="/achievement/1"/>" style="color: #72c02c">Ətraflı</a>
                                     </div>
                                 </div>
                             </div>
@@ -151,6 +158,7 @@
                                     <div class="col-md-8">
                                         <p>Winter purslane courgette pumpkin quandong komatsuna fennel green bean cucumber watercress. Pea sprouts wattle seed rutabaga okra yarrow cress avocado grape.</p>
                                         <p>Cabbage lentil cucumber chickpea sorrel gram garbanzo plantain lotus root bok choy squash cress potato.</p>
+                                        <a href="<c:url value="/achievement/1"/>" style="color: #72c02c">Ətraflı</a>
                                     </div>
                                 </div>
                             </div>
@@ -168,6 +176,7 @@
                                     <div class="col-md-8">
                                         <p>Winter purslane courgette pumpkin quandong komatsuna fennel green bean cucumber watercress. Pea sprouts wattle seed rutabaga okra yarrow cress avocado grape.</p>
                                         <p>Cabbage lentil cucumber chickpea sorrel gram garbanzo plantain lotus root bok choy squash cress potato.</p>
+                                        <a href="<c:url value="/achievement/1" />" style="color: #72c02c">Ətraflı</a>
                                     </div>
                                 </div>
                             </div>

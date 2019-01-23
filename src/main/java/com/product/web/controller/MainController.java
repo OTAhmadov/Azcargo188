@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -83,11 +84,32 @@ public class MainController extends SkeletonController {
        
         return "service";
     }
+//    
+//    @GetMapping("/service.1")
+//    protected String showServiceDetaPage(Model model) {
+//        
+//       
+//        return "service_details";
+//    }
     
     @GetMapping("/service/{id:\\d+}")
     protected String showServiceDetailsPage(Model model,
                                             @PathVariable int id) {
         
         return "service_details";
+    }
+    
+    @GetMapping("/career/{id:\\d+}")
+    protected String showCareerDetailsPage(Model model,
+                                            @PathVariable int id) {
+        
+        return "career_details";
+    }
+    
+    @GetMapping("/achievement/{id:\\d+}")
+    protected String showAchievementDetailsPage(Model model,
+                                            @PathVariable int id) {
+        
+        return "achievement_details";
     }
 }
