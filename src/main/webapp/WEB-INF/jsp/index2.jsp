@@ -2,6 +2,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
   
 <!-- Mirrored from warethemes.com/html/bready/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Sep 2018 16:36:26 GMT -->
 <head>
@@ -17,7 +18,7 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
     <title>Bready</title>
-    <%@include file="./WEB-INF/jsp/include/header.jsp" %>
+    <%@include file="include/header.jsp" %>
 
   </head>
   <body>
@@ -33,9 +34,8 @@
       </div>
     </div>
     <!-- Header-->
-    <%--<%@include file="./WEB-INF/jsp/include/main_modules.jsp" %>--%>
-    <!-- Home banner-->
-    <header class="header header--1">
+    <%--<%@include file="include/main_modules.jsp" %>--%>
+   <header class="header header--1">
       <div class="container-fluid" style="padding: 5px 15px;">
         <div class="row">
           <div class="col-sm-6 hidden-xs">
@@ -55,16 +55,16 @@
         <div class="ps-container">
           <div class="navigation__left">
             <ul class="menu">
-              <li class="menu-item-has-children current-menu-item"><a class="home_page" href="<c:url value="/index"/>"><spring:message code="page1"/></a></li>
+              <li class="menu-item-has-children current-menu-item"><a href="<c:url value="/index"/>"><spring:message code="page1"/></a></li>
               
-              <li class=""><a class="product_page" href="<c:url value="/product"/>"><spring:message code="page2"/></a></li>
+              <li class=""><a href="<c:url value="/product"/>"><spring:message code="page2"/></a></li>
             </ul>
           </div>
           <div class="navigation__center"><a class="ps-logo" href="index.html"><img src="assets/index/images/logo-light.png" alt=""></a></div>
           <div class="navigation__right">
             <ul class="menu">
-              <li><a class="about_page" href="<c:url value="/about"/>"><spring:message code="page3"/></a></li>
-              <li><a class="contact_page" href="<c:url value="/contact"/>"><spring:message code="page4"/></a></li>
+              <li><a href="<c:url value="/about"/>"><spring:message code="page3"/></a></li>
+              <li><a href="<c:url value="/contact"/>"><spring:message code="page4"/></a></li>
             </ul>
             <div class="header__actions">
               <a class="ps-search-btn" href="#"><i class="ba-magnifying-glass"></i></a>
@@ -87,36 +87,56 @@
         </div>
       </nav>
     </header>
+    <!-- Home banner-->
     <div class="pb-80" id="slider">
       <div class="ps-carousel--animate ps-carousel--1st">
-        <div class="item">
-          <div class="ps-product--banner">
-<!--              <span class="ps-badge ps-badge--sale">
-                  <img src="assets/index/images/icons/badge-brown.png" alt="">
-                  <i>0.5</i>
-              </span>-->
-              <img src="assets/index/images/banner/slider-5.png" alt="">
+          <c:forEach items="${titleImage}" var="image">
+              <div class="item">
+                <div class="ps-product--banner"><img src="http://dadliteatr.az/admin/image/${image.path}" alt="">
+                </div>
+              </div>
+          </c:forEach>
+<!--        <div class="item">
+          <div class="ps-product--banner"><span class="ps-badge ps-badge--sale"><img src="assets/index/images/icons/badge-brown.png" alt=""><i>0.5</i></span><img src="assets/index/images/banner/slider-5.png" alt="">
           </div>
         </div>
         <div class="item">
-          <div class="ps-product--banner">
-              <img src="assets/index/images/banner/slider-6.png" alt="">
+          <div class="ps-product--banner"><span class="ps-badge ps-badge--sale"><img src="assets/index/images/icons/badge-brown.png" alt=""><i>50%</i></span><img src="assets/index/images/banner/slider-6.png" alt="">
           </div>
-        </div>
-        
+        </div>-->
       </div>
     </div>
     <!-- award-->
     <!-- Home 1 products-->
+    
     <div class="ps-home-product bg--cover" data-background="assets/index/images/bg/home-product.jpg">
       <div class="ps-container">
         <div class="ps-section__header">
-            <h3 class="ps-section__title"><spring:message code="page2" /></h3>
+          <h3 class="ps-section__title"><spring:message code="page2" /></h3>
           <p></p><span><img src="assets/index/images/icons/floral.png" alt=""></span>
         </div>
         <div class="ps-section__content">
-          <div class="row favorite_product">
-              
+          <div class="row">
+              <c:forEach items="${favorite}" var="f">
+                  <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 ">
+                    <div class="ps-product ps-product--horizontal">
+                      <div class="ps-product__thumbnail"><img src="<c:if test="${fn:length(f.images) > 0}">
+                                                            http://dadliteatr.az/admin/image/${f.images[0].path}
+
+                                                        </c:if>" alt="">
+                          <a class="ps-product__overlay" href="<c:url value="/product/${f.id}" />"></a>
+                        
+                      </div>
+                      <div class="ps-product__content"><a class="ps-product__title" href="<c:url value="/product/${f.id}"/> ">${f.name}</a>
+                        <p><a href="<c:url value="/product/${f.id}" />">${f.type.value[lcl]}</a></p>
+
+<!--                        <p class="ps-product__price">${f.price}</p>-->
+                      </div>
+                    </div>
+                  </div>
+              </c:forEach>
+                  
+            
           </div>
         </div>
       </div>
@@ -168,58 +188,7 @@
         </div>
       </div>
     </div>
-    
-    <%@include file="./WEB-INF/jsp/include/footer.jsp" %>
-    
-    <script>
-        $(function() {
-            Product.lang = window.location.search.split('=')[1] ? window.location.search.split('=')[1] : 'az';
-            $('.home_page').text(Product.module[0].home[Product.lang]);
-            $('.product_page').text(Product.module[0].product[Product.lang]);
-            $('.about_page').text(Product.module[0].about[Product.lang]);
-            $('.contact_page').text(Product.module[0].contact[Product.lang]);
-            $('.ps-footer__contact h4').text(Product.module[0].footer_contact[Product.lang]);
-            Product.Proxy.getOtherFilesForMain(function(data) {
-                if(data && data.data) {
-                    var html='';
-                    $.each(data.data, function(i, v) {
-                        html +='<div class="item">'+
-                                    '<div class="ps-product--banner"><img src="http://dadliteatr.az/admin/image/'+v.path+'" alt="">'+
-                                    '</div>'+
-                                  '</div>'
-                      })
-
-//                   $('body .ps-carousel--animate').html(html); 
-                }
-            })
-            
-            Product.Proxy.getFavoriteProductList(function(data) {
-                if(data && data.data) {
-                    var html='';
-                    $.each(data.data, function(i, v) {
-                    
-                        html +='<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 ">'+
-                                '<div class="ps-product ps-product--horizontal">'+
-                                  '<div class="ps-product__thumbnail"><img src="http://dadliteatr.az/admin/image/'+(v.images ? v.images[0].path : "1")+'" alt=""><a class="ps-product__overlay" href="<c:url value="/product/${v.id}" />"></a>'+
-
-                                  '</div>'+
-                                  '<div class="ps-product__content"><a class="ps-product__title" href="'+Product.url+'/product/'+v.id+'">'+v.name+'</a>'+
-                                    '<p><a href="'+Product.url+'/product/'+v.id+'">'+v.type.value[Product.lang]+'</a></p>'+
-
-                                    '<p class="ps-product__price">'+v.price+' AZN</p>'+
-                                  '</div>'+
-                                '</div>'+
-                              '</div>'
-                      })
-                      
-
-                   $('body .favorite_product').html(html); 
-                }
-            })
-            
-            
-        })
-    </script>
+    <%@include file="include/footer.jsp" %>
   </body>
 
 </html>

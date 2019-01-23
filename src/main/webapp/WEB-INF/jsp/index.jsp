@@ -1,194 +1,463 @@
-<!DOCTYPE html>
+<%-- 
+    Document   : index
+    Created on : Jan 22, 2019, 5:14:45 PM
+    Author     : otahmadov
+--%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-  
-<!-- Mirrored from warethemes.com/html/bready/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Sep 2018 16:36:26 GMT -->
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="yandex-verification" content="27e5b7e636c95396" />
-    <meta name="format-detection" content="telephone=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <link href="apple-touch-icon.png" rel="apple-touch-icon">
-    <link href="favicon.png" rel="icon">
-    <meta name="author" content="">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <title>Bready</title>
-    <%@include file="include/header.jsp" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Əsas səhifə</title>
+        <%@include file="include/header.jsp" %>
+        
+         <main id="MainPage" class="ChildContent--flex ">
 
-  </head>
-  <body>
-    <div class="ps-search">
-      <div class="ps-search__content"><a class="ps-search__close" href="#"><span></span></a>
-        <form class="ps-form--search-2" action="<c:url value="/product" />" method="get">
-            <h3><spring:message code="search.key" /></h3>
-          <div class="form-group">
-              <input class="form-control" type="text" placeholder="" name="name">
-            <button class="ps-btn active ps-btn--fullwidth"><spring:message code="search" /></button>
-          </div>
-        </form>
-      </div>
-    </div>
-    <!-- Header-->
-    <%--<%@include file="include/main_modules.jsp" %>--%>
-   <header class="header header--1">
-      <div class="container-fluid" style="padding: 5px 15px;">
-        <div class="row">
-          <div class="col-sm-6 hidden-xs">
-            +994 55 215 79 36 <a href="<c:url value="/contact"/>" style="margin-left: 10px">Find us on map!</a>
-          </div>
-          <div class="col-sm-6">
-            <div class="lang-block text-right">
-              <a tabindex="-1" href="<c:url value="?lang=az" />" style="margin-left: 10px;"><spring:message code="label.header.azerbaijan"/></a>
-              <a tabindex="-1" href="<c:url value="?lang=en" />" style="margin-left: 10px;"><spring:message code="label.header.english"/></a>
-              <a tabindex="-1" href="<c:url value="?lang=ru" />" style="margin-left: 10px;"><spring:message code="label.header.russian"/></a>
-            </div>
-          </div>
-        </div>
-      </div>
+                    <div id="MainBanner">
 
-      <nav class="navigation">
-        <div class="ps-container">
-          <div class="navigation__left">
-            <ul class="menu">
-              <li class="menu-item-has-children current-menu-item"><a href="<c:url value="/index"/>"><spring:message code="page1"/></a></li>
-              
-              <li class=""><a href="<c:url value="/product"/>"><spring:message code="page2"/></a></li>
-            </ul>
-          </div>
-          <div class="navigation__center"><a class="ps-logo" href="index.html"><img src="assets/index/images/logo-light.png" alt=""></a></div>
-          <div class="navigation__right">
-            <ul class="menu">
-              <li><a href="<c:url value="/about"/>"><spring:message code="page3"/></a></li>
-              <li><a href="<c:url value="/contact"/>"><spring:message code="page4"/></a></li>
-            </ul>
-            <div class="header__actions">
-              <a class="ps-search-btn" href="#"><i class="ba-magnifying-glass"></i></a>
-            </div>
-          </div>
-        </div>
-      </nav>
-      <nav class="navigation--mobile">
-        <div class="ps-container"><a class="ps-logo" href="#"><img src="assets/index/images/logo-light.png" alt=""></a>
-          <ul class="menu menu--mobile">
-            <li><a href="<c:url value="/index"/>"><spring:message code="page1"/></a></li>
-            <li><a href="<c:url value="/product"/>"><spring:message code="page2"/></a></li>
-            <li><a href="<c:url value="/about"/>"><spring:message code="page3"/></a></li>
-            <li><a href="<c:url value="/contact"/>"><spring:message code="page4"/></a></li>
-          </ul>
-          <div class="menu-toggle"><span></span></div>
-          <div class="header__actions">
-            <a class="ps-search-btn" href="#"><i class="ba-magnifying-glass"></i></a>
-          </div>
-        </div>
-      </nav>
-    </header>
-    <!-- Home banner-->
-    <div class="pb-80" id="slider">
-      <div class="ps-carousel--animate ps-carousel--1st">
-          <c:forEach items="${titleImage}" var="image">
-              <div class="item">
-                <div class="ps-product--banner"><img src="http://dadliteatr.az/admin/image/${image.path}" alt="">
-                </div>
-              </div>
-          </c:forEach>
-<!--        <div class="item">
-          <div class="ps-product--banner"><span class="ps-badge ps-badge--sale"><img src="assets/index/images/icons/badge-brown.png" alt=""><i>0.5</i></span><img src="assets/index/images/banner/slider-5.png" alt="">
-          </div>
-        </div>
-        <div class="item">
-          <div class="ps-product--banner"><span class="ps-badge ps-badge--sale"><img src="assets/index/images/icons/badge-brown.png" alt=""><i>50%</i></span><img src="assets/index/images/banner/slider-6.png" alt="">
-          </div>
-        </div>-->
-      </div>
-    </div>
-    <!-- award-->
-    <!-- Home 1 products-->
-    
-    <div class="ps-home-product bg--cover" data-background="assets/index/images/bg/home-product.jpg">
-      <div class="ps-container">
-        <div class="ps-section__header">
-          <h3 class="ps-section__title"><spring:message code="page2" /></h3>
-          <p></p><span><img src="assets/index/images/icons/floral.png" alt=""></span>
-        </div>
-        <div class="ps-section__content">
-          <div class="row">
-              <c:forEach items="${favorite}" var="f">
-                  <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 ">
-                    <div class="ps-product ps-product--horizontal">
-                      <div class="ps-product__thumbnail"><img src="<c:if test="${fn:length(f.images) > 0}">
-                                                            http://dadliteatr.az/admin/image/${f.images[0].path}
+                        <!--Banner Slider -->
 
-                                                        </c:if>" alt="">
-                          <a class="ps-product__overlay" href="<c:url value="/product/${f.id}" />"></a>
-                        
-                      </div>
-                      <div class="ps-product__content"><a class="ps-product__title" href="<c:url value="/product/${f.id}"/> ">${f.name}</a>
-                        <p><a href="<c:url value="/product/${f.id}" />">${f.type.value[lcl]}</a></p>
+                        <div id="MainBannerSlider" class="owl-carousel owl-theme h-100">
 
-<!--                        <p class="ps-product__price">${f.price}</p>-->
-                      </div>
+                            <div class="item w-100 h-100">
+                                <div class="Banner--img h-100 w-100" style="background-image: url('assets/main/img/content/banners/mainBanner.png?cache=Rfx') ">
+                                    <div class="container d-flex align-items-center w-100 h-100">
+                                        <div class="" style="position: absolute; margin-top: 20%;">
+                                            <h2 class="font-60 font-mp-bold text-white mb-0">XİDMƏTİN YENİ ADI</h2>
+                                            <div class="mb-2"></div>
+                                            <p class="font-18 font-mp text-white mb-0">
+                                                Bu ildən etibarən Movex adı ilə tam yeni <br> keyfiyyət və xidmətlərlə qarşınızdayıq!
+                                            </p>
+                                            <div class="pt-25"></div>
+                                            <!--Button -->
+                                            <button 
+                                                type="button"
+                                                class="btn btn-outline-gray py-10 px-25 h-45"
+
+                                                >
+                                                <span class=" font-mp-bold  text-white font-12  ">
+                                                    ƏTRAFLI
+                                                </span>
+                                            </button>
+
+                                            <!--Button -->                </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="item w-100 h-100">
+                                <div class="Banner--img h-100 w-100" style="background-image: url('assets/main/img/content/banners/mainBanner.png?cache=Rfx') ">
+                                    <div class="container d-flex align-items-center w-100 h-100">
+                                        <div class="" style="position: absolute; margin-top: 20%;">
+                                            <h2 class="font-60 font-mp-bold text-white mb-0">XİDMƏTİN YENİ ADI</h2>
+                                            <div class="mb-2"></div>
+                                            <p class="font-18 font-mp text-white mb-0">
+                                                Bu ildən etibarən Movex adı ilə tam yeni <br> keyfiyyət və xidmətlərlə qarşınızdayıq!
+                                            </p>
+                                            <div class="pt-25"></div>
+                                            <!--Button -->
+                                            <button 
+                                                type="button"
+                                                class="btn btn-outline-gray py-10 px-25 h-45"
+
+                                                >
+                                                <span class=" font-mp-bold  text-white font-12  ">
+                                                    ƏTRAFLI
+                                                </span>
+                                            </button>
+
+                                            <!--Button -->                </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                        <!--Banner Slider
                     </div>
-                  </div>
-              </c:forEach>
-                  
-            
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Testimonials-->
-    <div class="ps-testimonials bg--parallax" data-background="assets/index/images/bg/testimonials.jpg">
-      <div class="ps-container">
-        <div class="ps-carousel--testimonial owl-slider" data-owl-auto="true" data-owl-loop="true" data-owl-speed="5000" data-owl-gap="0" data-owl-nav="false" data-owl-dots="true" data-owl-item="1" data-owl-item-xs="1" data-owl-item-sm="1" data-owl-item-md="1" data-owl-item-lg="1" data-owl-duration="1000" data-owl-mousedrag="off" data-owl-animate-in="fadeIn" data-owl-animate-out="fadeOut">
-          <div class="ps-block--tesimonial">
-            <div class="ps-block__user"><img src="assets/index/images/user/1.jpg" alt=""></div>
-            <div class="ps-block__content">
+                    
+                        <!--./MainBanner-->
+                        <div class="ServiceBlock">
+                            <div class="bg-m-white">
+                                <div class="container">
+                                    <div class="position-relative z-index-2" style="margin-top: calc(-140px / 2);">
+                                        <!-- ServiceItems -->
 
-              <p>?Dessert pudding dessert jelly beans cupcake sweet caramels gingerbread. Fruitcake biscuit cheesecake. Cookie topping sweet muffin pudding tart bear claw sugar plum croissant.?</p>
-            </div>
-            <div class="ps-block__footer">
-              <p><strong>Logan May</strong>  - CEO & Founder Invision</p>
-            </div>
-          </div>
-          <div class="ps-block--tesimonial">
-            <div class="ps-block__user"><img src="assets/index/images/user/2.jpg" alt=""></div>
-            <div class="ps-block__content">
 
-              <p>?Dessert pudding dessert jelly beans cupcake sweet caramels gingerbread. Fruitcake biscuit cheesecake. Cookie topping sweet muffin pudding tart bear claw sugar plum croissant.?</p>
-            </div>
-            <div class="ps-block__footer">
-              <p><strong>Logan May</strong>  - CEO & Founder Invision</p>
-            </div>
-          </div>
-          <div class="ps-block--tesimonial">
-            <div class="ps-block__user"><img src="assets/index/images/user/3.jpg" alt=""></div>
-            <div class="ps-block__content">
+                                        <div id="ServiceItems">
+                                            <div class="ServiceItems__content">
 
-              <p>?Dessert pudding dessert jelly beans cupcake sweet caramels gingerbread. Fruitcake biscuit cheesecake. Cookie topping sweet muffin pudding tart bear claw sugar plum croissant.?</p>
-            </div>
-            <div class="ps-block__footer">
-              <p><strong>Logan May</strong>  - CEO & Founder Invision</p>
-            </div>
-          </div>
-          <div class="ps-block--tesimonial">
-            <div class="ps-block__user"><img src="assets/index/images/user/4.jpg" alt=""></div>
-            <div class="ps-block__content">
+                                                <div class="row" class="flex-1">
+                                                    <div class="col-md-4">
+                                                        <div class="ServiceItem--mod d-flex flex-column h-145 bg-white text-center w-100">
+                                                            <div class="flex-1 d-flex align-items-center justify-content-center">
+                                                                <div class="Block">
 
-              <p>?Dessert pudding dessert jelly beans cupcake sweet caramels gingerbread. Fruitcake biscuit cheesecake. Cookie topping sweet muffin pudding tart bear claw sugar plum croissant.?</p>
-            </div>
-            <div class="ps-block__footer">
-              <p><strong>Logan May</strong>  - CEO & Founder Invision</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <%@include file="include/footer.jsp" %>
-  </body>
+                                                                    <img src="<c:url value="assets/main/img/icons/svgs/yukdasima.svg" />" width="75" alt="Yükdaşıma">
+                                                                    <div class="pt-2"></div>
+                                                                    <p class="mb-0 text-blue font-mp-bold">Yükdaşıma</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="divider-h-5 bg-green"></div>
 
-</html>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="ServiceItem--mod d-flex flex-column h-145 bg-white text-center w-100">
+                                                            <div class="flex-1 d-flex align-items-center justify-content-center">
+                                                                <div class="Block">
+
+                                                                    <img src="<c:url value="assets/main/img/icons/svgs/Evakuasiya.svg" />" width="75" alt="Evakuasiya">
+                                                                    <div class="pt-2"></div>
+                                                                    <p class="mb-0 text-blue font-mp-bold">Evakuasiya</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="divider-h-5 bg-green"></div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="ServiceItem--mod d-flex flex-column h-145 bg-white text-center w-100">
+                                                            <div class="flex-1 d-flex align-items-center justify-content-center">
+                                                                <div class="Block">
+
+                                                                    <img src="<c:url value="assets/main/img/icons/svgs/anbar_xidmeti.svg" />" width="75" alt="Anbar xidməti">
+                                                                    <div class="pt-2"></div>
+                                                                    <p class="mb-0 text-blue font-mp-bold">Anbar xidməti</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="divider-h-5 bg-green"></div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="py-10"></div>
+
+                                                <div class="row" class="flex-1">
+                                                    <div class="col-md-4">
+                                                        <div class="ServiceItem--mod d-flex flex-column h-145 bg-white text-center w-100">
+                                                            <div class="flex-1 d-flex align-items-center justify-content-center">
+                                                                <div class="Block">
+
+                                                                    <img src="<c:url value="assets/main/img/icons/svgs/cleaner.svg" />" width="75" alt="Təmizlik xidməti">
+                                                                    <div class="pt-2"></div>
+                                                                    <p class="mb-0 text-blue font-mp-bold">Təmizlik xidməti</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="divider-h-5 bg-green"></div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="ServiceItem--mod d-flex flex-column h-145 bg-white text-center w-100">
+                                                            <div class="flex-1 d-flex align-items-center justify-content-center">
+                                                                <div class="Block">
+
+                                                                    <img src="<c:url value="assets/main/img/icons/svgs/email.svg" />" width="75" alt="Yükdaşıma">
+                                                                    <div class="pt-2"></div>
+                                                                    <p class="mb-0 text-blue font-mp-bold">Poçt xidməti</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="divider-h-5 bg-green"></div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="ServiceItem--mod d-flex flex-column h-145 bg-white text-center w-100">
+                                                            <div class="flex-1 d-flex align-items-center justify-content-center">
+                                                                <div class="Block">
+
+                                                                    <img src="<c:url value="assets/main/img/icons/svgs/chauffeur.svg" />" width="75" alt="Evakuasiya">
+                                                                    <div class="pt-2"></div>
+                                                                    <p class="mb-0 text-blue font-mp-bold">Ayıq sürücü</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="divider-h-5 bg-green"></div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                        <!-- ./ServiceItems -->            </div>
+                                    <div class="py-15"></div>
+                                    <div class="py-1"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ServiceBlock">
+                            <div class="container">
+                                <div class="py-25"></div>
+                                <!-- ServiceCalculator -->
+
+                                <div id="ServiceCalculator">
+
+                                    <h2 class="text-gray font-40 font-mp-bold text-center">Yük kalkulyatoru</h2>
+                                    <div class="pt-15"></div>
+                                    <div id="ServiceCalculatorForm w-100">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-5">
+                                                <!-- Form Input -->
+
+                                                <div class="form-group ">
+
+                                                    <label class="font-16 font-mp text-gray" for="fromM__Input">HARADAN</label>
+
+                                                    <div class="CustomizeForm__inputCon">
+                                                        <input  type="" value="" class="form-control" id="fromM__Input" placeholder="">
+
+                                                        <div class="CustomizeForm__input__icon CustomizeForm__input__icon--right w-40p p-1 Show__pass c-point">
+                                                            <div class="w-100 h-100 d-flex align-items-center bg-white">
+                                                                <div class="d-flex justify-content-center w-100">
+                                                                    <img width="15" height="19" src="<c:url value="assets/main/img/icons/svgs/pin.svg?v=1" />" alt="pin">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                                <!-- Form Input -->            </div>
+                                            <div class="col-md-5">
+                                                <!-- Form Input -->
+
+                                                <div class="form-group ">
+
+                                                    <label class="font-16 font-mp text-gray" for="toM__Input">HARA</label>
+
+                                                    <div class="CustomizeForm__inputCon">
+                                                        <input  type="" value="" class="form-control" id="toM__Input" placeholder="">
+
+                                                        <div class="CustomizeForm__input__icon CustomizeForm__input__icon--right w-40p p-1 Show__pass c-point">
+                                                            <div class="w-100 h-100 d-flex align-items-center bg-white">
+                                                                <div class="d-flex justify-content-center w-100">
+                                                                    <img width="15" height="19" src="<c:url value="assets/main/img/icons/svgs/pin.svg?v=1" />" alt="pin">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                                <!-- Form Input -->            </div>
+                                            <div class="col-md-1"></div>
+                                        </div>
+                                        <div class="pt-1"></div>
+                                        <div class="d-flex justify-content-center w-100">
+                                            <div class="w-100 px-10 m-w-160p">
+                                                <!-- Form Input --> 
+                                                <div class="form-group CustomizeForm__inputCon ">
+                                                    <label class="font-16 font-mp text-gray text-nowrap" for="weightF__Input">YÜKÜN ÇƏKİSİ</label>
+                                                    <input class="form-control"  id="weightCF__Input" type="number"/>
+                                                </div>
+
+                                                <!-- Form Input -->
+                                            </div>
+                                            <div class="w-100 px-10 m-w-160p">
+                                                <!-- Form Input --> 
+                                                <div class="form-group CustomizeForm__inputCon ">
+                                                    <label class="font-16 font-mp text-gray text-nowrap" for="weightCF__Input">YÜKLƏRİN SAYI</label>
+                                                    <input class="form-control"  id="weightCF__Input" type="number"/>
+                                                </div>
+
+                                                <!-- Form Input -->
+                                            </div>
+                                            <div class="w-100 px-10 m-w-160p">
+                                                <!-- Form Input --> 
+                                                <div class="form-group CustomizeForm__inputCon ">
+                                                    <label class="font-16 font-mp text-gray text-nowrap" for="workerC__Input">FƏHLƏ SAYI</label>
+                                                    <input class="form-control"  id="workerC__Input" type="number"/>
+                                                </div>
+
+                                                <!-- Form Input -->
+                                            </div>
+                                        </div>
+                                        <div class="pt-10"></div>
+                                        <div class="d-flex justify-content-center w-100">
+                                            <div class="Block">
+                                                <div class="form-control m-w-250p border-bottom-0 text-center">
+                                                    <span id="MinPrice__f1" class="font-26 text-gray font-mp">55</span>
+                                                    <span id="MinPrice__f2" class="font-26 text-gray font-mp">-</span>
+                                                    <span id="MaxPrice__f3" class="font-26 text-gray font-mp">105</span>
+                                                    <span id="CurrencyType" class="font-26 text-gray font-mp">AZN</span>               
+                                                </div>
+                                                <div class="divider-h-3 bg-green"></div>
+                                            </div>
+                                        </div>
+                                        <div class="pt-15"></div>
+                                        <div class="d-flex justify-content-center w-100">
+                                            <!--Button -->
+                                            <button 
+                                                type="button"
+                                                class="btn btn-green py-10 px-25 h-45"
+
+                                                >
+                                                <span class=" font-mp-bold  font-16 text-white  ">
+                                                    TƏKLİF AL
+                                                </span>
+                                            </button>
+
+                                            <!--Button -->        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <!-- ./ServiceCalculator -->
+                            </div>
+                        </div>
+                        <div class="py-25"></div>
+                        <div class="container">
+                            
+                            <div class="divider-h-1 bg-light-gray"></div>
+                            <div class="divider-h-1 bg-light-gray"></div>
+                            
+                        </div>
+                        <div class="py-25"></div>
+                        <div class="container">
+                            <!-- WhyUs -->
+
+
+                            <div id="WhyUs">
+
+                                <h2 class="text-gray font-40 font-mp-bold text-center">Nə üçün bizi seçirlər?</h2>
+                                <div class="py-20"></div>
+                                <div class="row" class="flex-1">
+                                    <div class="col-md-3">
+                                        <div class="bg-white text-center w-100">
+                                            <div class="flex-1 d-flex align-items-center justify-content-center">
+                                                <div class="Block">
+
+                                                    <img src="<c:url value="assets/main/img/icons/svgs/serfeli_qiymet.svg?v=1"/>" width="62" alt="Yükdaşıma">
+                                                    <div class="pt-2"></div>
+                                                    <p class="mb-0 text-gray font-mp-bold">Yükdaşıma</p>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="bg-white text-center w-100">
+                                            <div class="flex-1 d-flex align-items-center justify-content-center">
+                                                <div class="Block">
+
+                                                    <img src="<c:url value="assets/main/img/icons/svgs/vaxtinda_catdirma.svg?v=1"/>" width="62" alt="Evakuasiya">
+                                                    <div class="pt-2"></div>
+                                                    <p class="mb-0 text-gray font-mp-bold">Evakuasiya</p>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="bg-white text-center w-100">
+                                            <div class="flex-1 d-flex align-items-center justify-content-center">
+                                                <div class="Block">
+
+                                                    <img src="<c:url value="assets/main/img/icons/svgs/24_7.svg?v=1" />" width="62" alt="Anbar xidməti">
+                                                    <div class="pt-2"></div>
+                                                    <p class="mb-0 text-gray font-mp-bold">Anbar xidməti</p>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="bg-white text-center w-100">
+                                            <div class="flex-1 d-flex align-items-center justify-content-center">
+                                                <div class="Block">
+
+                                                    <img src="<c:url value="assets/main/img/icons/svgs/cleaner.svg?v=1" />" width="62" height="62" alt="Təmizlik xidməti">
+                                                    <div class="pt-2"></div>
+                                                    <p class="mb-0 text-gray font-mp-bold">Təmizlik xidməti</p>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pt-25"></div>
+                                <div class="row" class="flex-1">
+                                    <div class="col-md-3">
+                                        <div class="bg-white text-center w-100">
+                                            <div class="flex-1 d-flex align-items-center justify-content-center">
+                                                <div class="Block">
+
+                                                    <img src="<c:url value="assets/main/img/icons/svgs/map.svg?v=1" />" width="62" height="62" alt="Yükdaşıma">
+                                                    <div class="pt-2"></div>
+                                                    <p class="mb-0 text-gray font-mp-bold">Ölkə üzrə xidmət</p>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="bg-white text-center w-100">
+                                            <div class="flex-1 d-flex align-items-center justify-content-center">
+                                                <div class="Block">
+
+                                                    <img src="<c:url value="assets/main/img/icons/svgs/xidmete_zemanet.svg?v=1"/>" width="62" height="62" alt="Evakuasiya">
+                                                    <div class="pt-2"></div>
+                                                    <p class="mb-0 text-gray font-mp-bold">Xidmətə zəmanət</p>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="bg-white text-center w-100">
+                                            <div class="flex-1 d-flex align-items-center justify-content-center">
+                                                <div class="Block">
+
+                                                    <img src="<c:url value="assets/main/img/icons/svgs/rahat_odenis.svg?v=1" />" width="62" height="62" alt="Anbar xidməti">
+                                                    <div class="pt-2"></div>
+                                                    <p class="mb-0 text-gray font-mp-bold">Rahat ödəniş</p>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="bg-white text-center w-100">
+                                            <div class="flex-1 d-flex align-items-center justify-content-center">
+                                                <div class="Block">
+
+                                                    <img src="<c:url value="assets/main/img/icons/svgs/shexsi_qablasdirma.svg?v=1" />" width="62" height="62" alt="Təmizlik xidməti">
+                                                    <div class="pt-2"></div>
+                                                    <p class="mb-0 text-gray font-mp-bold">Şəxsi qablaşdırma</p>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <!-- ./WhyUs --></div>
+                        <div class="py-25"></div>
+                        <%@include file="include/footer.jsp" %>
