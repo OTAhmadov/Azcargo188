@@ -23,11 +23,13 @@ import com.product.web.form.ProductForm;
 import com.product.web.form.PromotationForm;
 import com.product.web.form.ServiceForm;
 import com.product.web.util.Crypto;
+import com.product.web.util.FtpUtils;
 import com.product.web.util.WebUtils;
 import com.product.web.validation.FileWrapperFormValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.springframework.http.MediaType;
@@ -580,76 +582,6 @@ public class AdminController extends SkeletonController {
         return operationResponse;
     }
     
-    @ApiOperation(value = "productlarin add edit remove si, ", notes = "parametr siyahisi form packagesinde var hamisinin baxarsan. istifade ucun sessiya teleb olunur, login olmaq lazimdir.")
-    @ResponseBody
-    @PostMapping(value = "/product/ndu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    protected OperationResponse NDUProduct(@RequestPart(name = "image", required = false) MultipartFile image,
-                                            @RequestPart(name = "form", required = false) ProductForm form,
-                                            MultipartHttpServletRequest multipartHttpServletRequest
-//                                                BindingResult result
-    ) {
-        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
-        try {
-            Account account = getSessionAccount(operationResponse);
-            
-            
-            
-            int i = 0;
-            if(form.getId() == 0) {
-                MultiValueMap<String, MultipartFile> requestParts = multipartHttpServletRequest.getMultiFileMap();
-                List<MultipartFile> files;
-
-                files = requestParts.get("image");
-
-                if (files != null && files.size() > 5) {
-                    throw new Exception("invalid file count");
-                }
-
-                FileWrapperForm[] fileWrappers = new FileWrapperForm[files.size()];                                                         
-                for (MultipartFile multipartFile : files) {
-                    if (multipartFile != null && multipartFile.getSize() > 0) {
-                        fileWrappers[i] = new FileWrapperForm();
-                        fileWrappers[i].setFile(multipartFile);
-
-                        OperationResponse saveFileResponse = ftpService.saveFtpFile("", multipartFile, Crypto.getGuid());
-
-                        if (saveFileResponse.getCode() == ResultCode.OK) {
-                            String fullPath = (String) saveFileResponse.getData();
-                            fileWrappers[i].setOriginalName(multipartFile.getOriginalFilename());
-                            fileWrappers[i].setPath(fullPath);
-                            fileWrappers[i].setContentType(multipartFile.getContentType());
-
-                        }
-                    }
-
-                    i = i + 1;
-                }
-                form.setFiles(fileWrappers);
-            } else if(form.getId() < 0) {
-                List<FileWrapper> imageList = service.getProductFileList(Math.abs(form.getId()));
-                if(imageList.size() > 0) {
-                
-                    for(FileWrapper f: imageList) {
-                        OperationResponse removeOperation = ftpService.removeFtpFile(f.getFullPath());
-                        if(removeOperation.getCode() != ResultCode.OK) {
-                            throw new Exception("Error remove ftp file");
-                        
-                        }
-                    }
-                }
-            }
-                        
-            
-            operationResponse = service.NDUProduct(account, form);
-            
-        }
-        catch(Exception e) {
-            log.error(e.getMessage(), e);
-        }
-        
-        return operationResponse;
-    }
-    
     @ApiOperation(value = "path e gore sekli qaytarir", notes = "ftp de olmaqla yanasi bazadada path movcud olmalidir. tehlukesizlik ucun bazadan yoxlayir.")
     @GetMapping(value = "/image/{path}", produces = MediaType.IMAGE_JPEG_VALUE) // OK
     @ResponseBody
@@ -1104,6 +1036,29 @@ public class AdminController extends SkeletonController {
 
         return operationResponse;
     }
+    
+    
+    @GetMapping(value = "/file/{path}")
+    protected void downloadFile(@PathVariable String path,
+                                  HttpServletResponse response) {
+
+        // TODO: Get content type from Database instead of parsing file original name @Samir
+        try {
+            FileWrapper file = service.getFileByPath(path);
+            if (file != null) {
+                    String[] x = file.getPath().split("\\.");
+                    response.setHeader("Content-Type", FtpUtils.getType(x[x.length - 1].toLowerCase()));
+                    response.setHeader("Content-Disposition", "attachment; filename=" + file.getName());
+                
+//                return ftpService.downloadFtpFile(file.getPath());
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+//        return null;
+    }
+    
     
     @GetMapping(value = "/corporatives")
     @ResponseBody

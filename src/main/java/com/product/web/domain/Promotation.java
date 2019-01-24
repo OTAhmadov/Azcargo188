@@ -16,8 +16,8 @@ public class Promotation extends Common{
     private String startDate;
     private String endDate;
 
-    public Promotation(String startDate, String endDate, int id, String titleAz, String titleEn, String titleRu, String descriptionAz, String descriptionEn, String descriptionRu, int fileId) {
-        super(id, titleAz, titleEn, titleRu, descriptionAz, descriptionEn, descriptionRu, fileId);
+    public Promotation(String startDate, String endDate, int id, String titleAz, String titleEn, String titleRu, String descriptionAz, String descriptionEn, String descriptionRu, int fileId, String filePath) {
+        super(id, titleAz, titleEn, titleRu, descriptionAz, descriptionEn, descriptionRu, fileId, filePath);
         this.startDate = startDate;
         this.endDate = endDate;
     }

@@ -16,8 +16,8 @@ public class Achievement extends Common {
     private String achievementDate;
 
 
-    public Achievement(String achievementDate, int id, String titleAz, String titleEn, String titleRu, String descriptionAz, String descriptionEn, String descriptionRu, int fileId) {
-        super(id, titleAz, titleEn, titleRu, descriptionAz, descriptionEn, descriptionRu, fileId);
+    public Achievement(String achievementDate, int id, String titleAz, String titleEn, String titleRu, String descriptionAz, String descriptionEn, String descriptionRu, int fileId, String filePath) {
+        super(id, titleAz, titleEn, titleRu, descriptionAz, descriptionEn, descriptionRu, fileId, filePath);
         this.achievementDate = achievementDate;
     }
 }

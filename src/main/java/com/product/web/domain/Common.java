@@ -21,8 +21,9 @@ public class Common {
     private String descriptionEn;
     private String descriptionRu;
     private int fileId;
+    private String filePath;
 
-    public Common(int id, String titleAz, String titleEn, String titleRu, String descriptionAz, String descriptionEn, String descriptionRu, int fileId) {
+    public Common(int id, String titleAz, String titleEn, String titleRu, String descriptionAz, String descriptionEn, String descriptionRu, int fileId, String filePath) {
         this.id = id;
         this.titleAz = titleAz;
         this.titleEn = titleEn;
@@ -31,6 +32,7 @@ public class Common {
         this.descriptionEn = descriptionEn;
         this.descriptionRu = descriptionRu;
         this.fileId = fileId;
+        this.filePath = filePath;
     }
 
     public Common(String titleAz, String descriptionAz) {

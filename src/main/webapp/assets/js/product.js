@@ -9,7 +9,7 @@ var Product = {
     lang: 'az',
     rootUrl: '',
     checkQuestion:[],
-    url:'http://dadliteatr.az/ProductSite',
+    url:'http://localhost:8080/Azcargo188',
     module:[
         {
             home:{

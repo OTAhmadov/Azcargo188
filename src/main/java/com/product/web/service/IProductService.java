@@ -61,7 +61,6 @@ public interface IProductService {
     public FileWrapper getFileByPath(String path);
     public OperationResponse removeFile(int accountId, String path);
             
-    public OperationResponse NDUProduct(Account account, ProductForm form);
     public OperationResponse addProductFile(Account account, int productId, FileWrapperForm form);
     public OperationResponse addOtherFile(Account account, FileWrapperForm form);
     public List<FileWrapper> getOtherFile();

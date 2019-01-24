@@ -43,7 +43,7 @@ $(function (e) {
                                     var html = '';
                                     $.each(data.data.images, function (i, v) {
                                         html += '<div class="image-div">' +
-                                                '<img src="http://dadliteatr.az/admin/image/' + v.path + '"  class="form-control-file product-image-view">' +
+                                                '<img src="'+Product.url+'/admin/image/' + v.path + '"  class="form-control-file product-image-view">' +
                                                 '<i class="fa fa-remove remove-image-btn" data-path="' + v.path + '"></i>' +
                                                 '</div>'
                                     })
@@ -93,7 +93,7 @@ $(function (e) {
                                     var html = '';
                                     $.each(data.data, function (i, v) {
                                         html += '<div class="image-div">' +
-                                                '<img src="http://dadliteatr.az/admin/image/' + v.path + '"  class="form-control-file product-image-view">' +
+                                                '<img src="'+Product.url+'/admin/image/' + v.path + '"  class="form-control-file product-image-view">' +
                                                 '<i class="fa fa-remove remove-image-btn" data-path="' + v.path + '"></i>' +
                                                 '</div>'
                                     })
@@ -483,7 +483,20 @@ $(function (e) {
             Product.Proxy.getServiceDetails(id, function (data) {
                 if (data && data.data) {
                     $('body .super_service_type').val(data.data.typeId.parentId);
-                    $('body .sub_service_type').val(data.data.typeId.id);
+                    
+                    Product.Proxy.getDictionariesByParent(data.data.typeId.parentId, function(data2) {
+                        if(data2) {
+                            var html = "";
+                            $.each(data2, function(i, v){
+                                    html += '<option value = '+v.id+'>'+v.value.az+'</option>'
+                            })
+
+                            $('.sub_service_type').html(html);
+                             $('body .sub_service_type').val(data.data.typeId.id);
+                        }
+                    })
+                    
+                   
                     $('body #titleAz').val(data.data.titleAz);
                     $('body #titleEn').val(data.data.titleEn);
                     $('body #titleRu').val(data.data.titleRu);
@@ -504,8 +517,8 @@ $(function (e) {
                         $('body .active-file-div').removeClass('hidden');
                         $('body .active-file-type').addClass('hidden');
                         var html =  '<div class="image-div">' +
-                                    '<img src="http://dadliteatr.az/admin/image/' + data.data.fileId + '"  class="form-control-file product-image-view">' +
-                                    '<i class="fa fa-remove remove-image-btn" data-path="' + data.data.fileId + '"></i>' +
+                                    '<img src="'+Product.url+'/admin/image/' + data.data.filePath + '"  class="form-control-file product-image-view">' +
+                                    '<i class="fa fa-remove remove-image-btn" data-path="' + data.data.filePath + '"></i>' +
                                     '</div>'
                     }
 
@@ -538,8 +551,8 @@ $(function (e) {
                         $('body .active-file-div').removeClass('hidden');
                         $('body .active-file-type').addClass('hidden');
                         var html =  '<div class="image-div">' +
-                                    '<img src="http://dadliteatr.az/admin/image/' + data.data.fileId + '"  class="form-control-file product-image-view">' +
-                                    '<i class="fa fa-remove remove-image-btn" data-path="' + data.data.fileId + '"></i>' +
+                                    '<img src="'+Product.url+'/admin/image/' + data.data.filePath + '"  class="form-control-file product-image-view">' +
+                                    '<i class="fa fa-remove remove-image-btn" data-path="' + data.data.filePath + '"></i>' +
                                     '</div>'
                     }
 
@@ -573,8 +586,8 @@ $(function (e) {
                         $('body .active-file-div').removeClass('hidden');
                         $('body .active-file-type').addClass('hidden');
                         var html =  '<div class="image-div">' +
-                                    '<img src="http://dadliteatr.az/admin/image/' + data.data.fileId + '"  class="form-control-file product-image-view">' +
-                                    '<i class="fa fa-remove remove-image-btn" data-path="' + data.data.fileId + '"></i>' +
+                                    '<img src="'+Product.url+'/admin/image/' + data.data.filePath + '"  class="form-control-file product-image-view">' +
+                                    '<i class="fa fa-remove remove-image-btn" data-path="' + data.data.filePath + '"></i>' +
                                     '</div>'
                     }
 
@@ -627,8 +640,8 @@ $(function (e) {
                         $('body .active-file-div').removeClass('hidden');
                         $('body .active-file-type').addClass('hidden');
                         var html =  '<div class="image-div">' +
-                                    '<img src="http://dadliteatr.az/admin/image/' + data.data.fileId + '"  class="form-control-file product-image-view">' +
-                                    '<i class="fa fa-remove remove-image-btn" data-path="' + data.data.fileId + '"></i>' +
+                                    '<img src="'+Product.url+'/admin/image/' + data.data.filePath + '"  class="form-control-file product-image-view">' +
+                                    '<i class="fa fa-remove remove-image-btn" data-path="' + data.data.filePath + '"></i>' +
                                     '</div>'
                     }
                     $('body .image-content-div').html(html);
@@ -657,7 +670,7 @@ $(function (e) {
                     if (data.data.fileId && data.data.fileId > 0) {
                         $('body .active-file-div').removeClass('hidden');
                         var html =  '<div class="image-div">' +
-                                    '<img src="http://dadliteatr.az/admin/image/' + data.data.fileId + '"  class="form-control-file product-image-view">' +
+                                    '<img src="'+Product.url+'/admin/image/' + data.data.filePath + '"  class="form-control-file product-image-view">' +
                                     '</div>'
                     }
 
@@ -687,7 +700,8 @@ $(function (e) {
                     if (data.data.fileId && data.data.fileId > 0) {
                         $('body .active-file-div').removeClass('hidden');
                         var html =  '<div class="image-div">' +
-                                    '<img src="http://dadliteatr.az/admin/image/' + data.data.fileId + '"  class="form-control-file product-image-view">' +
+                                    '<img src="../assets/img/cv.jpg"  class="form-control-file product-image-view">' +
+                                    '<a class="download-cv" href="'+Product.url+'/admin/file/' + data.data.filePath + '"><i class = "fa fa-download download-cv"></i></a>'
                                     '</div>'
                     }
 
@@ -698,6 +712,13 @@ $(function (e) {
 
             $('body .career_apply_modal').modal('show');
         })
+        
+//        $('body').on('click', '.download-cv', function() {
+//            var path = $(this).attr('data-path');
+//            
+//            
+//            
+//        })
 
         $('body').on('click', '.view-common-apply', function () {
 
@@ -887,6 +908,9 @@ $(function (e) {
             Product.Proxy.removeProductImage(path, function (data) {
                 if (data) {
                     obj.parents('.image-div').remove();
+                    $('body .active-file-div').addClass('hidden');
+                    $('body .active-file-type').removeClass('hidden');
+                    $('body .active-file-type').find('input[type="file"]').val('');
                 }
             })
         })

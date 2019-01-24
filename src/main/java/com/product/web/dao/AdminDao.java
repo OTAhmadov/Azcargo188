@@ -436,18 +436,19 @@ public class AdminDao implements IAdminDao {
         }
         return operationResponse;
     }
+    
     @Override
     public OperationResponse addOtherFile(Account account, FileWrapperForm form) {
         OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
-        
+        String query = "insert into files(path, original_name, file_type, place_type) values(?,?,?,?)";
         try(Connection connection = dbConnect.getPostgresConnection();
-            CallableStatement callableStatement = connection.prepareCall("{call add_other_files(?,?,?,?)}")) {
-            callableStatement.setInt(1, account.getId());
-            callableStatement.setString(2, form.getPath());
-            callableStatement.setString(3, form.getOriginalName());
-            callableStatement.setString(4, form.getContentType());
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, form.getPath());
+            preparedStatement.setString(2, form.getOriginalName());
+            preparedStatement.setString(3, form.getContentType());
+            preparedStatement.setInt(4, 1);
+            preparedStatement.executeUpdate();
             
-            callableStatement.executeUpdate();
             operationResponse.setCode(ResultCode.OK);
         } 
         catch (Exception e) {
@@ -455,6 +456,7 @@ public class AdminDao implements IAdminDao {
         }
         return operationResponse;
     }
+    
     @Override
     public List<FileWrapper> getOtherFile() {
         List<FileWrapper> list = new ArrayList<>();
@@ -475,57 +477,14 @@ public class AdminDao implements IAdminDao {
     }
 
     @Override
-    public OperationResponse NDUProduct(Account account, ProductForm form) {
-        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
-        
-        try(Connection connection = dbConnect.getPostgresConnection();
-            CallableStatement callableStatement = connection.prepareCall("{? = call ndu_product(?,?,?,?,?,?,?,?,?,?)}")) {
-            callableStatement.registerOutParameter(1, Types.INTEGER);
-            callableStatement.setInt(2, account.getId());
-            callableStatement.setInt(3, form.getId());
-            callableStatement.setInt(4, form.getCompanyId());
-            callableStatement.setInt(5, form.getTypeId());
-            callableStatement.setString(6, form.getName());
-            callableStatement.setString(7, form.getDescription());
-            callableStatement.setString(8, form.getReceiptDescription());
-            callableStatement.setInt(9, form.getCount());
-            callableStatement.setString(10, form.getPrice());
-            callableStatement.setInt(11, form.getPriority());
-            callableStatement.execute();
-            
-            int id = callableStatement.getInt(1);
-            
-            if(form.getId() == 0 && id > 0) {
-                if(form.getFiles() != null && form.getFiles().length > 0) {
-                    for(FileWrapperForm f: form.getFiles()) {
-                        operationResponse = this.addProductFile(account, id, f);
-                        if(operationResponse.getCode() != ResultCode.OK) {
-                            connection.setAutoCommit(false);
-                            connection.rollback();
-                            throw new Exception("Error add file");
-                        }
-                    }
-                        
-                }
-            }
-            operationResponse.setCode(ResultCode.OK);
-            
-        } 
-        catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
-        return operationResponse;
-    }
-
-    @Override
     public OperationResponse removeFile(int accountId, String path) {
         OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
-        
+        String query = "update files set active = 0, update_date = now(), update_user_id = ? where path like '%'||?||'%'";
         try(Connection connection = dbConnect.getPostgresConnection();
-            CallableStatement callableStatement = connection.prepareCall("{call remove_files(?,?)}")) {
-            callableStatement.setInt(1, accountId);
-            callableStatement.setString(2, path);
-            callableStatement.executeUpdate();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, accountId);
+            preparedStatement.setString(2, path);
+            preparedStatement.executeUpdate();
             
             operationResponse.setCode(ResultCode.OK);
             
@@ -730,12 +689,14 @@ public class AdminDao implements IAdminDao {
     @Override
     public List<Achievement> getAchievementList() {
         List<Achievement> list = new ArrayList<>();
-        String query = "select * from achievement a where a.active = 1 order by to_date(a.achievement_date, 'dd/mm/yyyy') desc";
+        String query = "select * from v_achievement";
         try(Connection connection = dbConnect.getPostgresConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 while(resultSet.next()) {
+                    String path = resultSet.getString("file_path").trim().length() > 0 ? 
+                                    resultSet.getString("file_path").split("\\.")[0] : "";
                     list.add(new Achievement(resultSet.getString("achievement_date"), 
                                              resultSet.getInt("id"), 
                                              resultSet.getString("title_az"), 
@@ -744,7 +705,8 @@ public class AdminDao implements IAdminDao {
                                              resultSet.getString("description_az"), 
                                              resultSet.getString("description_en"), 
                                              resultSet.getString("description_ru"), 
-                                             resultSet.getInt("file_id")
+                                             resultSet.getInt("file_id"),
+                                             path
                                              ));
                 }
             }
@@ -758,12 +720,14 @@ public class AdminDao implements IAdminDao {
     @Override
     public Achievement getAchievementDetails(int id) {
         List<Achievement> list = new ArrayList<>();
-        String query = "select * from achievement a where a.active = 1 and a.id = ?";
+        String query = "select * from v_achievement a where a.id = ?";
         try(Connection connection = dbConnect.getPostgresConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if(resultSet.next()) {
+                    String path = resultSet.getString("file_path").trim().length() > 0 ? 
+                                    resultSet.getString("file_path").split("\\.")[0] : "";
                     return new Achievement(resultSet.getString("achievement_date"), 
                                              resultSet.getInt("id"), 
                                              resultSet.getString("title_az"), 
@@ -772,7 +736,8 @@ public class AdminDao implements IAdminDao {
                                              resultSet.getString("description_az"), 
                                              resultSet.getString("description_en"), 
                                              resultSet.getString("description_ru"), 
-                                             resultSet.getInt("file_id")
+                                             resultSet.getInt("file_id"),
+                                             path
                                              );
                 }
             }
@@ -819,6 +784,8 @@ public class AdminDao implements IAdminDao {
             
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 while(resultSet.next()) {
+                    String path = resultSet.getString("file_path").trim().length() > 0 ? 
+                                    resultSet.getString("file_path").split("\\.")[0] : "";
                     list.add(new Career(resultSet.getString("start_salary"), 
                                         resultSet.getString("end_salary"), 
                                         resultSet.getString("start_date"), 
@@ -834,7 +801,8 @@ public class AdminDao implements IAdminDao {
                                              resultSet.getString("description_az"), 
                                              resultSet.getString("description_en"), 
                                              resultSet.getString("description_ru"), 
-                                             resultSet.getInt("file_id")
+                                             resultSet.getInt("file_id"),
+                                             path
                                              ));
                 }
             }
@@ -853,6 +821,8 @@ public class AdminDao implements IAdminDao {
             
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 while(resultSet.next()) {
+                    String path = resultSet.getString("file_path").trim().length() > 0 ? 
+                                    resultSet.getString("file_path").split("\\.")[0] : "";
                     list.add(new CareerApply(resultSet.getInt("id"), 
                                             new Career(resultSet.getString("career_title"), 
                                                         resultSet.getString("career_description")), 
@@ -864,6 +834,7 @@ public class AdminDao implements IAdminDao {
                                             new DictionaryWrapper(resultSet.getInt("driving_license"), 
                                                                     new MultilanguageString(resultSet.getString("driving_lisence_name"), "", "")), 
                                             resultSet.getInt("file_id"), 
+                                            path, 
                                             resultSet.getString("create_date")));
                 }
             }
@@ -881,6 +852,8 @@ public class AdminDao implements IAdminDao {
             preparedStatement.setInt(1, id);
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if(resultSet.next()) {
+                    String path = resultSet.getString("file_path").trim().length() > 0 ? 
+                                    resultSet.getString("file_path").split("\\.")[0] : "";
                     return new CareerApply(resultSet.getInt("id"), 
                                             new Career(resultSet.getString("career_title"), 
                                                         resultSet.getString("career_description")), 
@@ -892,6 +865,7 @@ public class AdminDao implements IAdminDao {
                                             new DictionaryWrapper(resultSet.getInt("driving_license"), 
                                                                     new MultilanguageString(resultSet.getString("driving_lisence_name"), "", "")), 
                                             resultSet.getInt("file_id"), 
+                                            path, 
                                             resultSet.getString("create_date"));
                 }
             }
@@ -933,6 +907,8 @@ public class AdminDao implements IAdminDao {
             
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if(resultSet.next()) {
+                    String path = resultSet.getString("file_path").trim().length() > 0 ? 
+                                    resultSet.getString("file_path").split("\\.")[0] : "";
                     return new Career(resultSet.getString("start_salary"), 
                                         resultSet.getString("end_salary"), 
                                         resultSet.getString("start_date"), 
@@ -948,7 +924,8 @@ public class AdminDao implements IAdminDao {
                                              resultSet.getString("description_az"), 
                                              resultSet.getString("description_en"), 
                                              resultSet.getString("description_ru"), 
-                                             resultSet.getInt("file_id")
+                                             resultSet.getInt("file_id"),
+                                             path
                                              );
                 }
             }
@@ -1011,12 +988,14 @@ public class AdminDao implements IAdminDao {
     @Override
     public List<Promotation> getPromotationList() {
         List<Promotation> list = new ArrayList<>();
-        String query = "select * from promotation where active = 1 order by id desc";
+        String query = "select * from v_promotion";
         try(Connection connection = dbConnect.getPostgresConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 while(resultSet.next()) {
+                    String path = resultSet.getString("file_path").trim().length() > 0 ? 
+                                    resultSet.getString("file_path").split("\\.")[0] : "";
                     list.add(new Promotation(resultSet.getString("start_day"), 
                                              resultSet.getString("end_day"), 
                                              resultSet.getInt("id"), 
@@ -1026,7 +1005,8 @@ public class AdminDao implements IAdminDao {
                                              resultSet.getString("description_az"), 
                                              resultSet.getString("description_en"), 
                                              resultSet.getString("description_ru"), 
-                                             resultSet.getInt("file_id")
+                                             resultSet.getInt("file_id"),
+                                             path
                                              ));
                 }
             }
@@ -1039,12 +1019,14 @@ public class AdminDao implements IAdminDao {
 
     @Override
     public Promotation getPromotationDetails(int id) {
-        String query = "select * from promotation where id = ? and  active = 1 ";
+        String query = "select * from v_promotion where id = ? ";
         try(Connection connection = dbConnect.getPostgresConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if(resultSet.next()) {
+                    String path = resultSet.getString("file_path").trim().length() > 0 ? 
+                                    resultSet.getString("file_path").split("\\.")[0] : "";
                     return new Promotation(resultSet.getString("start_day"), 
                                              resultSet.getString("end_day"), 
                                              resultSet.getInt("id"), 
@@ -1054,7 +1036,8 @@ public class AdminDao implements IAdminDao {
                                              resultSet.getString("description_az"), 
                                              resultSet.getString("description_en"), 
                                              resultSet.getString("description_ru"), 
-                                             resultSet.getInt("file_id")
+                                             resultSet.getInt("file_id"),
+                                             path
                                              );
                 }
             }
@@ -1102,6 +1085,8 @@ public class AdminDao implements IAdminDao {
             
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 while(resultSet.next()) {
+                    String path = resultSet.getString("file_path").trim().length() > 0 ? 
+                                    resultSet.getString("file_path").split("\\.")[0] : "";
                     list.add(new Service(new DictionaryWrapper(resultSet.getInt("type_id"), 
                                                                 0, new MultilanguageString(resultSet.getString("name_az"), 
                                                                                         resultSet.getString("name_en"), 
@@ -1114,7 +1099,8 @@ public class AdminDao implements IAdminDao {
                                              resultSet.getString("description_az"), 
                                              resultSet.getString("description_en"), 
                                              resultSet.getString("description_ru"), 
-                                             resultSet.getInt("file_id")
+                                             resultSet.getInt("file_id"),
+                                             path
                                              ));
                 }
             }
@@ -1133,6 +1119,8 @@ public class AdminDao implements IAdminDao {
             preparedStatement.setInt(1, id);
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if(resultSet.next()) {
+                    String path = resultSet.getString("file_path").trim().length() > 0 ? 
+                                    resultSet.getString("file_path").split("\\.")[0] : "";
                     return new Service(new DictionaryWrapper(resultSet.getInt("type_id"), 
                                                                 0, new MultilanguageString(resultSet.getString("name_az"), 
                                                                                         resultSet.getString("name_en"), 
@@ -1145,7 +1133,8 @@ public class AdminDao implements IAdminDao {
                                              resultSet.getString("description_az"), 
                                              resultSet.getString("description_en"), 
                                              resultSet.getString("description_ru"), 
-                                             resultSet.getInt("file_id")
+                                             resultSet.getInt("file_id"),
+                                             path
                                              );
                 }
             }
@@ -1178,6 +1167,8 @@ public class AdminDao implements IAdminDao {
             
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if(resultSet.next()) {
+                    String path = resultSet.getString("file_path").trim().length() > 0 ? 
+                                    resultSet.getString("file_path").split("\\.")[0] : "";
                     return new Service(new DictionaryWrapper(resultSet.getInt("type_id"), 
                                                                 0, new MultilanguageString(resultSet.getString("name_az"), 
                                                                                         resultSet.getString("name_en"), 
@@ -1190,7 +1181,8 @@ public class AdminDao implements IAdminDao {
                                              resultSet.getString("description_az"), 
                                              resultSet.getString("description_en"), 
                                              resultSet.getString("description_ru"), 
-                                             resultSet.getInt("file_id")
+                                             resultSet.getInt("file_id"),
+                                             path
                                              );
                 }
             }
@@ -1237,12 +1229,12 @@ public class AdminDao implements IAdminDao {
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, form.getPath());
             preparedStatement.setString(2, form.getOriginalName());
-            preparedStatement.setString(5, form.getTitleAz());
-            preparedStatement.setString(6, form.getTitleEn());
-            preparedStatement.setString(7, form.getTitleRu());
-            preparedStatement.setString(8, form.getDescriptionAz());
-            preparedStatement.setString(9, form.getDescriptionEn());
-            preparedStatement.setString(10, form.getDescriptionRu());
+            preparedStatement.setString(3, form.getTitleAz());
+            preparedStatement.setString(4, form.getTitleEn());
+            preparedStatement.setString(5, form.getTitleRu());
+            preparedStatement.setString(6, form.getDescriptionAz());
+            preparedStatement.setString(7, form.getDescriptionEn());
+            preparedStatement.setString(8, form.getDescriptionRu());
             
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if(resultSet.next()) {
@@ -1267,6 +1259,8 @@ public class AdminDao implements IAdminDao {
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 while(resultSet.next()) {
+                    String path = resultSet.getString("file_path").trim().length() > 0 ? 
+                                    resultSet.getString("file_path").split("\\.")[0] : "";
                     list.add (new Corporative(resultSet.getInt("id"), 
                                              resultSet.getString("fullname"), 
                                              resultSet.getString("company_name"), 
@@ -1276,6 +1270,7 @@ public class AdminDao implements IAdminDao {
                                              resultSet.getString("email"), 
                                              resultSet.getString("description_az"),
                                              resultSet.getInt("file_id"),
+                                             path,
                                              resultSet.getString("create_date")
                                              ));
                 }
@@ -1296,6 +1291,8 @@ public class AdminDao implements IAdminDao {
             preparedStatement.setInt(1, id);
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if(resultSet.next()) {
+                    String path = resultSet.getString("file_path").trim().length() > 0 ? 
+                                    resultSet.getString("file_path").split("\\.")[0] : "";
                     return new Corporative(resultSet.getInt("id"), 
                                              resultSet.getString("fullname"), 
                                              resultSet.getString("company_name"), 
@@ -1305,6 +1302,7 @@ public class AdminDao implements IAdminDao {
                                              resultSet.getString("email"), 
                                              resultSet.getString("description_az"),
                                              resultSet.getInt("file_id"),
+                                             path,
                                              resultSet.getString("create_date")
                                              );
                 }

@@ -19,8 +19,8 @@ public class Career extends Common {
     private String endDate;
     private DictionaryWrapper status;
     
-    public Career(String startSalary, String endSalary, String startDate, String endDate, DictionaryWrapper status, int id, String titleAz, String titleEn, String titleRu, String descriptionAz, String descriptionEn, String descriptionRu, int fileId) {
-        super(id, titleAz, titleEn, titleRu, descriptionAz, descriptionEn, descriptionRu, fileId);
+    public Career(String startSalary, String endSalary, String startDate, String endDate, DictionaryWrapper status, int id, String titleAz, String titleEn, String titleRu, String descriptionAz, String descriptionEn, String descriptionRu, int fileId, String filePath) {
+        super(id, titleAz, titleEn, titleRu, descriptionAz, descriptionEn, descriptionRu, fileId, filePath);
         this.startSalary = startSalary;
         this.endSalary = endSalary;
         this.startDate = startDate;

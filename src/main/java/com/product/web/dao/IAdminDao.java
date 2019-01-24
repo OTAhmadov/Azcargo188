@@ -64,7 +64,6 @@ public interface IAdminDao {
     public OperationResponse addProductFile(Account account, int productId, FileWrapperForm form);
     public OperationResponse addOtherFile(Account account, FileWrapperForm form);
     public List<FileWrapper> getOtherFile();
-    public OperationResponse NDUProduct(Account account, ProductForm form);
     public List<Product> getProductList(ProductForm form);
     public Product getProductDetails(int productId);
     public List<FileWrapper> getProductFileList(int productId);

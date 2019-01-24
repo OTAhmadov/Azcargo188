@@ -125,10 +125,6 @@ public class ProductService implements IProductService {
         return this.adminDao.removeFile(accountId, path);
     }
     
-    @Override
-    public OperationResponse NDUProduct(Account account, ProductForm form) {
-        return this.adminDao.NDUProduct(account, form);
-    }
     
     @Override
     public OperationResponse addProductFile(Account account, int productId, FileWrapperForm form) {

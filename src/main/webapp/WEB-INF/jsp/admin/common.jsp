@@ -257,7 +257,7 @@
                                     var html = '';
                                     $.each(data.data, function (i, v) {
                                         html += '<div class="image-div">' +
-                                                '<img src="http://dadliteatr.az/admin/image/' + v.path + '"  class="form-control-file product-image-view">' +
+                                                '<img src="http://localhost:8080/Azcargo188/admin/image/' + v.path + '"  class="form-control-file product-image-view">' +
                                                 '<i class="fa fa-remove remove-image-btn" data-path="' + v.path + '"></i>' +
                                                 '</div>'
                                     })

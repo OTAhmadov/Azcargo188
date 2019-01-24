@@ -21,9 +21,10 @@ public class CareerApply {
     private DictionaryWrapper experience;
     private DictionaryWrapper drivingLicense;
     private int fileId;
+    private String filePath;
     private String createDate;
 
-    public CareerApply(int id, Career career, String fullname, String phone, String birthdate, DictionaryWrapper experience, DictionaryWrapper drivingLicense, int fileId, String createDate) {
+    public CareerApply(int id, Career career, String fullname, String phone, String birthdate, DictionaryWrapper experience, DictionaryWrapper drivingLicense, int fileId, String filePath, String createDate) {
         this.id = id;
         this.career = career;
         this.fullname = fullname;
@@ -32,6 +33,7 @@ public class CareerApply {
         this.experience = experience;
         this.drivingLicense = drivingLicense;
         this.fileId = fileId;
+        this.filePath = filePath;
         this.createDate = createDate;
     }
     

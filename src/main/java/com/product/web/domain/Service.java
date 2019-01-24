@@ -15,8 +15,8 @@ import lombok.Data;
 public class Service extends Common{
     private DictionaryWrapper typeId;
 
-    public Service(DictionaryWrapper typeId, int id, String titleAz, String titleEn, String titleRu, String descriptionAz, String descriptionEn, String descriptionRu, int fileId) {
-        super(id, titleAz, titleEn, titleRu, descriptionAz, descriptionEn, descriptionRu, fileId);
+    public Service(DictionaryWrapper typeId, int id, String titleAz, String titleEn, String titleRu, String descriptionAz, String descriptionEn, String descriptionRu, int fileId, String filePath) {
+        super(id, titleAz, titleEn, titleRu, descriptionAz, descriptionEn, descriptionRu, fileId, filePath);
         this.typeId = typeId;
     }
 }
