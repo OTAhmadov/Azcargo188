@@ -207,7 +207,7 @@
                 $('#main-menu a i[data-type="corporative"]').parents('li').addClass('active');
                 
                 
-                $('#achievementDate').fdatepicker()
+                $('#achievementDate').fdatepicker({format: 'dd/mm/yyyy'})
                 
                 Product.Proxy.getCorporativeList('', function (data) {
                     if (data && data.data) {

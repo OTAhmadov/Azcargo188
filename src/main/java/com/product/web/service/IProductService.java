@@ -79,15 +79,18 @@ public interface IProductService {
     public OperationResponse NDUAchievement(AchievementForm form, int accountId);
     
     public List<Career> getCareerList();
+    public List<Career> getCareerListForCommon();
     public Career getCareerDetails(int id);
     public OperationResponse NDUCareer(CareerForm form, int accountId);
     public OperationResponse ADCareer(CareerForm form, int accountId);
     
     public List<Promotation> getPromotationList();
+    public List<Promotation> getPromotationListForCommon();
     public Promotation getPromotationDetails(int id);
     public OperationResponse NDUPromotation(PromotationForm form, int accountId);
     
     public List<Service> getServiceList();
+    public List<Service> getServiceListByParentForCommon(int id);
     public Service getServiceDetails(int id);
     public Service getServiceByType(int id, int typeId);
     public OperationResponse NDUService(ServiceForm form, int accountId);

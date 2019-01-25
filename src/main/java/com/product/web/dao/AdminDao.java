@@ -812,6 +812,48 @@ public class AdminDao implements IAdminDao {
         }
         return list;
     }
+
+    @Override
+    public List<Career> getCareerListForCommon() {
+        List<Career> list = new ArrayList<>();
+        String query = "select " +
+                            "* " +
+                            "from v_career p " +
+                            "where (to_date(p.start_date,'dd/mm/yyyy') <= to_date(to_char(now(),'dd/mm/yyyy'),'dd/mm/yyyy')) and " +
+                            "(to_date(p.end_date,'dd/mm/yyyy') >= to_date(to_char(now(),'dd/mm/yyyy'),'dd/mm/yyyy')) and status = 47 ";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                while(resultSet.next()) {
+                    String path = resultSet.getString("file_path").trim().length() > 0 ? 
+                                    resultSet.getString("file_path").split("\\.")[0] : "";
+                    list.add(new Career(resultSet.getString("start_salary"), 
+                                        resultSet.getString("end_salary"), 
+                                        resultSet.getString("start_date"), 
+                                        resultSet.getString("end_date"), 
+                                        new DictionaryWrapper(resultSet.getInt("status"), 
+                                                                new MultilanguageString(resultSet.getString("name_az"), 
+                                                                                        resultSet.getString("name_en"), 
+                                                                                        resultSet.getString("name_ru"))), 
+                                             resultSet.getInt("id"), 
+                                             resultSet.getString("title_az"), 
+                                             resultSet.getString("title_en"), 
+                                             resultSet.getString("title_ru"), 
+                                             resultSet.getString("description_az"), 
+                                             resultSet.getString("description_en"), 
+                                             resultSet.getString("description_ru"), 
+                                             resultSet.getInt("file_id"),
+                                             path
+                                             ));
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
+    }
     @Override
     public List<CareerApply> getCareerApplyList() {
         List<CareerApply> list = new ArrayList<>();
@@ -1018,6 +1060,38 @@ public class AdminDao implements IAdminDao {
     }
 
     @Override
+    public List<Promotation> getPromotationListForCommon() {
+        List<Promotation> list = new ArrayList<>();
+        String query = "select * from v_promotion p where (to_date(p.start_day,'dd/mm/yyyy') <= to_date(to_char(now(),'dd/mm/yyyy'),'dd/mm/yyyy')) and (to_date(p.end_day,'dd/mm/yyyy') >= to_date(to_char(now(),'dd/mm/yyyy'),'dd/mm/yyyy'))";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                while(resultSet.next()) {
+                    String path = resultSet.getString("file_path").trim().length() > 0 ? 
+                                    resultSet.getString("file_path").split("\\.")[0] : "";
+                    list.add(new Promotation(resultSet.getString("start_day"), 
+                                             resultSet.getString("end_day"), 
+                                             resultSet.getInt("id"), 
+                                             resultSet.getString("title_az"), 
+                                             resultSet.getString("title_en"), 
+                                             resultSet.getString("title_ru"), 
+                                             resultSet.getString("description_az"), 
+                                             resultSet.getString("description_en"), 
+                                             resultSet.getString("description_ru"), 
+                                             resultSet.getInt("file_id"),
+                                             path
+                                             ));
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
+    }
+
+    @Override
     public Promotation getPromotationDetails(int id) {
         String query = "select * from v_promotion where id = ? ";
         try(Connection connection = dbConnect.getPostgresConnection();
@@ -1083,6 +1157,41 @@ public class AdminDao implements IAdminDao {
         try(Connection connection = dbConnect.getPostgresConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                while(resultSet.next()) {
+                    String path = resultSet.getString("file_path").trim().length() > 0 ? 
+                                    resultSet.getString("file_path").split("\\.")[0] : "";
+                    list.add(new Service(new DictionaryWrapper(resultSet.getInt("type_id"), 
+                                                                0, new MultilanguageString(resultSet.getString("name_az"), 
+                                                                                        resultSet.getString("name_en"), 
+                                                                                        resultSet.getString("name_ru")), 
+                                                                resultSet.getInt("parent_id")),
+                                             resultSet.getInt("id"), 
+                                             resultSet.getString("title_az"), 
+                                             resultSet.getString("title_en"), 
+                                             resultSet.getString("title_ru"), 
+                                             resultSet.getString("description_az"), 
+                                             resultSet.getString("description_en"), 
+                                             resultSet.getString("description_ru"), 
+                                             resultSet.getInt("file_id"),
+                                             path
+                                             ));
+                }
+            }
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
+    }
+
+    @Override
+    public List<Service> getServiceListByParentForCommon(int id) {
+        List<Service> list = new ArrayList<>();
+        String query = "select * from v_service where parent_id = ? ";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 while(resultSet.next()) {
                     String path = resultSet.getString("file_path").trim().length() > 0 ? 

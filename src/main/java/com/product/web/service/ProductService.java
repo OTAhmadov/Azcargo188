@@ -190,6 +190,11 @@ public class ProductService implements IProductService {
     public List<Career> getCareerList() {
         return this.adminDao.getCareerList();
     }
+
+    @Override
+    public List<Career> getCareerListForCommon() {
+        return this.adminDao.getCareerListForCommon();
+    }
     
     @Override
     public Career getCareerDetails(int id) {
@@ -212,6 +217,11 @@ public class ProductService implements IProductService {
     }
     
     @Override
+    public List<Promotation> getPromotationListForCommon() {
+        return this.adminDao.getPromotationListForCommon();
+    }
+    
+    @Override
     public Promotation getPromotationDetails(int id) {
         return this.adminDao.getPromotationDetails(id);
     }
@@ -224,6 +234,11 @@ public class ProductService implements IProductService {
     @Override
     public List<com.product.web.domain.Service> getServiceList() {
         return this.adminDao.getServiceList();
+    }
+    
+    @Override
+    public List<com.product.web.domain.Service> getServiceListByParentForCommon(int id) {
+        return this.adminDao.getServiceListByParentForCommon(id);
     }
     
     @Override

@@ -21,7 +21,7 @@
     <%@include file="include/header.jsp" %>
 
   </head>
-  <body>
+<!--  <body>
     <div class="ps-search">
       <div class="ps-search__content"><a class="ps-search__close" href="#"><span></span></a>
         <form class="ps-form--search-2" action="<c:url value="/product" />" method="get">
@@ -33,7 +33,7 @@
         </form>
       </div>
     </div>
-    <!-- Header-->
+     Header
     <%--<%@include file="include/main_modules.jsp" %>--%>
    <header class="header header--1">
       <div class="container-fluid" style="padding: 5px 15px;">
@@ -87,7 +87,7 @@
         </div>
       </nav>
     </header>
-    <!-- Home banner-->
+     Home banner
     <div class="pb-80" id="slider">
       <div class="ps-carousel--animate ps-carousel--1st">
           <c:forEach items="${titleImage}" var="image">
@@ -96,18 +96,18 @@
                 </div>
               </div>
           </c:forEach>
-<!--        <div class="item">
+        <div class="item">
           <div class="ps-product--banner"><span class="ps-badge ps-badge--sale"><img src="assets/index/images/icons/badge-brown.png" alt=""><i>0.5</i></span><img src="assets/index/images/banner/slider-5.png" alt="">
           </div>
         </div>
         <div class="item">
           <div class="ps-product--banner"><span class="ps-badge ps-badge--sale"><img src="assets/index/images/icons/badge-brown.png" alt=""><i>50%</i></span><img src="assets/index/images/banner/slider-6.png" alt="">
           </div>
-        </div>-->
+        </div>
       </div>
     </div>
-    <!-- award-->
-    <!-- Home 1 products-->
+     award
+     Home 1 products
     
     <div class="ps-home-product bg--cover" data-background="assets/index/images/bg/home-product.jpg">
       <div class="ps-container">
@@ -130,7 +130,7 @@
                       <div class="ps-product__content"><a class="ps-product__title" href="<c:url value="/product/${f.id}"/> ">${f.name}</a>
                         <p><a href="<c:url value="/product/${f.id}" />">${f.type.value[lcl]}</a></p>
 
-<!--                        <p class="ps-product__price">${f.price}</p>-->
+                        <p class="ps-product__price">${f.price}</p>
                       </div>
                     </div>
                   </div>
@@ -141,7 +141,7 @@
         </div>
       </div>
     </div>
-    <!-- Testimonials-->
+     Testimonials
     <div class="ps-testimonials bg--parallax" data-background="assets/index/images/bg/testimonials.jpg">
       <div class="ps-container">
         <div class="ps-carousel--testimonial owl-slider" data-owl-auto="true" data-owl-loop="true" data-owl-speed="5000" data-owl-gap="0" data-owl-nav="false" data-owl-dots="true" data-owl-item="1" data-owl-item-xs="1" data-owl-item-sm="1" data-owl-item-md="1" data-owl-item-lg="1" data-owl-duration="1000" data-owl-mousedrag="off" data-owl-animate-in="fadeIn" data-owl-animate-out="fadeOut">
@@ -189,6 +189,6 @@
       </div>
     </div>
     <%@include file="include/footer.jsp" %>
-  </body>
+  </body>-->
 
 </html>

@@ -205,7 +205,30 @@
         <!--<script  src="<c:url value="assets/main/js/product.js" />"></script>-->
         <script>
             $(function () {
+                var type = '${pagename}';
+                $('body li a span[data-type="'+type+'"]').each(function() {
+                    $(this).addClass('active');
+                })
+                var link = window.location.href;
+                var splitLink = link.split('?');
+                if(splitLink.length > 1 && splitLink[1].split('=')[0] === 'lang') {
                 
+                    var lang = splitLink[1].split('=')[1]
+                    $('.lang').each(function() {
+                        $(this).val(lang)
+                    })
+                    
+                } else {
+                    $('.lang').each(function() {
+                        $(this).val('az')
+                    })
+                }
+                
+                $('.lang').on('change', function(){
+                    var lang = $(this).val();
+                    var link = window.location.origin  + window.location.pathname;
+                    window.location.href = link + '?lang=' + lang;
+                })
                 $('.apply-career').on('click', function() {
                     $('#LoginModalCenter').modal('show');
                 })

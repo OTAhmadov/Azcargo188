@@ -62,7 +62,7 @@
                                                 <h2>Yükdaşıma xidməti</h2>
                                                 <p>It is a long established fact that a reader will be distracted by the readable content 
                                                     of a page when looking at its layout.It is a long established fact that a reader will be distracted by...</p>
-                                                <a href="<c:url value="/service/1"/>">Ətraflı</a>
+                                                <a href="<c:url value="/service/32"/>">Ətraflı</a>
                                             </div>
                                         </div>
                                         <div class="col-md-6 margin-bottom-30">
@@ -72,7 +72,7 @@
                                                 <p>It is a long established fact that a reader will be distracted by the readable content 
                                                     of a page when looking at its layout.It is a long established fact that a reader will be distracted by...
                                                 </p>
-                                                <!--<a href="<c:url value="/service/1" />">Ətraflı</a>-->
+                                                <a href="<c:url value="/service/31"/>">Ətraflı</a>
                                             </div>
                                         </div>
                                          <div class="col-md-6 margin-bottom-30">
@@ -81,7 +81,7 @@
                                                 <h2>Təmizlik xidməti</h2>
                                                 <p>It is a long established fact that a reader will be distracted by the readable content of a page when 
                                                     looking at its layout.It is a long established fact that a reader will be distracted by...</p>
-                                                <!--<a href="<c:url value="/service/1" />">Ətraflı</a>-->
+                                                <a href="<c:url value="/service/34"/>">Ətraflı</a>
                                             </div>
                                         </div>
                                         <div class="col-md-6 margin-bottom-30">
@@ -92,7 +92,7 @@
                                                     It is a long established fact that a reader will be distracted by the readable content 
                                                     of a page when looking at its layout.It is a long established fact that a reader will be distracted by...
                                                 </p>
-                                                <!--<a href="<c:url value="/service/1" />">Ətraflı</a>-->
+                                                <a href="<c:url value="/service/33"/>">Ətraflı</a>
                                             </div>
                                         </div>
                                         
@@ -102,7 +102,7 @@
                                                 <h2>Poçt xidməti</h2>
                                                 <p>It is a long established fact that a reader will be distracted by the readable content 
                                                     of a page when looking at its layout.It is a long established fact that a reader will be distracted by...</p>
-                                                <!--<a href="<c:url value="/service/1" />">Ətraflı</a>-->
+                                                <a href="<c:url value="/service/35"/>">Ətraflı</a>
                                             </div>
                                         </div>
                                         <div class="col-md-6 margin-bottom-30">
@@ -111,7 +111,7 @@
                                                 <h2>Ayıq sürücü xidməti</h2>
                                                 <p>It is a long established fact that a reader will be distracted by the readable content 
                                                     of a page when looking at its layout.It is a long established fact that a reader will be distracted by...</p>
-                                                <!--<a href="<c:url value="/service/1" />">Ətraflı</a>-->
+                                                <a href="<c:url value="/service/36"/>">Ətraflı</a>
                                             </div>
                                         </div>
                                     </div>

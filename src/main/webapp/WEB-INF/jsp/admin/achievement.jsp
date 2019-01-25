@@ -208,7 +208,7 @@
                 $('#main-menu a i[data-type="achievement"]').parents('li').addClass('active');
                 
                 
-                $('#achievementDate').fdatepicker()
+                $('#achievementDate').fdatepicker({format: 'dd/mm/yyyy'})
                 
                 Product.Proxy.getAchievementList('', function (data) {
                     if (data && data.data) {

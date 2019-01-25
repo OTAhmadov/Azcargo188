@@ -216,8 +216,8 @@
                 $('#main-menu a i[data-type="career"]').parents('li').addClass('active');
                 
                 
-                $('#startDate').fdatepicker()
-                $('#endDate').fdatepicker()
+                $('#startDate').fdatepicker({format: 'dd/mm/yyyy'})
+                $('#endDate').fdatepicker({format: 'dd/mm/yyyy'})
                 
                 Product.Proxy.getCareerList('', function (data) {
                     if (data && data.data) {

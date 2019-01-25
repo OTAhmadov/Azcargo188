@@ -5,6 +5,8 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
         <!--<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>-->
         <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
@@ -65,9 +67,9 @@
 
                                                 <li class="pl-15">
                                                     <select class="lang font-mp-bold">
-                                                        <option>AZ</option>
-                                                        <option>EN</option>
-                                                        <option>RU</option>
+                                                        <option value="az">AZ</option>
+                                                        <option value="en">EN</option>
+                                                        <option value="ru">RU</option>
                                                     </select>
                                                 </li>
                                                 <li class="pl-15">
@@ -364,42 +366,42 @@
                                                 <!--<li style="width: 94px;">-->
                                                 <li>
                                                     <a href="<c:url value="/index" />" class="d-block underline-none text-green-hover">
-                                                        <span class="text-white font-mp-bold font-12 active">ƏSAS</span>
+                                                        <span class="text-white font-mp-bold font-12" data-type="index"><spring:message code="page1" /></span>
                                                     </a>
                                                 </li>
                                                 <li class="pl-15">
                                                     <a href="<c:url value="/about" />" class="d-block underline-none text-green-hover">
-                                                        <span class="text-white font-mp-bold font-12">HAQQIMIZDA</span>
+                                                        <span class="text-white font-mp-bold font-12" data-type="about"><spring:message code="page2" /></span>
                                                     </a>
                                                 </li>
                                                 <li class="pl-15">
                                                     <a href="<c:url value="/service" />" class="d-block underline-none text-green-hover">
-                                                        <span class="text-white font-mp-bold font-12">XİDMƏTLƏRİMİZ</span>
+                                                        <span class="text-white font-mp-bold font-12" data-type="service"><spring:message code="page3" /></span>
                                                     </a>
                                                 </li>
                                                 <li class="pl-15">
                                                     <a href="<c:url value="/achievement" />" class="d-block underline-none text-green-hover">
-                                                        <span class="text-white font-mp-bold font-12">NAİLİYYƏTLƏRİMİZ</span>
+                                                        <span class="text-white font-mp-bold font-12" data-type="achievement"><spring:message code="page4" /></span>
                                                     </a>
                                                 </li>
                                                 <li class="pl-15">
                                                     <a href="<c:url value="/promotion" />" class="d-block underline-none text-green-hover">
-                                                        <span class="text-white font-mp-bold font-12">KAMPANİYALAR</span>
+                                                        <span class="text-white font-mp-bold font-12" data-type="promotion"><spring:message code="page5" /></span>
                                                     </a>
                                                 </li>
                                                 <li class="pl-15">
                                                     <a href="<c:url value="/corporative" />" class="d-block underline-none text-green-hover">
-                                                        <span class="text-white font-mp-bold font-12">KORPORATİV</span>
+                                                        <span class="text-white font-mp-bold font-12" data-type="corporative"><spring:message code="page6" /></span>
                                                     </a>
                                                 </li>
                                                 <li class="pl-15">
                                                     <a href="<c:url value="/career" />" class="d-block underline-none text-green-hover">
-                                                        <span class="text-white font-mp-bold font-12">KARYERA</span>
+                                                        <span class="text-white font-mp-bold font-12" data-type="career"><spring:message code="page7" /></span>
                                                     </a>
                                                 </li>
                                                 <li class="pl-15">
                                                     <a href="<c:url value="/contact" />" class="d-block underline-none text-green-hover">
-                                                        <span class="text-white font-mp-bold font-12" style="">ƏLAQƏ</span>
+                                                        <span class="text-white font-mp-bold font-12" style="" data-type="contact"><spring:message code="page8" /></span>
                                                     </a>
                                                 </li>
 
@@ -447,9 +449,9 @@
 
                                                 <li class="pl-15">
                                                     <select class="lang font-mp-bold">
-                                                        <option>AZ</option>
-                                                        <option>EN</option>
-                                                        <option>RU</option>
+                                                        <option value="az">AZ</option>
+                                                        <option value="en">EN</option>
+                                                        <option value="ru">RU</option>
                                                     </select>
                                                 </li>
                                                 <li class="pl-15">
@@ -746,42 +748,42 @@
                                                 <!--<li style="width: 94px;">-->
                                                 <li>
                                                     <a href="<c:url value="/index" />" class="d-block underline-none text-green-hover">
-                                                        <span class="text-white font-mp-bold font-12 active">ƏSAS</span>
+                                                        <span class="text-white font-mp-bold font-12 " data-type="index"><spring:message code="page1" /></span>
                                                     </a>
                                                 </li>
                                                 <li class="pl-15">
                                                     <a href="<c:url value="/about" />" class="d-block underline-none text-green-hover">
-                                                        <span class="text-white font-mp-bold font-12">HAQQIMIZDA</span>
+                                                        <span class="text-white font-mp-bold font-12" data-type="about"><spring:message code="page2" /></span>
                                                     </a>
                                                 </li>
                                                 <li class="pl-15">
                                                     <a href="<c:url value="/service" />" class="d-block underline-none text-green-hover">
-                                                        <span class="text-white font-mp-bold font-12">XİDMƏTLƏRİMİZ</span>
+                                                        <span class="text-white font-mp-bold font-12" data-type="service"><spring:message code="page3" /></span>
                                                     </a>
                                                 </li>
                                                 <li class="pl-15">
                                                     <a href="<c:url value="/achievement" />" class="d-block underline-none text-green-hover">
-                                                        <span class="text-white font-mp-bold font-12">NAİLİYYƏTLƏRİMİZ</span>
+                                                        <span class="text-white font-mp-bold font-12" data-type="achievement"><spring:message code="page4" /></span>
                                                     </a>
                                                 </li>
                                                 <li class="pl-15">
                                                     <a href="<c:url value="/promotion" />" class="d-block underline-none text-green-hover">
-                                                        <span class="text-white font-mp-bold font-12">KAMPANİYALAR</span>
+                                                        <span class="text-white font-mp-bold font-12" data-type="promotion"><spring:message code="page5" /></span>
                                                     </a>
                                                 </li>
                                                 <li class="pl-15">
                                                     <a href="<c:url value="/corporative" />" class="d-block underline-none text-green-hover">
-                                                        <span class="text-white font-mp-bold font-12">KORPORATİV</span>
+                                                        <span class="text-white font-mp-bold font-12" data-type="corporative"><spring:message code="page6" /></span>
                                                     </a>
                                                 </li>
                                                 <li class="pl-15">
                                                     <a href="<c:url value="/career" />" class="d-block underline-none text-green-hover">
-                                                        <span class="text-white font-mp-bold font-12">KARYERA</span>
+                                                        <span class="text-white font-mp-bold font-12" data-type="career"><spring:message code="page7" /></span>
                                                     </a>
                                                 </li>
                                                 <li class="pl-15">
                                                     <a href="<c:url value="/contact" />" class="d-block underline-none text-green-hover">
-                                                        <span class="text-white font-mp-bold font-12" style="">ƏLAQƏ</span>
+                                                        <span class="text-white font-mp-bold font-12" style="" data-type="contact"><spring:message code="page8" /></span>
                                                     </a>
                                                 </li>
 
