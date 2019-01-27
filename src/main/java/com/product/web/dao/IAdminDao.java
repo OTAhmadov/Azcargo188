@@ -16,9 +16,12 @@ import com.product.web.domain.Contact;
 import com.product.web.domain.Corporative;
 import com.product.web.domain.DictionaryWrapper;
 import com.product.web.domain.FileWrapper;
+import com.product.web.domain.Modules;
 import com.product.web.domain.OperationResponse;
 import com.product.web.domain.Product;
 import com.product.web.domain.Promotation;
+import com.product.web.domain.RoleAccess;
+import com.product.web.domain.Roles;
 import com.product.web.domain.Service;
 import com.product.web.form.AboutForm;
 import com.product.web.form.AccountForm;
@@ -32,6 +35,7 @@ import com.product.web.form.FileWrapperForm;
 import com.product.web.form.LoginForm;
 import com.product.web.form.ProductForm;
 import com.product.web.form.PromotationForm;
+import com.product.web.form.RoleForm;
 import com.product.web.form.ServiceForm;
 import java.util.List;
 
@@ -110,4 +114,8 @@ public interface IAdminDao {
     public List<CommonApply> getCommonApplyList();
     public CommonApply getCommonApplyDetail(int id);
     
+    public OperationResponse NDURole(RoleForm form, int accountId);
+    public List<Roles> getRoleList();
+    public Roles getRoleDetails(int id);
+    public List<Modules> getModuleList();
 }

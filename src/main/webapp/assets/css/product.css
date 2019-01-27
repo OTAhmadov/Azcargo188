@@ -320,6 +320,11 @@ transition: all .3s ease-in-out;
         cursor: pointer;
 }
 
+#user_group_list .remove-user-group, #user_group_list .edit-user-group{
+        margin-left: 6px;
+        cursor: pointer;
+}
+
 #corporative_list .view-corporative{
         margin-left: 6px;
         cursor: pointer;

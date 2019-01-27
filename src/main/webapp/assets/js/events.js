@@ -935,6 +935,21 @@ $(function (e) {
                 }
             })
         })
+
+        $('body').on('click', '#user_group_list tbody tr .for-view', function () {
+            var id = $(this).parents('tr').attr('data-id');
+            var html='';
+            Product.Proxy.getRoleDetails(id, function(data2) {
+                $.each(data2.modules, function(i, v){
+                    html += '<tr data-id="'+v.id+'">'+
+                                '<td>'+(++i)+'</td>'+
+                                '<td>'+v.name[Product.lang]+'</td>'+
+
+                            '</tr>';
+                })
+                $('#user_group_module_list tbody').html(html); 
+            })
+        })
         
         $('body').on('change', '#dictionary_type_list', function () {
             var id = $(this).val();
@@ -960,6 +975,84 @@ $(function (e) {
             $('body .dictionary_modal').modal('show');
         })
         
+        $('body').on('click','.add-user-group', function() {
+            $('body .btn-ndu-usergroup').attr('data-type', 'add');
+            $('body #user_group_form')[0].reset();
+            $('body input[name="id"]').val(0);
+            $('body .user_group_modal').modal('show');
+        })
+        
+        $('body').on('click','.edit-user-group', function() {
+            var id = $(this).parents('tr').attr('data-id');
+            $('body .btn-ndu-usergroup').attr('data-type', 'edit');
+            $('body #user_group_form')[0].reset();
+            $('body input[name="id"]').val(id);
+            Product.Proxy.getRoleDetails(id, function(data2) {
+                $('body #nameAz').val(data2.name.az);
+                
+                $.each(data2.modules, function(i, v){
+                    $('body #user_group_module_operation tbody tr td input[value="'+v.id+'"]').prop('checked', true)
+                })
+                $('body .user_group_modal').modal('show');
+            })
+        })
+        
+        $('body').on('click','.remove-user-group', function() {
+            var id = $(this).parents('tr').attr('data-id');
+            var obj = $(this).parents('tr');
+            $('body input[name="id"]').val((-1) * id)
+            var form = $('body #user_group_form').serialize() + '&moduleId=1';
+            if(confirm('Silmək istədiyinizə əminsiniz?')){
+                Product.Proxy.nduUserGroup(form, function(result) {
+                    if(result) {
+
+                        obj.remove();
+                    }
+                })
+            }
+        })
+        
+        $('body').on('click','.btn-ndu-usergroup', function() {
+            var form = $('body #user_group_form').serialize();
+            Product.Proxy.nduUserGroup(form, function(result) {
+                if(result) {
+                    
+                    Product.Proxy.getRoleList(function(data) {
+                        if(data) {
+                            var html ='';
+                            var count = 0;
+                            var roleId = 0;
+                            $.each(data, function(i, v){
+                                if(count < 1) {
+                                    roleId = v.id;
+                                    ++count;
+                                }
+                                html += '<tr data-id="'+v.id+'">'+
+                                            '<td>'+(++i)+'</td>'+
+                                            '<td>'+v.name[Product.lang]+'</td>'+
+                                            '<td><i class="fa fa-remove remove-user-group" data-id="'+v.id+'"></i>'+
+                                                '<i class="fa fa-edit edit-user-group" data-id="'+v.id+'"></i></td>'+
+                                        '</tr>';
+                            })
+                            $('#user_group_list tbody').html(html);
+                            html='';
+                            Product.Proxy.getRoleDetails(roleId, function(data2) {
+                                $.each(data2.modules, function(i, v){
+                                    html += '<tr data-id="'+v.id+'">'+
+                                                '<td>'+(++i)+'</td>'+
+                                                '<td>'+v.name[Product.lang]+'</td>'+
+
+                                            '</tr>';
+                                })
+                                $('#user_group_module_list tbody').html(html); 
+                                $('body .user_group_modal').modal('hide');
+                            })
+
+                        }
+                    })
+                }
+            })
+        })
         $('body').on('click','.btn-ndu-dictionary', function() {
             var id = $(this).attr('data-id') &&  $(this).attr('data-id') > 0 ? $(this).attr('data-id') : 0 ;
             
@@ -1053,6 +1146,7 @@ $(function (e) {
             var lname = $('#lname').val();
             var newPassword = $('#new_password').val();
             var oldPassword = $('#old_password').val();
+            var roleId = $('#roleId').val();
             
             var form = {
                 username: username,
@@ -1061,7 +1155,8 @@ $(function (e) {
                 lname:lname,
                 mname:mname,
                 newPassword:newPassword,
-                oldPassword:oldPassword
+                oldPassword:oldPassword,
+                roleId: roleId
             }
             
             Product.Proxy.nduAccount(form, function(data) {
@@ -1074,6 +1169,7 @@ $(function (e) {
                                         '<td>'+(++i)+'</td>'+
                                         '<td>'+(v.lastname + ' ' + v.firstname + ' ' + v.middlename)+'</td>'+
                                         '<td>'+(v.username)+'</td>'+
+                                        '<td>'+(v.role.name.az)+'</td>'+
                                         '<td><i class="fa fa-remove remove-account"></i>'+
                                         '<i class="fa fa-edit edit-account"></i>'+
                                         '</td>'+
@@ -1098,6 +1194,7 @@ $(function (e) {
                      $('#fname').val(data.data.firstname);
                      $('#mname').val(data.data.middlename);
                      $('#lname').val(data.data.lastname);
+                     $('#roleId').val(data.data.role.id);
                      $('#old_password').val('');
                      $('#new_password').val('');
                     $('.user_modal').modal('show');
@@ -1122,6 +1219,7 @@ $(function (e) {
                                             '<td>'+(++i)+'</td>'+
                                             '<td>'+(v.lastname + ' ' + v.firstname + ' ' + v.middlename)+'</td>'+
                                             '<td>'+(v.username)+'</td>'+
+                                            '<td>'+(v.role.name.az)+'</td>'+
                                             '<td><i class="fa fa-remove remove-account"></i>'+
                                             '<i class="fa fa-edit edit-account"></i>'+
                                             '</td>'+

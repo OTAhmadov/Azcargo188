@@ -17,10 +17,12 @@ import com.product.web.domain.Contact;
 import com.product.web.domain.Corporative;
 import com.product.web.domain.DictionaryWrapper;
 import com.product.web.domain.FileWrapper;
+import com.product.web.domain.Modules;
 import com.product.web.domain.MultilanguageString;
 import com.product.web.domain.OperationResponse;
 import com.product.web.domain.Product;
 import com.product.web.domain.Promotation;
+import com.product.web.domain.Roles;
 import com.product.web.domain.Service;
 import com.product.web.enums.ResultCode;
 import com.product.web.form.AboutForm;
@@ -35,6 +37,7 @@ import com.product.web.form.FileWrapperForm;
 import com.product.web.form.LoginForm;
 import com.product.web.form.ProductForm;
 import com.product.web.form.PromotationForm;
+import com.product.web.form.RoleForm;
 import com.product.web.form.ServiceForm;
 import com.product.web.util.Crypto;
 import java.sql.CallableStatement;
@@ -79,7 +82,8 @@ public class AdminDao implements IAdminDao {
                                             resultSet.getString("first_name"), 
                                             resultSet.getString("last_name"), 
                                             resultSet.getString("middle_name"),
-                                            resultSet.getString("user_type"));
+                                            resultSet.getString("user_type"),
+                                            getRoleDetails(resultSet.getInt("role_id")));
                     }
                 }
             }
@@ -336,7 +340,8 @@ public class AdminDao implements IAdminDao {
                                                 resultSet.getString("first_name"), 
                                                 resultSet.getString("last_name"), 
                                                 resultSet.getString("middle_name"),
-                                                resultSet.getString("user_type")));
+                                                resultSet.getString("user_type"),
+                                                getRoleDetails(resultSet.getInt("role_id"))));
                 }
         } 
         catch (Exception e) {
@@ -361,7 +366,8 @@ public class AdminDao implements IAdminDao {
                                                 resultSet.getString("first_name"), 
                                                 resultSet.getString("last_name"), 
                                                 resultSet.getString("middle_name"),
-                                                resultSet.getString("user_type"));
+                                                resultSet.getString("user_type"),
+                                                getRoleDetails(resultSet.getInt("role_id")));
                     }
                 }
                     
@@ -376,7 +382,7 @@ public class AdminDao implements IAdminDao {
     public OperationResponse NDUAccount(AccountForm form, int accountId) {
         OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
         System.out.println(Crypto.base64Encode(form.getNewPassword()) + "  " + Crypto.base64Encode(form.getOldPassword()));
-        String query = "{call ndu_account(?,?,?,?,?,?,?,?)}";
+        String query = "{call ndu_account(?,?,?,?,?,?,?,?,?)}";
         try(Connection connection = dbConnect.getPostgresConnection();
             CallableStatement callableStatement = connection.prepareCall(query)) {
             callableStatement.setInt(1, accountId);
@@ -387,6 +393,7 @@ public class AdminDao implements IAdminDao {
             callableStatement.setString(6, form.getFname());
             callableStatement.setString(7, form.getLname());
             callableStatement.setString(8, form.getMname());
+            callableStatement.setInt(9, form.getRoleId());
             
             callableStatement.executeUpdate();
             operationResponse.setCode(ResultCode.OK);
@@ -1488,6 +1495,112 @@ public class AdminDao implements IAdminDao {
             log.error(e.getMessage(), e);
         }
         return null;
+    }
+    
+    @Override
+    public OperationResponse NDURole(RoleForm form, int accountId){
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+        
+        try(Connection connection = dbConnect.getPostgresConnection();
+            CallableStatement callableStatement = connection.prepareCall("{call ndu_role(?,?,?,?,?,?)}")) {
+            
+            callableStatement.setInt(1, accountId);
+            callableStatement.setInt(2, form.getId());
+            callableStatement.setString(3, form.getNameAz());
+            callableStatement.setString(4, form.getNameEn());
+            callableStatement.setString(5, form.getNameRu());
+            callableStatement.setArray(6, connection.createArrayOf("int", form.getModuleId()));
+            callableStatement.executeUpdate();
+            
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return operationResponse;
+    }
+    
+    @Override
+    public List<Roles> getRoleList(){
+        
+        List<Roles> list = new ArrayList<>();
+        String query = "select * from roles where active = 1";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement prepareStatement = connection.prepareStatement(query)) {
+            try(ResultSet resultSet = prepareStatement.executeQuery()) {
+                while(resultSet.next()) {
+                    list.add(new Roles(resultSet.getInt("id"), new MultilanguageString(resultSet.getString("name_az"), "", ""), null));
+                }
+            }
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
+    }
+    
+    @Override
+    public Roles getRoleDetails(int id){
+        
+        String query = "select * from roles where active = 1 and  id = ?";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement prepareStatement = connection.prepareStatement(query)) {
+            prepareStatement.setInt(1, id);
+            try(ResultSet resultSet = prepareStatement.executeQuery()) {
+                if(resultSet.next()) {
+                    return new Roles(resultSet.getInt("id"), 
+                                        new MultilanguageString(resultSet.getString("name_az"), "", ""),
+                                        getModuleListByRole(id, connection));
+                }
+            }
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+    
+    @Override
+    public List<Modules> getModuleList(){
+        List<Modules> list = new ArrayList<>();
+        String query = "select * from modules where active = 1";
+        try(Connection connection = dbConnect.getPostgresConnection();
+            PreparedStatement prepareStatement = connection.prepareStatement(query)) {
+            try(ResultSet resultSet = prepareStatement.executeQuery()) {
+                while(resultSet.next()) {
+                    list.add(new Modules(resultSet.getInt("id"), 
+                                         new MultilanguageString(resultSet.getString("name_az"), "", ""), 
+                                         resultSet.getString("url"), 
+                                         resultSet.getString("icon"), 
+                                         resultSet.getString("type")));
+                }
+            }
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
+    }
+    
+    private List<Modules> getModuleListByRole(int id, Connection connection) {
+        List<Modules> list = new ArrayList<>();
+        String query = "select * from v_role_access_module where role_id = ?";
+        try(PreparedStatement prepareStatement = connection.prepareStatement(query)) {
+            prepareStatement.setInt(1, id);
+            try(ResultSet resultSet = prepareStatement.executeQuery()) {
+                while(resultSet.next()) {
+                    list.add(new Modules(resultSet.getInt("module_id"), 
+                                         new MultilanguageString(resultSet.getString("module_az"), "", ""), 
+                                         resultSet.getString("module_url"), 
+                                         resultSet.getString("module_icon"), 
+                                         resultSet.getString("module_type")));
+                }
+            }
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return list;
     }
     
 }

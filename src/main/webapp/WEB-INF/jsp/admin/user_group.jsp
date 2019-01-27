@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Admin page</title>
+    <title>User group</title>
     <meta name="description" content="Sufee Admin - HTML5 Admin Template">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -87,7 +87,7 @@
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>Soraqçalar</h1>
+                        <h1>İstifadəçi qrupları</h1>
                     </div>
                 </div>
             </div>
@@ -95,7 +95,7 @@
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
-                            <li class="active"><span class="fa fa-plus add-dictionary" style="cursor: pointer;"></span></li>
+                            <li class="active"><span class="fa fa-plus add-user-group" style="cursor: pointer;"></span></li>
                         </ol>
                     </div>
                 </div>
@@ -108,14 +108,16 @@
                 <div class="col-md-3">
                     <div class="card">
                         <div class="card-header">
-                            <strong class="card-title">Soraqça tipi</strong>
+                            <strong class="card-title">İstifadəçi qrupları</strong>
+                            
                         </div>
                         <div class="card-body">
-                            <table id="dictionary_type" class="table table-striped table-bordered">
+                            <table id="user_group_list" class="table table-striped table-bordered">
                                 <thead>
                                   <tr>
                                     <th>No</th>
                                     <th>Adı</th>
+                                    <th></th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -128,17 +130,14 @@
                 <div class="col-md-8 col-md-offset-1">
                     <div class="card">
                         <div class="card-header">
-                            <strong class="card-title">Soraqça</strong>
+                            <strong class="card-title">Modullar</strong>
                         </div>
                         <div class="card-body">
-                            <table id="dictinary_list" class="table table-striped table-bordered">
+                            <table id="user_group_module_list" class="table table-striped table-bordered">
                                 <thead>
                                   <tr>
                                     <th>No</th>
-                                    <th>AZ</th>
-                                    <th>EN</th>
-                                    <th>RU</th>
-                                    <th></th>
+                                    <th>Adı</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -149,48 +148,46 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade bs-example-modal-lg dictionary_modal" tabicommon_selling_modalndex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+            <div class="modal fade bs-example-modal-lg user_group_modal" tabicommon_selling_modalndex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
 
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                        <h4 class="modal-title" id="myLargeModalLabel">Soraqça</h4>
+                        <h4 class="modal-title" id="myLargeModalLabel">İstifadəçi qrupu</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="row form-group hidden">
-                          <div class="col col-md-3"><label for="dictionary_type_list" class=" form-control-label">Tipi</label></div>
-                          <div class="col-12 col-md-9">
-                            <select name="select" id="dictionary_type_list" class="form-control">
-                              
-                            </select>
-                          </div>
-                        </div>
-                        <div class="row form-group hidden">
-                          <div class="col col-md-3"><label for="dictionary_type_list" class=" form-control-label">Asılılıq</label></div>
-                          <div class="col-12 col-md-9">
-                            <select id="dictionary_list_by_type" class="form-control">
-                              
-                            </select>
-                          </div>
-                        </div>
-                        <div class="row form-group">
-                          <div class="col col-md-3"><label for="product_name" class=" form-control-label">Az</label></div>
-                          <div class="col-12 col-md-9"><input type="text" id="name_az" name="text-input" placeholder="" class="form-control"></div>
-                        </div>
-                        <div class="row form-group">
-                          <div class="col col-md-3"><label for="product_name" class=" form-control-label">En</label></div>
-                          <div class="col-12 col-md-9"><input type="text" id="name_en" name="text-input" placeholder="" class="form-control"></div>
-                        </div>
-                        <div class="row form-group">
-                          <div class="col col-md-3"><label for="product_name" class=" form-control-label">Ru</label></div>
-                          <div class="col-12 col-md-9"><input type="text" id="name_ru" name="text-input" placeholder="" class="form-control"></div>
-                        </div>
+                        <form id="user_group_form">
+                            <input class="hidden" value="0" name="id" />
+                            <div class="row form-group">
+                                <div class="col col-md-3"><label for="product_name" class=" form-control-label">Adı</label></div>
+                                <div class="col-12 col-md-9"><input type="text" id="nameAz" name="nameAz" placeholder="" class="form-control"></div>
+                            </div>
+                            <div class="row form-group">
+                              <div class="col col-md-12"><label for="product_name" class=" form-control-label">Modullar</label></div>
+                              <div class="col-12 col-md-12">
+                                  <table id="user_group_module_operation" class="table table-striped table-bordered">
+                                    <thead>
+                                      <tr>
+                                        <th>No</th>
+                                        <th>Adı</th>
+                                        <th></th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                  </table>
+
+                              </div>
+                            </div>
+                        </form>
+                        
                     </div>
                     <div class="modal-footer">
                         
                         <button type="button" class="btn btn-default" data-dismiss="modal">Bağla</button>
-                        <button type="button" class="btn btn-primary btn-ndu-dictionary">Təsdiq et</button>
+                        <button type="button" class="btn btn-primary btn-ndu-usergroup">Təsdiq et</button>
 
                     </div>
                 </div>
@@ -201,23 +198,52 @@
     <script>
         $(function() {
             
-            $('#main-menu a i[data-type="dictionary"]').parents('li').addClass('active');
+            $('#main-menu a i[data-type="userGroup"]').parents('li').addClass('active');
             
-            Product.Proxy.getDictionariesType(function(data) {
+            Product.Proxy.getRoleList(function(data) {
+                if(data) {
+                    var html ='';
+                    var count = 0;
+                    var roleId = 0;
+                    $.each(data, function(i, v){
+                        if(count < 1) {
+                            roleId = v.id;
+                            ++count;
+                        }
+                        html += '<tr data-id="'+v.id+'">'+
+                                    '<td class="for-view">'+(++i)+'</td>'+
+                                    '<td class="for-view">'+v.name[Product.lang]+'</td>'+
+                                    '<td><i class="fa fa-remove remove-user-group" data-id="'+v.id+'"></i>'+
+                                        '<i class="fa fa-edit edit-user-group" data-id="'+v.id+'"></i></td>'+
+                                '</tr>';
+                    })
+                    $('#user_group_list tbody').html(html);
+                    html='';
+                    Product.Proxy.getRoleDetails(roleId, function(data2) {
+                        $.each(data2.modules, function(i, v){
+                            html += '<tr data-id="'+v.id+'">'+
+                                        '<td>'+(++i)+'</td>'+
+                                        '<td>'+v.name[Product.lang]+'</td>'+
+                                        
+                                    '</tr>';
+                        })
+                        $('#user_group_module_list tbody').html(html); 
+                    })
+                    
+                }
+            })
+            
+            Product.Proxy.getModuleList(function(data) {
                 if(data) {
                     var html ='';
                     $.each(data, function(i, v){
                         html += '<tr data-id="'+v.id+'">'+
                                     '<td>'+(++i)+'</td>'+
-                                    '<td>'+v.value[Product.lang]+'</td>'+
+                                    '<td>'+v.name[Product.lang]+'</td>'+
+                                    '<td><input type="checkbox" name="moduleId" value="'+v.id+'"/></td>'+
                                 '</tr>';
                     })
-                    $('#dictionary_type tbody').html(html);
-                    html='';
-                    $.each(data, function(i, v){
-                        html += '<option value="'+v.id+'">'+v.value[Product.lang]+'</option>'
-                    })
-                    $('#dictionary_type_list').html(html);
+                    $('#user_group_module_operation tbody').html(html);
                 }
             })
             

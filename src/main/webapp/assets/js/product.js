@@ -96,9 +96,70 @@ var Product = {
                 }
             });
         },
+        getRoleList: function(callback) {
+            $.ajax({
+                url: Product.rootUrl + 'roles',
+                type: 'GET',
+                success: function(data) {
+                    if(data && data.code === Product.statusCodes.OK && callback) {
+                        callback(data.data);
+                    }
+                }
+            });
+        },
+        getModuleList: function(callback) {
+            $.ajax({
+                url: Product.rootUrl + 'modules',
+                type: 'GET',
+                success: function(data) {
+                    if(data && data.code === Product.statusCodes.OK && callback) {
+                        callback(data.data);
+                    }
+                }
+            });
+        },
+        getRoleDetails: function(id,callback) {
+            $.ajax({
+                url: Product.rootUrl + 'role/' + id,
+                type: 'GET',
+                success: function(data) {
+                    if(data && data.code === Product.statusCodes.OK && callback) {
+                        callback(data.data);
+                    }
+                }
+            });
+        },
         nduDictinary: function(form, callback) {
             $.ajax({
                 url: Product.rootUrl + 'dictionary/ndu',
+                type: 'POST',
+                data:form,
+                success: function(result) {
+                    if (result) {
+                        switch (result.code) {
+                            case Product.statusCodes.OK:
+
+                                if (callback) {
+                                    callback(result);
+                                }
+                                break;
+
+                            case Product.statusCodes.ERROR:
+                                if (result.message) {
+                                    
+                                } else {
+                                   alert('Xeta bas verdi') 
+                                }
+                                break;
+
+                        }
+                    }
+                }
+            });
+        },
+        nduUserGroup: function(form, callback) {
+            $.ajax({
+                url: Product.rootUrl + 'role/ndu',
                 type: 'POST',
                 data:form,
                 success: function(result) {

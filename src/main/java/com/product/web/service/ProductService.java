@@ -17,10 +17,12 @@ import com.product.web.domain.Contact;
 import com.product.web.domain.Corporative;
 import com.product.web.domain.DictionaryWrapper;
 import com.product.web.domain.FileWrapper;
+import com.product.web.domain.Modules;
 import com.product.web.domain.OperationResponse;
 import com.product.web.domain.Product;
 import com.product.web.domain.Promotation;
 import com.product.web.domain.Promotation;
+import com.product.web.domain.Roles;
 import com.product.web.form.AboutForm;
 import com.product.web.form.AccountForm;
 import com.product.web.form.AchievementForm;
@@ -33,6 +35,7 @@ import com.product.web.form.FileWrapperForm;
 import com.product.web.form.LoginForm;
 import com.product.web.form.ProductForm;
 import com.product.web.form.PromotationForm;
+import com.product.web.form.RoleForm;
 import com.product.web.form.ServiceForm;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -299,6 +302,26 @@ public class ProductService implements IProductService {
     @Override
     public OperationResponse insertCareerApply(CareerApplyForm form) {
         return this.adminDao.insertCareerApply(form);
+    }
+
+    @Override
+    public OperationResponse NDURole(RoleForm form, int accountId) {
+        return this.adminDao.NDURole(form, accountId);
+    }
+
+    @Override
+    public List<Roles> getRoleList() {
+        return this.adminDao.getRoleList();
+    }
+
+    @Override
+    public Roles getRoleDetails(int id) {
+        return this.adminDao.getRoleDetails(id);
+    }
+
+    @Override
+    public List<Modules> getModuleList() {
+        return this.adminDao.getModuleList();
     }
     
 }

@@ -44,7 +44,10 @@
                 <div class="col-sm-5">
                     <div class="user-area dropdown float-right">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="user-avatar rounded-circle" src="<c:url value="/assets/img/admin.jpeg"/>" alt="User Avatar">
+                            <!--<img class="user-avatar rounded-circle" src="<c:url value="/assets/img/admin.jpeg"/>" alt="User Avatar">--> 
+                            <form action="<c:url value="/admin/logout" />" method="post">
+                                <input type="submit" class="btn btn-default" value="Çıxış"/>
+                            </form>
                         </a>
 
                         <div class="user-menu dropdown-menu">
@@ -115,6 +118,7 @@
                                         <th>No</th>
                                         <th>S.A.A</th>
                                         <th>İstifadəçi adı</th>
+                                        <th>İstifadəçi qrupu</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -161,6 +165,10 @@
                                 <div class="col col-md-3"><label for="product_name" class=" form-control-label">Ata adı</label></div>
                                 <div class="col-12 col-md-9"><input type="text" id="mname" name="text-input" placeholder="" class="form-control"></div>
                             </div>
+                           <div class="row form-group">
+                                <div class="col col-md-3"><label for="product_name" class=" form-control-label">Istifadəçi adı</label></div>
+                                <div class="col-12 col-md-9"><select type="text" id="roleId" name="text-input" placeholder="" class="form-control"></select></div>
+                            </div>
                         </div>
                         <div class="modal-footer">
 
@@ -185,6 +193,7 @@
                                     '<td>'+(++i)+'</td>'+
                                     '<td>'+(v.lastname + ' ' + v.firstname + ' ' + v.middlename)+'</td>'+
                                     '<td>'+(v.username)+'</td>'+
+                                    '<td>'+(v.role.name.az)+'</td>'+
                                     '<td><i class="fa fa-remove remove-account"></i>'+
                                     '<i class="fa fa-edit edit-account"></i>'+
                                     '</td>'+
@@ -192,6 +201,17 @@
                         })
                         
                         $('#user_list tbody').html(html);
+                    }
+                })
+                
+                Product.Proxy.getRoleList(function(data) {
+                    if(data) {
+                        var html ='';
+                        $.each(data, function(i, v){
+                            html += '<option value="'+v.id+'">'+v.name[Product.lang]+'</option>';
+                        })
+                        
+                        $('body #roleId').html(html)
                     }
                 })
 

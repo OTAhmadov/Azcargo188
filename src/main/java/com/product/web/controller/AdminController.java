@@ -21,6 +21,7 @@ import com.product.web.form.FileWrapperForm;
 import com.product.web.form.LoginForm;
 import com.product.web.form.ProductForm;
 import com.product.web.form.PromotationForm;
+import com.product.web.form.RoleForm;
 import com.product.web.form.ServiceForm;
 import com.product.web.util.Crypto;
 import com.product.web.util.FtpUtils;
@@ -59,10 +60,12 @@ public class AdminController extends SkeletonController {
     private Logger log = Logger.getLogger(AdminController.class);
     
     @GetMapping(value = "/service")
-    protected String showAdminProduct() {
+    protected String showAdminProduct(Model model) {
         
         try {
-            if(getSessionAccount() != null) {
+            Account account = getSessionAccount();
+            if(account != null) {
+                model.addAttribute("modules", account.getRole().getModules());
                 return "admin/service";
             }
             
@@ -72,14 +75,16 @@ public class AdminController extends SkeletonController {
             log.error(e.getMessage(), e);
         }
         
-        return "redirect:/main";
+        return "redirect:/admin";
     }
     
     @GetMapping(value = "/common")
-    protected String showAdminLog() {
+    protected String showAdminLog(Model model) {
         
         try {
-            if(getSessionAccount() != null) {
+            Account account = getSessionAccount();
+            if(account != null) {
+                model.addAttribute("modules", account.getRole().getModules());
                 return "admin/common";
             }
             
@@ -89,14 +94,16 @@ public class AdminController extends SkeletonController {
             log.error(e.getMessage(), e);
         }
         
-        return "redirect:/main";
+        return "redirect:/admin";
     }
     
     @GetMapping(value = "/dic")
-    protected String showAdminDictionary() {
+    protected String showAdminDictionary(Model model) {
         
         try {
-            if(getSessionAccount() != null) {
+            Account account = getSessionAccount();
+            if(account != null) {
+                model.addAttribute("modules", account.getRole().getModules());
                 return "admin/dictionary";
             }
             
@@ -106,13 +113,35 @@ public class AdminController extends SkeletonController {
             log.error(e.getMessage(), e);
         }
         
-        return "redirect:/main";
+        return "redirect:/admin";
     }
-    @GetMapping(value = "/user")
-    protected String showAdminUser() {
+    
+    @GetMapping(value = "/userGroup")
+    protected String showUserGroupDictionary(Model model) {
         
         try {
-            if(getSessionAccount() != null) {
+            Account account = getSessionAccount();
+            if(account != null) {
+                model.addAttribute("modules", account.getRole().getModules());
+                return "admin/user_group";
+            }
+            
+            return "redirect:/admin";
+        } 
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return "redirect:/admin";
+    }
+    
+    @GetMapping(value = "/user")
+    protected String showAdminUser(Model model) {
+        
+        try {
+            Account account = getSessionAccount();
+            if(account != null) {
+                model.addAttribute("modules", account.getRole().getModules());
                 return "admin/user";
             }
             
@@ -122,14 +151,16 @@ public class AdminController extends SkeletonController {
             log.error(e.getMessage(), e);
         }
         
-        return "redirect:/main";
+        return "redirect:/admin";
     }
     
     @GetMapping(value = "/achievement")
-    protected String showAdminCompany() {
+    protected String showAdminCompany(Model model) {
         
         try {
-            if(getSessionAccount() != null) {
+            Account account = getSessionAccount();
+            if(account != null) {
+                model.addAttribute("modules", account.getRole().getModules());
                 return "admin/achievement";
             }
             
@@ -139,14 +170,16 @@ public class AdminController extends SkeletonController {
             log.error(e.getMessage(), e);
         }
         
-        return "redirect:/main";
+        return "redirect:/admin";
     }
     
     @GetMapping(value = "/promotation")
-    protected String showAdminPromotation() {
+    protected String showAdminPromotation(Model model) {
         
         try {
-            if(getSessionAccount() != null) {
+            Account account = getSessionAccount();
+            if(account != null) {
+                model.addAttribute("modules", account.getRole().getModules());
                 return "admin/promotation";
             }
             
@@ -156,14 +189,16 @@ public class AdminController extends SkeletonController {
             log.error(e.getMessage(), e);
         }
         
-        return "redirect:/main";
+        return "redirect:/admin";
     }
     
     @GetMapping(value = "/corporative")
-    protected String showAdminCorporative() {
+    protected String showAdminCorporative(Model model) {
         
         try {
-            if(getSessionAccount() != null) {
+            Account account = getSessionAccount();
+            if(account != null) {
+                model.addAttribute("modules", account.getRole().getModules());
                 return "admin/corporative";
             }
             
@@ -173,14 +208,16 @@ public class AdminController extends SkeletonController {
             log.error(e.getMessage(), e);
         }
         
-        return "redirect:/main";
+        return "redirect:/admin";
     }
     
     @GetMapping(value = "/career")
-    protected String showAdminCareer() {
+    protected String showAdminCareer(Model model) {
         
         try {
-            if(getSessionAccount() != null) {
+            Account account = getSessionAccount();
+            if(account != null) {
+                model.addAttribute("modules", account.getRole().getModules());
                 return "admin/career";
             }
             
@@ -190,14 +227,16 @@ public class AdminController extends SkeletonController {
             log.error(e.getMessage(), e);
         }
         
-        return "redirect:/main";
+        return "redirect:/admin";
     }
     
     @GetMapping(value = "/careerApply")
-    protected String showAdminCareerApply() {
+    protected String showAdminCareerApply(Model model) {
         
         try {
-            if(getSessionAccount() != null) {
+            Account account = getSessionAccount();
+            if(account != null) {
+                model.addAttribute("modules", account.getRole().getModules());
                 return "admin/career_apply";
             }
             
@@ -207,14 +246,16 @@ public class AdminController extends SkeletonController {
             log.error(e.getMessage(), e);
         }
         
-        return "redirect:/main";
+        return "redirect:/admin";
     }
     
     @GetMapping(value = "/commonApply")
-    protected String showAdminCommonApply() {
+    protected String showAdminCommonApply(Model model) {
         
         try {
-            if(getSessionAccount() != null) {
+            Account account = getSessionAccount();
+            if(account != null) {
+                model.addAttribute("modules", account.getRole().getModules());
                 return "admin/common_apply";
             }
             
@@ -224,14 +265,16 @@ public class AdminController extends SkeletonController {
             log.error(e.getMessage(), e);
         }
         
-        return "redirect:/main";
+        return "redirect:/admin";
     }
     
     @GetMapping
-    protected String showLoginPage() {
+    protected String showLoginPage(Model model) {
         
         try {
-            if(getSessionAccount() != null) {
+            Account account = getSessionAccount();
+            if(account != null) {
+                model.addAttribute("modules", account.getRole().getModules());
                 return "admin/service";
             }
             
@@ -241,7 +284,7 @@ public class AdminController extends SkeletonController {
             log.error(e.getMessage(), e);
         }
         
-        return "redirect:/main";
+        return "redirect:/admin";
     }
     
     @PostMapping("/login")
@@ -261,6 +304,22 @@ public class AdminController extends SkeletonController {
             HttpSession session = request.getSession(true);
             session.setAttribute("account", account);
             return "redirect:/admin/service";
+        }
+        catch(Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        
+        return "redirect:/admin";
+    }
+    
+    @PostMapping("/logout")
+    protected String doLogout(Model model,
+                             HttpSession session) {
+        
+        try {
+            
+            session.removeAttribute("account");
+            return "redirect:/admin";
         }
         catch(Exception e) {
             log.error(e.getMessage(), e);
@@ -986,8 +1045,7 @@ public class AdminController extends SkeletonController {
             
             operationResponse = service.NDUService(form, account.getId());
             
-        }
-        catch(Exception e) {
+        }        catch(Exception e) {
             log.error(e.getMessage(), e);
         }
         
@@ -1177,6 +1235,113 @@ public class AdminController extends SkeletonController {
                 throw new Exception("User Access Denied");
             }
             operationResponse.setData(service.getCommonApplyDetail(id));
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    @PostMapping(value = "/role/ndu")
+    @ResponseBody
+    protected OperationResponse nduRole(RoleForm form) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            
+            operationResponse = service.NDURole(form, account.getId());
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    
+    @GetMapping(value = "/role/{id:\\d+}")
+    @ResponseBody
+    protected OperationResponse getRoleDetailsById(@PathVariable int id) {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            operationResponse.setData(service.getRoleDetails(id));
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    
+    @GetMapping(value = "/roles")
+    @ResponseBody
+    protected OperationResponse getRoleList() {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            operationResponse.setData(service.getRoleList());
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    @GetMapping(value = "/modules")
+    @ResponseBody
+    protected OperationResponse getModuleList() {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            operationResponse.setData(service.getModuleList());
+            operationResponse.setCode(ResultCode.OK);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return operationResponse;
+    }
+    
+    @GetMapping(value = "/modulesByAccount")
+    @ResponseBody
+    protected OperationResponse getModuleListByAccount() {
+        OperationResponse operationResponse = new OperationResponse(ResultCode.ERROR);
+
+        try {
+            Account account = getSessionAccount(operationResponse);
+            
+            if(!account.getUserType().equals("ADMIN")) {
+                throw new Exception("User Access Denied");
+            }
+            operationResponse.setData(account.getRole().getModules());
             operationResponse.setCode(ResultCode.OK);
             
         } catch (Exception e) {

@@ -1,5 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
+* To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -18,6 +18,7 @@ public class AccountForm {
     private String mname;
     private String newPassword;
     private String oldPassword;
+    private int roleId;
 
     public AccountForm() {
     }
@@ -86,8 +87,16 @@ public class AccountForm {
         this.oldPassword = oldPassword;
     }
 
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
+
     @Override
     public String toString() {
-        return "AccountForm{" + "id=" + id + ", companyId=" + companyId + ", username=" + username + ", fname=" + fname + ", lname=" + lname + ", mname=" + mname + ", newPassword=" + newPassword + ", password=" + oldPassword + '}';
+        return "AccountForm{" + "id=" + id + ", companyId=" + companyId + ", username=" + username + ", fname=" + fname + ", lname=" + lname + ", mname=" + mname + ", newPassword=" + newPassword + ", oldPassword=" + oldPassword + ", roleId=" + roleId + '}';
     }
 }

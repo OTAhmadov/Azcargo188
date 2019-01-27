@@ -44,7 +44,9 @@
                 <div class="col-sm-5">
                     <div class="user-area dropdown float-right">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="user-avatar rounded-circle" src="<c:url value="/assets/img/admin.jpeg"/>" alt="User Avatar">
+                            <form action="<c:url value="/admin/logout" />" method="post">
+                                <input type="submit" class="btn btn-default" value="Çıxış"/>
+                            </form>
                         </a>
 
                         <div class="user-menu dropdown-menu">
@@ -204,7 +206,7 @@
     <script>
         $(function() {
                 
-            $('#main-menu a i[data-type="log"]').parents('li').addClass('active');
+            $('#main-menu a i[data-type="common"]').parents('li').addClass('active');
             Product.Proxy.getAbout(function(data) {
                 if(data && data.data) {
                     var id = data.data.id;
